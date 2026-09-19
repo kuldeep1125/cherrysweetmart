@@ -1,0 +1,31 @@
+# Node dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Build output
+dist/
+dist-ssr/
+*.local
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System & Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Raw scratch unpacks (active web assets live cleanly inside public/images/)
+extracted_assets/
+_indian sweets_ stock photos, royalty-free images, vectors, video/

@@ -1,0 +1,135 @@
+/* [ADDED] Global styles with custom gradients, glassmorphism, and luxury typography */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  body {
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-x: hidden;
+    max-width: 100vw;
+    position: relative;
+  }
+
+  #root {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+}
+
+/* Custom Gold Foil Text Gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #B38E22 0%, #E5C365 35%, #C99E2A 70%, #8A6419 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-bright {
+  background: linear-gradient(135deg, #F3D079 0%, #FFF4D2 50%, #C99E2A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glass Surface with warm luxury tone */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(228, 214, 187, 0.45);
+}
+
+.dark .glass-panel {
+  background: rgba(24, 20, 16, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.glass-panel-gold {
+  background: rgba(255, 252, 245, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+}
+
+.dark .glass-panel-gold {
+  background: rgba(28, 23, 19, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+/* Subtle Indian Golden Filigree Border Pattern */
+.border-filigree {
+  border-image: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.4), transparent) 1;
+}
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F3;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #12100E;
+}
+::-webkit-scrollbar-thumb {
+  background: #D8B349;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #AB821F;
+}
+
+/* Luxury Card Hover Lift & Gold Glow */
+.luxury-card-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.luxury-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -15px rgba(201, 158, 42, 0.22), 0 0 0 1px rgba(212, 175, 55, 0.35);
+}
+.dark .luxury-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(212, 175, 55, 0.45);
+}
+
+/* Shimmer Sheen effect for badges and buttons */
+.shimmer-badge {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-badge::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: rotate(30deg);
+  animation: badgeShimmer 5s infinite;
+}
+
+@keyframes badgeShimmer {
+  0% { transform: translateX(-100%) rotate(30deg); }
+  25%, 100% { transform: translateX(100%) rotate(30deg); }
+}
+
+/* Hide scrollbar for tabs while maintaining touch/mouse scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
