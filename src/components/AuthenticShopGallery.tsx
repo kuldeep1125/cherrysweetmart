@@ -1,5 +1,5 @@
 // [ADDED] AuthenticShopGallery component with dark mode support and responsive lightbox preview
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Camera, Eye, X } from 'lucide-react';
 import { AUTHENTIC_SHOP_PHOTOS } from '../data/sweetsData';
 
@@ -48,6 +48,15 @@ export const AuthenticShopGallery: React.FC = () => {
   });
 
   const activePhoto = activeLightboxIndex !== null ? galleryItems[activeLightboxIndex] : null;
+
+  useEffect(() => {
+    if (!activePhoto) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setActiveLightboxIndex(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [activePhoto]);
 
   return (
     <section id="gallery" className="py-16 sm:py-24 bg-white dark:bg-[#15110E] border-y border-gold-100 dark:border-gold-900/40 relative transition-colors duration-300">
@@ -117,17 +126,18 @@ export const AuthenticShopGallery: React.FC = () => {
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {filteredItems.map((item, idx) => (
-            <div
+            <button
+              type="button"
               key={item.id}
               onClick={() => setActiveLightboxIndex(galleryItems.findIndex(g => g.id === item.id))}
-              className={`relative rounded-2xl overflow-hidden border border-gold-200 dark:border-gold-800/40 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer bg-slate-100 dark:bg-slate-900 ${
+              className={`relative block w-full text-left rounded-2xl overflow-hidden border border-gold-200 dark:border-gold-800/40 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer bg-slate-100 dark:bg-slate-900 ${
                 idx === 0 ? 'sm:col-span-2 sm:row-span-2 min-h-[260px] sm:min-h-[380px]' : 'h-60'
               }`}
             >
               <img
                 src={item.imageUrl}
                 alt={item.title}
-                className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"
               />
               
@@ -151,22 +161,23 @@ export const AuthenticShopGallery: React.FC = () => {
               <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 dark:bg-black/60 backdrop-blur-sm text-slate-800 dark:text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Eye className="w-4 h-4" />
               </div>
-            </div>
+            </button>
           ))}
         </div>
 
         {/* Lightbox Modal */}
         {activePhoto && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn" role="dialog" aria-modal="true" aria-labelledby="gallery-lightbox-title">
             <button
               onClick={() => setActiveLightboxIndex(null)}
               className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-colors z-20"
+              aria-label="Close photo viewer"
             >
               <X className="w-6 h-6" />
             </button>
 
             <div className="relative max-w-4xl w-full bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-gold-400/40">
-              <div className="aspect-16/10 bg-black flex items-center justify-center overflow-hidden">
+              <div className="aspect-[16/10] bg-black flex items-center justify-center overflow-hidden">
                 <img
                   src={activePhoto.imageUrl}
                   alt={activePhoto.title}
@@ -181,7 +192,7 @@ export const AuthenticShopGallery: React.FC = () => {
                   </span>
                   <span className="text-xs text-slate-400">• Cherry&apos;s Sweet Mart (Spine Road)</span>
                 </div>
-                <h3 className="font-display text-xl font-bold">
+                <h3 id="gallery-lightbox-title" className="font-display text-xl font-bold">
                   {activePhoto.title}
                 </h3>
                 <p className="text-xs font-serif italic text-gold-400">

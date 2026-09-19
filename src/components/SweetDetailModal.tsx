@@ -1,5 +1,5 @@
 // [ADDED] SweetDetailModal component with dark mode styling, deep culinary details & WhatsApp ordering
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, ShieldCheck, Clock, AlertTriangle, Package, ShoppingBag } from 'lucide-react';
 import { SweetItem, SHOP_METADATA } from '../data/sweetsData';
 
@@ -10,6 +10,15 @@ interface SweetDetailModalProps {
 
 export const SweetDetailModal: React.FC<SweetDetailModalProps> = ({ sweet, onClose }) => {
   const [selectedWeight, setSelectedWeight] = useState<'250g' | '500g' | '1kg'>('500g');
+
+  useEffect(() => {
+    if (!sweet) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [sweet, onClose]);
 
   if (!sweet) return null;
 
@@ -29,7 +38,7 @@ Please confirm availability and packaging details.`
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn" role="dialog" aria-modal="true" aria-labelledby="sweet-detail-title">
       {/* Click outside to close */}
       <div className="absolute inset-0" onClick={onClose} />
 
@@ -42,7 +51,7 @@ Please confirm availability and packaging details.`
             <span className="text-[10px] font-bold uppercase tracking-wider text-gold-700 dark:text-gold-400">
               {sweet.categoryName}
             </span>
-            <h3 className="font-display text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+            <h3 id="sweet-detail-title" className="font-display text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
               {sweet.name}
             </h3>
             <p className="text-xs font-serif italic text-gold-600 dark:text-gold-400 font-semibold">
@@ -202,7 +211,7 @@ Please confirm availability and packaging details.`
               href={`https://wa.me/${SHOP_METADATA.whatsappOrderNumber}?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-none px-5 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all active:scale-98"
+              className="flex-1 sm:flex-none px-5 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 active:scale-95"
             >
               <span>WhatsApp Order ({selectedWeight})</span>
             </a>
@@ -211,7 +220,7 @@ Please confirm availability and packaging details.`
               href={SHOP_METADATA.swiggyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-3 rounded-full bg-[#FC8019] hover:bg-[#e06f14] text-white font-bold text-xs shadow flex items-center justify-center gap-1.5 transition-all active:scale-98"
+              className="px-4 py-3 rounded-full bg-[#FC8019] hover:bg-[#e06f14] text-white font-bold text-xs shadow flex items-center justify-center gap-1.5 transition-all hover:-translate-y-0.5 active:scale-95"
               title="Order on Swiggy"
             >
               <ShoppingBag className="w-4 h-4" />

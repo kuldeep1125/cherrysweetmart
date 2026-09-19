@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             
             {/* Brand Logo & Store Badge */}
             <a href="#" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-gold-400 via-gold-500 to-gold-700 p-0.5 shadow-md group-hover:scale-108 group-hover:shadow-gold-500/30 transition-all duration-300 flex-shrink-0">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-gold-400 via-gold-500 to-gold-700 p-0.5 shadow-md group-hover:scale-105 group-hover:shadow-gold-500/30 transition-all duration-300 flex-shrink-0">
                 <div className="w-full h-full rounded-full bg-ivory-50 dark:bg-[#1C1713] flex items-center justify-center p-1 border border-gold-200 dark:border-gold-700">
                   <span className="text-base sm:text-lg select-none" role="img" aria-label="Cherry Sweets">🍒</span>
                 </div>
@@ -133,7 +133,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Direct Call Button */}
               <a
                 href={`tel:${SHOP_METADATA.phone.replace(/\s+/g, '')}`}
-                className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white dark:bg-[#1E1914] hover:bg-gold-50/70 dark:hover:bg-[#25201A] border border-slate-200 dark:border-gold-800/50 text-slate-800 dark:text-slate-200 text-xs font-semibold whitespace-nowrap hover:scale-102 active:scale-98 transition-all shadow-xs"
+                className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white dark:bg-[#1E1914] hover:bg-gold-50/70 dark:hover:bg-[#25201A] border border-slate-200 dark:border-gold-800/50 text-slate-800 dark:text-slate-200 text-xs font-semibold whitespace-nowrap hover:-translate-y-0.5 active:scale-95 transition-all shadow-xs"
                 title="Call Cherry's Sweet Mart"
               >
                 <Phone className="w-3.5 h-3.5 text-gold-600 dark:text-gold-400" />
@@ -144,7 +144,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="relative">
                 <button
                   onClick={() => setOrderDropdownOpen(!orderDropdownOpen)}
-                  className="flex items-center gap-1.5 sm:gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-700 hover:from-gold-700 hover:to-gold-800 text-white text-xs font-bold whitespace-nowrap shadow-md hover:shadow-lg hover:shadow-gold-600/30 hover:scale-102 active:scale-98 transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 sm:gap-2 px-4 py-2 rounded-full bg-[#3a2119] hover:bg-gold-700 text-white text-xs font-bold whitespace-nowrap shadow-md hover:shadow-lg hover:shadow-gold-600/30 hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer"
                   aria-expanded={orderDropdownOpen}
                 >
                   <ShoppingBag className="w-3.5 h-3.5" />

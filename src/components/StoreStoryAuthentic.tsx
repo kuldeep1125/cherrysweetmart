@@ -66,7 +66,7 @@ export const StoreStoryAuthentic: React.FC = () => {
                   onClick={() => setSelectedPhotoIndex(idx)}
                   className={`relative rounded-xl overflow-hidden aspect-square border-2 transition-all ${
                     selectedPhotoIndex === idx
-                      ? 'border-gold-500 ring-2 ring-gold-400 scale-102'
+                      ? 'border-gold-500 ring-2 ring-gold-400 scale-105'
                       : 'border-slate-200 dark:border-slate-700 opacity-70 hover:opacity-100'
                   }`}
                 >

@@ -66,7 +66,7 @@ export const LocationHoursVisit: React.FC = () => {
                   href={SHOP_METADATA.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 dark:bg-gold-600 hover:bg-gold-700 dark:hover:bg-gold-700 text-white text-xs font-bold hover:scale-103 active:scale-97 transition-all shadow-sm cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 dark:bg-gold-600 hover:bg-gold-700 dark:hover:bg-gold-700 text-white text-xs font-bold hover:-translate-y-0.5 active:scale-95 transition-all shadow-sm cursor-pointer"
                 >
                   <Navigation className="w-3.5 h-3.5" />
                   <span>Get Google Maps Directions</span>

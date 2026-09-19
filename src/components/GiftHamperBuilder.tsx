@@ -1,5 +1,5 @@
 // [ADDED] GiftHamperBuilder component with interactive box builder, compartment filling & confetti celebration
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Gift, X, Check, Plus, Trash2, Sparkles, Send, Award } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { SWEETS_CATALOG, SweetItem, SHOP_METADATA } from '../data/sweetsData';
@@ -50,6 +50,15 @@ export const GiftHamperBuilder: React.FC<GiftHamperBuilderProps> = ({ isOpen, on
   const [selectedSweets, setSelectedSweets] = useState<SweetItem[]>([]);
   const [notes, setNotes] = useState('');
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const remainingSlots = selectedBoxTier.capacity - selectedSweets.length;
@@ -90,7 +99,7 @@ Please advise availability and delivery details.`
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn" role="dialog" aria-modal="true" aria-labelledby="gift-hamper-title">
       <div className="absolute inset-0" onClick={onClose} />
 
       <div className="relative w-full max-w-3xl bg-white dark:bg-[#181310] rounded-3xl shadow-2xl border border-gold-300 dark:border-gold-700/60 overflow-hidden z-10 max-h-[92vh] flex flex-col transition-colors duration-300">
@@ -102,7 +111,7 @@ Please advise availability and delivery details.`
               <Gift className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-display text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
+              <h3 id="gift-hamper-title" className="font-display text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
                 Custom Mithai Gift Box Builder
               </h3>
               <p className="text-xs text-gold-700 dark:text-gold-400 font-medium">

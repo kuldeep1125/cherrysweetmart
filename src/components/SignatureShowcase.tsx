@@ -55,7 +55,7 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                 onClick={() => setActiveIndex(index)}
                 className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 flex items-center gap-2 border cursor-pointer ${
                   activeIndex === index
-                    ? 'bg-gradient-to-r from-gold-600 via-gold-500 to-gold-700 text-white border-gold-500 shadow-lg shadow-gold-500/25 scale-105 ring-2 ring-gold-400/40'
+                    ? 'bg-[#3a2119] text-white border-[#3a2119] shadow-lg shadow-gold-500/25 scale-105 ring-2 ring-gold-400/40'
                     : 'bg-white dark:bg-[#1E1914] text-slate-700 dark:text-slate-200 border-slate-200/80 dark:border-gold-800/40 hover:border-gold-400 dark:hover:border-gold-600 hover:bg-gold-50/70 dark:hover:bg-[#25201A] hover:-translate-y-0.5'
                 }`}
               >

@@ -1,5 +1,5 @@
 // [ADDED] Master App component orchestrating luxury white-theme hospitality digital experience
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { StoreStoryAuthentic } from './components/StoreStoryAuthentic';
@@ -40,6 +40,31 @@ export const App: React.FC = () => {
     }
   }, [darkMode]);
 
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('main > section'));
+    sections.forEach((section, index) => {
+      section.classList.add('reveal-section');
+      if (index === 0) section.classList.add('is-visible');
+    });
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      sections.forEach(section => section.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      }),
+      { threshold: 0.08, rootMargin: '0px 0px -44px' }
+    );
+    sections.forEach(section => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   const toggleDarkMode = () => {
     setDarkMode(prev => !prev);
   };
@@ -69,12 +94,12 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ivory-50 dark:bg-[#12100E] text-slate-800 dark:text-slate-100 font-sans selection:bg-gold-500 selection:text-white flex flex-col transition-colors duration-300">
+    <div className="min-h-screen bg-ivory-50 dark:bg-[#14100d] text-slate-800 dark:text-slate-100 font-sans selection:bg-gold-500 selection:text-white flex flex-col transition-colors duration-300">
       
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-20 right-4 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-2xl border border-gold-400/50 flex items-center gap-2 animate-bounce">
-          <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <div className="fixed top-20 right-4 z-50 bg-[#2a1714] text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-2xl border border-gold-400/30 flex items-center gap-2 animate-fadeIn">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span>{toastMessage}</span>
         </div>
       )}
@@ -137,14 +162,14 @@ export const App: React.FC = () => {
       {/* Back to top floating button */}
       <button
         onClick={scrollToTop}
-        className="fixed bottom-20 sm:bottom-6 right-5 z-30 w-10 h-10 rounded-full bg-white/90 dark:bg-[#1C1713]/90 hover:bg-gold-500 text-slate-700 dark:text-gold-400 hover:text-white border border-gold-300 dark:border-gold-800 shadow-lg flex items-center justify-center transition-all hover:scale-110"
+        className="fixed bottom-20 sm:bottom-6 right-5 z-30 w-11 h-11 rounded-full bg-white/95 dark:bg-[#251914]/95 hover:bg-gold-600 text-slate-700 dark:text-gold-300 hover:text-white border border-gold-300/80 dark:border-gold-800 shadow-lg flex items-center justify-center transition-all duration-300 hover:-translate-y-1 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
         aria-label="Scroll to top"
       >
         <ChevronUp className="w-5 h-5" />
       </button>
 
       {/* Persistent Mobile Bottom Action Bar */}
-      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-[#16120F]/95 backdrop-blur-md border-t border-gold-200 dark:border-gold-900/60 py-2.5 px-3 flex items-center justify-between gap-2 shadow-2xl">
+      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-[#fffdf8]/95 dark:bg-[#1b120f]/95 backdrop-blur-md border-t border-gold-200 dark:border-gold-900/60 py-2.5 px-3 flex items-center justify-between gap-2 shadow-[0_-12px_32px_rgba(42,23,20,0.12)]">
         <a
           href={`tel:${SHOP_METADATA.phone.replace(/\s+/g, '')}`}
           className="flex-1 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs text-center flex items-center justify-center gap-1.5"

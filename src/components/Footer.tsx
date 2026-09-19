@@ -5,7 +5,8 @@ import { SHOP_METADATA, CATEGORIES } from '../data/sweetsData';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-slate-950 text-slate-300 pt-16 pb-12 border-t border-gold-500/30">
+    <footer className="relative overflow-hidden bg-[#241510] text-slate-300 pt-16 pb-12 border-t border-gold-500/30">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-[radial-gradient(ellipse_at_top,rgba(183,132,39,.16),transparent_68%)]" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main 4-Column Footer Grid */}

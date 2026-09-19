@@ -1,6 +1,5 @@
-// [ADDED] HeroSection component with dark mode support, non-overlapping decorative assets & official Swiggy/Zomato brand styling
 import React from 'react';
-import { Star, ShieldCheck, Award, ArrowRight, Phone, Sparkles, Flame, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Award, CheckCircle2, Phone, Sparkles, Star } from 'lucide-react';
 import { SHOP_METADATA } from '../data/sweetsData';
 
 interface HeroSectionProps {
@@ -10,227 +9,76 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpenHamper }) => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-ivory-100 via-ivory-50 to-white dark:from-[#12100E] dark:via-[#171310] dark:to-[#12100E] pt-8 pb-16 lg:pt-14 lg:pb-24 transition-colors duration-300">
-      
-      {/* Background Decorative Ambient Circles */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-gold-100/40 dark:from-gold-900/20 via-gold-200/20 dark:via-gold-800/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute -top-20 -right-20 w-96 h-96 bg-amber-100/30 dark:bg-amber-950/20 rounded-full blur-2xl pointer-events-none -z-10" />
+    <section className="paper-grain relative isolate overflow-hidden bg-[#2b1915] pt-7 pb-12 sm:pt-10 sm:pb-16 lg:py-16">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_76%_26%,rgba(196,145,58,.31),transparent_23rem),radial-gradient(circle_at_11%_82%,rgba(131,59,38,.46),transparent_28rem)]" />
+      <div className="absolute top-0 right-[12%] h-px w-[35rem] max-w-full bg-gradient-to-r from-transparent via-gold-400/70 to-transparent" />
 
-      {/* Decorative Sweet Cutouts - Safely positioned in far corners so they NEVER overlap text or buttons */}
-      <div className="hidden xl:block absolute top-12 left-4 w-20 h-20 animate-float-slow opacity-80 pointer-events-none">
-        <img
-          src="/images/cutouts/kaju_katli_silver_saucer.png"
-          alt="Shahi Kaju Katli"
-          className="w-full h-full object-contain drop-shadow-xl"
-        />
-      </div>
-      <div className="hidden 2xl:block absolute top-20 right-8 w-24 h-24 animate-float-reverse opacity-75 pointer-events-none">
-        <img
-          src="/images/cutouts/ukadiche_modak_plate.png"
-          alt="Shahi Mawa Modak"
-          className="w-full h-full object-contain drop-shadow-2xl"
-        />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          
-          {/* Left Column: Story, Typography & CTAs */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            
-            {/* Top Verified Heritage Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#1C1713] border border-gold-300/80 dark:border-gold-700/60 shadow-xs">
-              <span className="flex h-2 w-2 rounded-full bg-gold-600 animate-ping" />
-              <span className="text-[11px] sm:text-xs font-bold tracking-wider uppercase text-gold-800 dark:text-gold-300">
-                Pimpri-Chinchwad's Authentic Mithai Mart
-              </span>
-              <span className="text-slate-300 dark:text-slate-600">•</span>
-              <span className="text-slate-600 dark:text-slate-400 text-xs font-medium">Spine Road</span>
-            </div>
-
-            {/* Main Headline */}
-            <div className="space-y-2">
-              <h1 className="font-display text-3xl sm:text-5xl xl:text-6xl font-extrabold text-slate-900 dark:text-white leading-[1.15] tracking-tight">
-                Pure <span className="text-gold-gradient">Shuddha Desi Ghee</span> & Royal Mithai
-              </h1>
-              <p className="font-serif italic text-lg sm:text-2xl text-gold-700 dark:text-gold-400 font-semibold">
-                चेरीज स्वीट कॉर्नर — परंपरेची शुद्ध चव आणि आपुलकी
-              </p>
-            </div>
-
-            {/* Description */}
-            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              For thousands of families across Chinchwad, Nigdi, and Pune, festival celebrations and family milestones begin at Cherry's Sweet Mart. Prepared daily in small batches with 100% pure cow ghee, morning-fresh milk chhena, and premium Goan cashews.
-            </p>
-
-            {/* Key Quality Pillars Pill Grid */}
-            {/* [ADDED]: Luxury card hover lift and micro-interactions */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-1 max-w-xl mx-auto lg:mx-0 text-left">
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/90 dark:bg-[#1A1613] border border-gold-100 dark:border-gold-800/40 shadow-xs hover:-translate-y-1 hover:border-gold-300 dark:hover:border-gold-600 hover:shadow-md transition-all duration-300 cursor-default">
-                <div className="w-7 h-7 rounded-lg bg-gold-50 dark:bg-gold-950/40 flex items-center justify-center text-gold-600 dark:text-gold-400 flex-shrink-0">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <div className="text-xs">
-                  <div className="font-bold text-slate-800 dark:text-slate-200">100% Shuddha Ghee</div>
-                  <div className="text-slate-500 dark:text-slate-400 text-[10px]">Zero adulteration</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/90 dark:bg-[#1A1613] border border-gold-100 dark:border-gold-800/40 shadow-xs hover:-translate-y-1 hover:border-gold-300 dark:hover:border-gold-600 hover:shadow-md transition-all duration-300 cursor-default">
-                <div className="w-7 h-7 rounded-lg bg-gold-50 dark:bg-gold-950/40 flex items-center justify-center text-gold-600 dark:text-gold-400 flex-shrink-0">
-                  <Sparkles className="w-4 h-4" />
-                </div>
-                <div className="text-xs">
-                  <div className="font-bold text-slate-800 dark:text-slate-200">Fresh Chhena Daily</div>
-                  <div className="text-slate-500 dark:text-slate-400 text-[10px]">Hand-crafted Bengali</div>
-                </div>
-              </div>
-
-              <div className="col-span-2 sm:col-span-1 flex items-center gap-2 p-2.5 rounded-xl bg-white/90 dark:bg-[#1A1613] border border-gold-100 dark:border-gold-800/40 shadow-xs hover:-translate-y-1 hover:border-gold-300 dark:hover:border-gold-600 hover:shadow-md transition-all duration-300 cursor-default">
-                <div className="w-7 h-7 rounded-lg bg-gold-50 dark:bg-gold-950/40 flex items-center justify-center text-gold-600 dark:text-gold-400 flex-shrink-0">
-                  <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
-                </div>
-                <div className="text-xs">
-                  <div className="font-bold text-slate-800 dark:text-slate-200">3,500+ Reviews</div>
-                  <div className="text-slate-500 dark:text-slate-400 text-[10px]">3.7★ on Google</div>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA Button Array */}
-            {/* [ADDED]: Silky micro-animations, scale on active/hover, shimmer badge */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
-              <button
-                onClick={onExploreClick}
-                className="px-6 py-3.5 rounded-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-700 hover:from-gold-700 hover:to-gold-800 text-white font-bold text-sm shadow-lg hover:shadow-xl hover:shadow-gold-500/25 hover:scale-103 active:scale-97 transition-all duration-300 flex items-center gap-2.5 group cursor-pointer"
-              >
-                <span>Explore 50+ Fresh Sweets</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
-              </button>
-
-              <button
-                onClick={onOpenHamper}
-                className="px-5 py-3.5 rounded-full bg-white dark:bg-[#1E1914] hover:bg-gold-50 dark:hover:bg-[#25201A] border border-gold-300 dark:border-gold-700 hover:border-gold-500 dark:hover:border-gold-500 text-gold-900 dark:text-gold-300 font-bold text-sm shadow-sm hover:shadow-md hover:scale-103 active:scale-97 transition-all duration-300 flex items-center gap-2 cursor-pointer"
-              >
-                <Award className="w-4 h-4 text-gold-600 dark:text-gold-400 group-hover:rotate-12 transition-transform" />
-                <span>Custom Gift Hamper</span>
-              </button>
-
-              <a
-                href={`tel:${SHOP_METADATA.phone.replace(/\s+/g, '')}`}
-                className="px-4 py-3.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent hover:border-slate-300 dark:hover:border-slate-600 text-slate-800 dark:text-slate-200 font-semibold text-sm hover:scale-103 active:scale-97 transition-all duration-300 flex items-center gap-2 cursor-pointer"
-              >
-                <Phone className="w-4 h-4 text-gold-600 dark:text-gold-400" />
-                <span>Call Shop</span>
-              </a>
-            </div>
-
-            {/* Prominent, Unobstructed Instant Delivery Section */}
-            <div className="pt-3 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
-              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                Order Online for Instant Home Delivery:
-              </span>
-              <div className="flex items-center gap-2.5">
-                <a
-                  href={SHOP_METADATA.swiggyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2.5 rounded-full bg-gradient-to-r from-[#FC8019] to-[#F16B00] hover:from-[#F16B00] hover:to-[#DE5D00] text-white font-extrabold text-xs shadow-md hover:shadow-lg hover:shadow-orange-500/35 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 cursor-pointer group"
-                >
-                  <span className="text-[13px] group-hover:translate-x-0.5 transition-transform">🛵</span>
-                  <span>Swiggy Delivery</span>
-                </a>
-                <a
-                  href={SHOP_METADATA.zomatoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2.5 rounded-full bg-gradient-to-r from-[#E23744] to-[#CB202D] hover:from-[#CB202D] hover:to-[#B51723] text-white font-extrabold text-xs shadow-md hover:shadow-lg hover:shadow-red-500/35 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 cursor-pointer group"
-                >
-                  <span className="text-[13px] group-hover:scale-110 transition-transform">🍽️</span>
-                  <span>Zomato Delivery</span>
-                </a>
-              </div>
-            </div>
-
+      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8">
+        <div className="relative z-10 text-center lg:col-span-6 lg:text-left">
+          <div className="mb-6 inline-flex items-center gap-2 border border-gold-300/35 bg-white/5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.16em] text-gold-200 backdrop-blur-sm sm:text-[11px]">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-300" />
+            </span>
+            Fresh batches in the counter today
           </div>
 
-          {/* Right Column: Hero Visual Showcase */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
-              
-              {/* Main Circular Gold Glow Frame */}
-              <div className="relative p-3 rounded-3xl bg-gradient-to-b from-gold-300/40 via-gold-100/30 to-white/70 dark:from-gold-700/30 dark:via-gold-900/20 dark:to-[#1A1613] shadow-2xl border border-gold-200 dark:border-gold-800/60">
-                <div className="relative rounded-2xl overflow-hidden aspect-square shadow-inner group bg-slate-900">
-                  <img
-                    src="/images/banners/grand_festive_feast_samosa_kaju.jpg"
-                    alt="Cherry's Sweet Mart Festive Feast"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  
-                  {/* Subtle Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/15 to-transparent pointer-events-none" />
+          <p className="mb-4 font-sans text-[11px] font-bold uppercase tracking-[.2em] text-gold-300 sm:text-xs">Cherry&apos;s Sweet Mart · Spine Road, Pune</p>
+          <h1 className="font-serif text-[2.65rem] font-semibold leading-[.97] tracking-[-.045em] text-[#fffaf1] sm:text-6xl lg:text-[4.55rem]">
+            The sweeter side
+            <span className="block italic font-medium text-gold-300">of every celebration.</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-stone-200/85 sm:text-base lg:mx-0">
+            Heritage mithai, prepared daily with pure cow ghee, fresh chhena, and the kind of care your family can taste.
+          </p>
 
-                  {/* On-Image Bottom Badge */}
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <div className="flex items-center gap-1.5 text-gold-300 text-xs font-semibold mb-1">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>Diwali & Festive Celebration Thali</span>
-                    </div>
-                    <div className="font-display text-lg font-bold">
-                      Signature Kaju Katli & Samosa Feast
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating Card 1: Hot Desi Ghee Jalebi Badge */}
-                <div className="absolute -bottom-5 -left-4 sm:-left-6 bg-white/95 dark:bg-[#1C1713]/95 backdrop-blur-md rounded-2xl p-3.5 shadow-xl border border-gold-200 dark:border-gold-800/60 flex items-center gap-3 max-w-[240px] animate-float-slow">
-                  <div className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-950/50 flex items-center justify-center text-orange-600 dark:text-orange-400 flex-shrink-0">
-                    <Flame className="w-5 h-5 animate-pulse" />
-                  </div>
-                  <div>
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-orange-700 dark:text-orange-400 flex items-center gap-1">
-                      <span>Live Kadai</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-                    </div>
-                    <div className="text-xs font-bold text-slate-900 dark:text-white">Desi Ghee Jalebi</div>
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400">Fried hot with thick rabdi</div>
-                  </div>
-                </div>
-
-                {/* Floating Card 2: 3,500+ Google Reviews Badge */}
-                <div className="absolute -top-4 -right-3 sm:-right-6 bg-white/95 dark:bg-[#1C1713]/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-gold-200 dark:border-gold-800/60 flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50 flex items-center justify-center text-amber-600 dark:text-amber-400 flex-shrink-0">
-                    <Star className="w-5 h-5 fill-amber-400 text-amber-500" />
-                  </div>
-                  <div className="text-left">
-                    <div className="flex items-center gap-1">
-                      <span className="text-sm font-extrabold text-slate-900 dark:text-white">3.7</span>
-                      <div className="flex text-amber-400 text-xs">★★★★☆</div>
-                    </div>
-                    <div className="text-[10px] text-slate-600 dark:text-slate-300 font-medium">
-                      3,505 Google Reviews
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Verified Trust Stamp below */}
-              <div className="mt-4 flex items-center justify-center gap-4 text-xs text-slate-500 dark:text-slate-400">
-                <span className="flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span>FSSAI Certified</span>
-                </span>
-                <span className="text-slate-300 dark:text-slate-600">•</span>
-                <span className="flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span>Pure Vegetarian (100%)</span>
-                </span>
-              </div>
-
-            </div>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+            <button
+              onClick={onExploreClick}
+              className="button-press inline-flex min-h-12 items-center gap-2 bg-[#fffaf1] px-5 py-3 text-xs font-extrabold text-[#382018] shadow-[0_12px_28px_rgba(0,0,0,.2)] hover:bg-gold-200 sm:px-6 sm:text-sm"
+            >
+              Explore today&apos;s mithai
+              <ArrowRight className="h-4 w-4" />
+            </button>
+            <button
+              onClick={onOpenHamper}
+              className="button-press inline-flex min-h-12 items-center gap-2 border border-gold-300/50 bg-white/5 px-5 py-3 text-xs font-bold text-[#fffaf1] backdrop-blur-sm hover:bg-white/10 sm:px-6 sm:text-sm"
+            >
+              <Award className="h-4 w-4 text-gold-300" />
+              Build a gift box
+            </button>
           </div>
 
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-medium text-stone-300 lg:justify-start sm:text-xs">
+            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-emerald-300" />100% vegetarian</span>
+            <span className="inline-flex items-center gap-1.5"><Star className="h-3.5 w-3.5 fill-gold-300 text-gold-300" />3,500+ local reviews</span>
+            <a href={`tel:${SHOP_METADATA.phone.replace(/\s+/g, '')}`} className="inline-flex items-center gap-1.5 underline decoration-gold-500/70 underline-offset-4 hover:text-gold-200"><Phone className="h-3.5 w-3.5" />{SHOP_METADATA.phone}</a>
+          </div>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-xl lg:col-span-6 lg:max-w-none">
+          <div className="relative aspect-[4/4.6] overflow-hidden border border-gold-300/30 bg-[#3e241c] p-2 shadow-[0_28px_70px_rgba(0,0,0,.28)] sm:aspect-[5/4] lg:aspect-[4/4.35]">
+            <img
+              src="/images/banners/shahi_platter_spoon_wooden_table.jpg"
+              alt="An elegant platter of handcrafted Indian sweets at Cherry's Sweet Mart"
+              className="h-full w-full object-cover object-center"
+            />
+            <div className="absolute inset-2 bg-gradient-to-t from-[#1d100d]/75 via-transparent to-transparent" />
+            <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between gap-3 text-left text-white sm:bottom-8 sm:left-8 sm:right-8">
+              <div>
+                <p className="mb-1 text-[10px] font-bold uppercase tracking-[.16em] text-gold-200">Made for the moment</p>
+                <p className="font-serif text-xl italic leading-tight sm:text-2xl">A table full of stories.</p>
+              </div>
+              <div className="hidden border border-white/25 bg-black/20 p-2.5 backdrop-blur-md sm:block">
+                <Sparkles className="h-4 w-4 text-gold-200" />
+              </div>
+            </div>
+          </div>
+          <div className="absolute -bottom-3 -left-2 hidden w-40 border border-gold-300/30 bg-[#fffaf1] p-3 text-left shadow-xl sm:block lg:-left-6">
+            <p className="text-[9px] font-bold uppercase tracking-[.14em] text-gold-700">Today&apos;s promise</p>
+            <p className="mt-1 font-serif text-sm font-semibold leading-tight text-[#362019]">Freshly crafted. Carefully packed.</p>
+          </div>
+          <img src="/images/cutouts/kaju_katli_silver_saucer.png" alt="" className="pointer-events-none absolute -right-6 -top-10 hidden h-28 w-28 object-contain drop-shadow-2xl lg:block" />
         </div>
       </div>
     </section>

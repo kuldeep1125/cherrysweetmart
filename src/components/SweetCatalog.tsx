@@ -86,6 +86,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
             <div className="relative w-full md:w-96">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
+                aria-label="Search the sweets catalog"
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
@@ -176,7 +177,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                   onClick={() => setActiveCategory('all')}
                   className={`px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all duration-300 flex-shrink-0 cursor-pointer ${
                     activeCategory === 'all'
-                      ? 'bg-gradient-to-r from-gold-600 via-gold-500 to-gold-700 text-white shadow-md shadow-gold-500/25 scale-102'
+                      ? 'bg-[#3a2119] text-white shadow-md shadow-gold-500/25 scale-105'
                       : 'bg-slate-50 dark:bg-[#221D18] text-slate-700 dark:text-slate-300 hover:bg-gold-50 dark:hover:bg-[#2A231D] hover:text-gold-900 dark:hover:text-gold-300 border border-slate-200 dark:border-slate-700 hover:border-gold-300'
                   }`}
                 >
@@ -188,7 +189,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                     onClick={() => setActiveCategory(cat.id)}
                     className={`px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all duration-300 flex-shrink-0 cursor-pointer ${
                       activeCategory === cat.id
-                        ? 'bg-gradient-to-r from-gold-600 via-gold-500 to-gold-700 text-white shadow-md shadow-gold-500/25 scale-102'
+                        ? 'bg-[#3a2119] text-white shadow-md shadow-gold-500/25 scale-105'
                         : 'bg-slate-50 dark:bg-[#221D18] text-slate-700 dark:text-slate-300 hover:bg-gold-50 dark:hover:bg-[#2A231D] hover:text-gold-900 dark:hover:text-gold-300 border border-slate-200 dark:border-slate-700 hover:border-gold-300'
                     }`}
                   >
@@ -220,7 +221,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
         </div>
 
         {/* Results Counter */}
-        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-6 px-1">
+        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-6 px-1" aria-live="polite">
           <span>
             Showing <strong>{filteredSweets.length}</strong> confections in catalog
           </span>
@@ -239,7 +240,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
             return (
               <div
                 key={sweet.id}
-                className="bg-white dark:bg-[#1A1613] rounded-3xl overflow-hidden border border-gold-200/70 dark:border-gold-800/40 shadow-sm hover:shadow-2xl hover:shadow-gold-500/15 hover:-translate-y-1.5 transition-all duration-400 flex flex-col h-full group"
+                className="bg-white dark:bg-[#1A1613] rounded-3xl overflow-hidden border border-gold-200/70 dark:border-gold-800/40 shadow-sm hover:shadow-2xl hover:shadow-gold-500/15 hover:-translate-y-1.5 transition-all duration-500 flex flex-col h-full group"
               >
                 {/* Fixed-Height Image Container (Guarantees identical dimensions across all 55 sweets) */}
                 <div
@@ -249,7 +250,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                   <img
                     src={sweet.image}
                     alt={sweet.name}
-                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"
                   />
                   
@@ -342,7 +343,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                     {/* Order / Inquire CTA Button */}
                     <button
                       onClick={() => onOrderQuick(sweet, weight, price)}
-                      className="w-full py-2.5 px-3 rounded-xl bg-gold-50 dark:bg-gold-950/40 hover:bg-gradient-to-r hover:from-gold-600 hover:to-gold-700 text-gold-900 dark:text-gold-200 hover:text-white dark:hover:text-white border border-gold-300 dark:border-gold-700/60 hover:border-gold-600 text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 shadow-xs hover:shadow-md cursor-pointer hover:scale-102 active:scale-98 group-hover:bg-gradient-to-r group-hover:from-gold-600 group-hover:to-gold-700 group-hover:text-white group-hover:border-gold-600"
+                      className="w-full py-2.5 px-3 rounded-xl bg-gold-50 dark:bg-gold-950/40 hover:bg-[#3a2119] text-gold-900 dark:text-gold-200 hover:text-white dark:hover:text-white border border-gold-300 dark:border-gold-700/60 hover:border-[#3a2119] text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 shadow-xs hover:shadow-md cursor-pointer hover:-translate-y-0.5 active:scale-95 group-hover:bg-[#3a2119] group-hover:text-white group-hover:border-[#3a2119]"
                     >
                       <ShoppingCart className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
                       <span>Order on WhatsApp / Inquire</span>
@@ -359,7 +360,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
         {/* No Results Fallback */}
         {filteredSweets.length === 0 && (
           <div className="text-center py-16 bg-white dark:bg-[#1A1613] rounded-3xl border border-gold-200 dark:border-gold-800/40 p-8 space-y-3">
-            <p className="text-slate-500 dark:text-slate-400 text-sm">No sweets match your current filter or search criteria.</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">No sweets match those selections just now. Try clearing a filter or searching by a broader name.</p>
             <button
               onClick={() => {
                 setActiveCategory('all');
