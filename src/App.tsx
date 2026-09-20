@@ -193,7 +193,7 @@ export const App: React.FC = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-20 sm:bottom-6 right-5 z-30 flex h-11 w-11 items-center justify-center rounded-full border border-gold-300/80 bg-white/95 text-stone-700 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:bg-gold-500 hover:text-[#2A140E] active:scale-95 dark:border-gold-700 dark:bg-[#201712] dark:text-gold-300 dark:hover:bg-gold-500 dark:hover:text-[#2A140E] animate-fade-in"
+          className="fixed bottom-22 sm:bottom-6 right-4 sm:right-6 z-30 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-gold-300/80 bg-white/95 text-stone-700 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:bg-gold-500 hover:text-[#2A140E] active:scale-95 dark:border-gold-700 dark:bg-[#201712] dark:text-gold-300 dark:hover:bg-gold-500 dark:hover:text-[#2A140E] animate-fade-in"
           aria-label="Scroll to top"
         >
           <ChevronUp className="h-5 w-5" />

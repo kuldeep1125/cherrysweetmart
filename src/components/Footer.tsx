@@ -7,9 +7,10 @@ interface FooterProps {
   onOpenHamper?: () => void;
 }
 
+// [FIXED] Luxury Footer with generous mobile clearance (pb-32) so sticky bottom action bar and back-to-top button never obscure content
 export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
   return (
-    <footer className="relative w-full max-w-full overflow-hidden bg-[#1E0F0B] pt-16 pb-12 sm:pt-20 text-stone-300 border-t border-gold-500/30">
+    <footer className="relative w-full max-w-full overflow-hidden bg-[#1E0F0B] pt-16 pb-32 sm:pb-16 sm:pt-20 text-stone-300 border-t border-gold-500/30">
       {/* Subtle top ambient gold shimmer */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-[radial-gradient(ellipse_at_top,rgba(217,160,62,0.18),transparent_65%)]" />
 
@@ -175,11 +176,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
         </div>
 
         {/* Bottom Bar: Copyright & Local SEO Notice */}
-        <div className="flex flex-col items-center justify-between gap-4 pt-8 text-xs text-stone-400 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 pt-8 pb-4 text-xs text-stone-400 md:flex-row text-center md:text-left">
           <div>
             © {new Date().getFullYear()} Cherry&apos;s Sweet Mart (चेरीज स्वीट कॉर्नर). All rights reserved.
           </div>
-          <div className="flex flex-wrap items-center gap-3 text-[11px] text-stone-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[11px] text-stone-400 md:justify-end">
             <span>Spine Road</span>
             <span>•</span>
             <span>Moshi</span>
@@ -188,9 +189,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
             <span>•</span>
             <span>Pune</span>
             <span>•</span>
-            <a href="#menu" className="hover:text-gold-300">Sweets Menu</a>
+            <a href="#menu" className="hover:text-gold-300 transition-colors">Sweets Menu</a>
             <span>•</span>
-            <a href="#location" className="hover:text-gold-300">Store Map</a>
+            <a href="#location" className="hover:text-gold-300 transition-colors">Store Map</a>
           </div>
         </div>
 

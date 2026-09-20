@@ -1,6 +1,6 @@
-// [ADDED] AuthenticShopGallery component with dark mode support and responsive lightbox preview
+// [FIXED] AuthenticShopGallery component with responsive proportional lightbox and carousel controls
 import React, { useEffect, useState } from 'react';
-import { Camera, Eye, X } from 'lucide-react';
+import { Camera, Eye, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AUTHENTIC_SHOP_PHOTOS } from '../data/sweetsData';
 
 export const AuthenticShopGallery: React.FC = () => {
@@ -49,14 +49,34 @@ export const AuthenticShopGallery: React.FC = () => {
 
   const activePhoto = activeLightboxIndex !== null ? galleryItems[activeLightboxIndex] : null;
 
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (activeLightboxIndex !== null) {
+      setActiveLightboxIndex((activeLightboxIndex - 1 + galleryItems.length) % galleryItems.length);
+    }
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (activeLightboxIndex !== null) {
+      setActiveLightboxIndex((activeLightboxIndex + 1) % galleryItems.length);
+    }
+  };
+
   useEffect(() => {
     if (!activePhoto) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setActiveLightboxIndex(null);
+      if (event.key === 'ArrowLeft' && activeLightboxIndex !== null) {
+        setActiveLightboxIndex((activeLightboxIndex - 1 + galleryItems.length) % galleryItems.length);
+      }
+      if (event.key === 'ArrowRight' && activeLightboxIndex !== null) {
+        setActiveLightboxIndex((activeLightboxIndex + 1) % galleryItems.length);
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [activePhoto]);
+  }, [activePhoto, activeLightboxIndex, galleryItems.length]);
 
   return (
     <section id="gallery" className="py-16 sm:py-24 bg-white dark:bg-[#15110E] border-y border-gold-100 dark:border-gold-900/40 relative transition-colors duration-300">
@@ -165,43 +185,87 @@ export const AuthenticShopGallery: React.FC = () => {
           ))}
         </div>
 
-        {/* Lightbox Modal */}
+        {/* [FIXED] Responsive Lightbox Modal - Proportional geometry, never oversized on desktop or mobile */}
         {activePhoto && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn" role="dialog" aria-modal="true" aria-labelledby="gallery-lightbox-title">
-            <button
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-fadeIn"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="gallery-lightbox-title"
+          >
+            {/* Backdrop click to close */}
+            <div
+              className="absolute inset-0 cursor-pointer"
               onClick={() => setActiveLightboxIndex(null)}
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-colors z-20"
-              aria-label="Close photo viewer"
-            >
-              <X className="w-6 h-6" />
-            </button>
+              aria-label="Close photo viewer overlay"
+            />
 
-            <div className="relative max-w-4xl w-full bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-gold-400/40">
-              <div className="aspect-[16/10] bg-black flex items-center justify-center overflow-hidden">
+            {/* Modal Card Window - Balanced maximum width and height */}
+            <div className="relative z-10 flex max-h-[88vh] w-full max-w-lg sm:max-w-2xl flex-col overflow-hidden rounded-2xl sm:rounded-3xl border border-gold-400/40 bg-[#17120E] shadow-2xl text-white">
+              
+              {/* Close Button */}
+              <button
+                onClick={() => setActiveLightboxIndex(null)}
+                className="absolute top-3 right-3 z-30 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-black/60 text-stone-200 backdrop-blur-md transition-colors hover:bg-black/90 hover:text-white"
+                aria-label="Close photo viewer"
+              >
+                <X className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
+              </button>
+
+              {/* Responsive Image Frame - Constrained height prevents oversized display on desktop & mobile */}
+              <div className="relative flex max-h-[46vh] sm:max-h-[52vh] w-full items-center justify-center overflow-hidden bg-black/95 p-2 sm:p-3 shrink-0">
                 <img
                   src={activePhoto.imageUrl}
                   alt={activePhoto.title}
-                  className="w-full h-full object-contain"
+                  className="max-h-[42vh] sm:max-h-[48vh] w-auto max-w-full rounded-lg object-contain shadow-lg"
                 />
+
+                {/* Left navigation arrow */}
+                <button
+                  onClick={handlePrev}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-all hover:bg-black/80 hover:scale-110 active:scale-95"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                </button>
+
+                {/* Right navigation arrow */}
+                <button
+                  onClick={handleNext}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-all hover:bg-black/80 hover:scale-110 active:scale-95"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                </button>
+
+                {/* Counter pill */}
+                <div className="absolute bottom-3 left-3 rounded-full bg-black/70 px-2.5 py-0.5 text-[10px] font-bold text-gold-300 backdrop-blur-sm">
+                  {((activeLightboxIndex ?? 0) + 1)} / {galleryItems.length}
+                </div>
               </div>
 
-              <div className="p-5 sm:p-6 bg-slate-900/95 text-white text-left space-y-2">
+              {/* Caption & Metadata Container */}
+              <div className="overflow-y-auto p-4 sm:p-5 text-left space-y-1.5 bg-gradient-to-b from-[#1C1612] to-[#14100D] border-t border-gold-900/40">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded bg-gold-600 text-xs font-bold">
+                  <span className="rounded-full bg-gold-600/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                     {activePhoto.verifiedSource}
                   </span>
-                  <span className="text-xs text-slate-400">• Cherry&apos;s Sweet Mart (Spine Road)</span>
+                  <span className="text-[11px] text-stone-400">· Spine Road Boutique</span>
                 </div>
-                <h3 id="gallery-lightbox-title" className="font-display text-xl font-bold">
+
+                <h3 id="gallery-lightbox-title" className="font-display text-base sm:text-lg font-bold text-[#FFF8ED]">
                   {activePhoto.title}
                 </h3>
-                <p className="text-xs font-serif italic text-gold-400">
+
+                <p className="font-display text-xs italic text-gold-400">
                   {activePhoto.marathiTitle}
                 </p>
-                <p className="text-xs text-slate-300">
+
+                <p className="text-xs text-stone-300 leading-relaxed">
                   {activePhoto.caption}
                 </p>
               </div>
+
             </div>
           </div>
         )}

@@ -115,23 +115,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             : 'border-b border-gold-200/30 bg-ivory-50/85 py-3 backdrop-blur-md dark:border-gold-900/30 dark:bg-[#15110E]/85 sm:py-3.5'
         }`}
       >
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-2 sm:gap-4">
+        <div className="mx-auto w-full max-w-7xl px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-2 sm:gap-4 w-full">
             
             {/* Brand Logo Crest */}
-            <a href="#" className="group flex shrink-0 items-center gap-2.5 text-left sm:gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-700 p-0.5 shadow-md transition-all duration-300 group-hover:scale-105 sm:h-11 sm:w-11">
-                <div className="flex h-full w-full items-center justify-center rounded-[14px] border border-gold-200/60 bg-gradient-to-b from-[#FFFDF9] to-ivory-100 dark:border-gold-700/60 dark:from-[#221A15] dark:to-[#17120E]">
-                  <span className="select-none text-xl" role="img" aria-label="Cherry's Sweets">🍒</span>
+            <a href="#" className="group flex shrink min-w-0 items-center gap-2 sm:gap-3 text-left">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-700 p-0.5 shadow-md transition-all duration-300 group-hover:scale-105 sm:h-11 sm:w-11 sm:rounded-2xl">
+                <div className="flex h-full w-full items-center justify-center rounded-[10px] sm:rounded-[14px] border border-gold-200/60 bg-gradient-to-b from-[#FFFDF9] to-ivory-100 dark:border-gold-700/60 dark:from-[#221A15] dark:to-[#17120E]">
+                  <span className="select-none text-lg sm:text-xl" role="img" aria-label="Cherry's Sweets">🍒</span>
                 </div>
               </div>
 
-              <div className="flex flex-col">
-                <div className="flex items-baseline gap-1.5 whitespace-nowrap">
-                  <span className="font-serif text-lg font-bold tracking-tight text-stone-900 transition-colors group-hover:text-gold-700 dark:text-white dark:group-hover:text-gold-400 sm:text-xl">
+              <div className="flex flex-col min-w-0">
+                <div className="flex items-baseline gap-1 sm:gap-1.5 truncate">
+                  <span className="font-serif text-base sm:text-xl font-bold tracking-tight text-stone-900 transition-colors group-hover:text-gold-700 dark:text-white dark:group-hover:text-gold-400">
                     Cherry&apos;s
                   </span>
-                  <span className="font-serif text-xs font-semibold italic text-gold-600 dark:text-gold-400 sm:text-sm">
+                  <span className="font-serif text-xs sm:text-sm font-semibold italic text-gold-600 dark:text-gold-400 truncate">
                     Sweet Mart
                   </span>
                 </div>
@@ -188,14 +188,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Hamper Atelier Trigger Button */}
               <button
                 onClick={onOpenHamper}
-                className="flex items-center gap-1.5 rounded-full border border-gold-300/70 bg-gold-50 px-2.5 py-1.5 text-xs font-bold text-primary-900 shadow-xs transition-all hover:bg-gold-100 sm:px-3 sm:py-2 dark:border-gold-800/60 dark:bg-gold-950/40 dark:text-gold-300"
+                className="relative flex items-center justify-center h-9 w-9 sm:h-auto sm:w-auto sm:gap-1.5 rounded-full border border-gold-300/70 bg-gold-50 sm:px-3 sm:py-2 text-xs font-bold text-primary-900 shadow-xs transition-all hover:bg-gold-100 dark:border-gold-800/60 dark:bg-gold-950/40 dark:text-gold-300"
                 title="Open Gift Box Builder"
                 aria-label="Open Gift Box Builder"
               >
                 <Gift className="h-4 w-4 text-gold-700 dark:text-gold-400" />
                 <span className="hidden sm:inline">Hamper</span>
                 {totalCartBadge > 0 && (
-                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 text-[10px] font-black text-[#2A140E]">
+                  <span className="absolute -top-1 -right-1 sm:static flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 text-[10px] font-black text-[#2A140E]">
                     {totalCartBadge}
                   </span>
                 )}
@@ -211,11 +211,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {darkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-stone-600" />}
               </button>
 
-              {/* Order Online Dropdown Button */}
-              <div className="relative">
+              {/* Order Online Dropdown Button - Visible on tablet/desktop (sm:flex); mobile has persistent bottom bar & drawer options */}
+              <div className="relative hidden sm:block">
                 <button
                   onClick={() => setOrderDropdownOpen(!orderDropdownOpen)}
-                  className="flex items-center gap-1.5 rounded-full bg-[#2A140E] px-3 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-gold-700 active:scale-95 sm:px-3.5 sm:py-2.5"
+                  className="flex items-center gap-1.5 rounded-full bg-[#2A140E] px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-gold-700 active:scale-95"
                   aria-expanded={orderDropdownOpen}
                 >
                   <ShoppingBag className="h-3.5 w-3.5 text-gold-300" />
@@ -293,10 +293,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Mobile Menu Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-stone-700 transition-colors hover:bg-stone-100 xl:hidden dark:text-stone-200 dark:hover:bg-stone-800"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 shadow-xs transition-all hover:bg-stone-50 xl:hidden dark:border-gold-800/60 dark:bg-[#1E1914] dark:text-gold-400"
                 aria-label="Toggle navigation menu"
               >
-                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {mobileMenuOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
               </button>
 
             </div>
