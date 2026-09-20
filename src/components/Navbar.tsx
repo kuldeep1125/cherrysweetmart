@@ -1,223 +1,302 @@
-// [ADDED] Navbar component with clean responsive architecture, dark mode toggle, and zero crowding
+// [ADDED] World-Class Haute Confectionery Navbar with responsive non-clipping architecture, luxury glassmorphism, dynamic store status, and multi-channel order flyout
 import React, { useState, useEffect } from 'react';
-import { Phone, ShoppingBag, Menu, X, Sparkles, ExternalLink, Gift, Sun, Moon } from 'lucide-react';
+import { Phone, ShoppingBag, Menu, X, Sparkles, ExternalLink, Gift, Sun, Moon, ChevronDown } from 'lucide-react';
 import { SHOP_METADATA } from '../data/sweetsData';
 
 interface NavbarProps {
   onOpenHamper: () => void;
-  savedFavoritesCount: number;
+  savedFavoritesCount?: number;
+  hamperCount?: number;
   darkMode: boolean;
   onToggleDarkMode: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenHamper,
-  savedFavoritesCount: _savedFavoritesCount,
+  savedFavoritesCount = 0,
+  hamperCount = 0,
   darkMode,
   onToggleDarkMode
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [orderDropdownOpen, setOrderDropdownOpen] = useState(false);
+  const [storeStatus, setStoreStatus] = useState<{ isOpen: boolean; text: string }>({
+    isOpen: true,
+    text: 'Open Now · Fresh Batches Ready'
+  });
+
+  // Calculate live store status based on current time
+  useEffect(() => {
+    const updateStatus = () => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const currentDecimal = hours + minutes / 60;
+
+      if (currentDecimal >= 8.0 && currentDecimal < 22.5) {
+        if (currentDecimal < 11.5) {
+          setStoreStatus({
+            isOpen: true,
+            text: 'Morning Desi Ghee Jalebi Batch Live'
+          });
+        } else if (currentDecimal >= 16.0 && currentDecimal <= 20.5) {
+          setStoreStatus({
+            isOpen: true,
+            text: 'Evening Hot Samosa & Jalebi Batch Ready'
+          });
+        } else {
+          setStoreStatus({
+            isOpen: true,
+            text: 'Open Now · Fresh Counter Ready'
+          });
+        }
+      } else {
+        setStoreStatus({
+          isOpen: false,
+          text: 'Store Opens at 8:00 AM'
+        });
+      }
+    };
+
+    updateStatus();
+    const timer = setInterval(updateStatus, 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const totalCartBadge = (hamperCount || 0) + (savedFavoritesCount || 0);
+
   return (
     <>
-      {/* Top Notification Bar */}
-      {/* [ADDED]: Live store timing badge embedded directly in announcement bar to free horizontal space in main navbar */}
-      <div className="bg-gradient-to-r from-gold-700 via-gold-600 to-gold-700 text-white text-xs font-medium py-1.5 px-4 text-center tracking-wide flex items-center justify-center gap-2.5 shadow-sm">
-        <Sparkles className="w-3.5 h-3.5 text-gold-200 animate-pulse flex-shrink-0" />
-        <span className="truncate">Shuddha Desi Ghee Sweets & Fresh Daily Chhena • Spine Road, Chinchwad East</span>
-        <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/15 text-gold-100 text-[11px] font-semibold flex-shrink-0">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Open Today: 8:00 AM – 10:30 PM</span>
-        </span>
-        <span className="hidden xl:inline text-gold-200 font-serif italic text-[11px] flex-shrink-0">• 100% Vegetarian & Pure Cow Ghee</span>
+      {/* Top Announcement & Live Atelier Status Bar - strictly constrained to prevent any horizontal overflow */}
+      <div className="relative z-50 w-full overflow-hidden border-b border-gold-400/20 bg-gradient-to-r from-[#25130F] via-[#381E16] to-[#25130F] px-3 py-1.5 text-center text-white shadow-sm sm:px-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2.5 text-[11px] font-medium tracking-wide">
+          <div className="flex shrink-0 items-center gap-1.5 text-gold-300">
+            <Sparkles className="h-3 w-3 animate-pulse text-gold-300" />
+            <span className="hidden text-[10px] font-bold uppercase tracking-wider sm:inline">Purity Heritage:</span>
+          </div>
+
+          <span className="truncate text-stone-200">
+            100% Shuddha Desi Cow Ghee & Daily Fresh Chhena • Spine Road, Pune
+          </span>
+
+          {/* Live Status Pill */}
+          <div className="hidden shrink-0 items-center gap-1.5 rounded-full border border-gold-300/25 bg-white/10 px-2.5 py-0.5 text-[10px] text-gold-200 lg:inline-flex">
+            <span className={`h-1.5 w-1.5 rounded-full ${storeStatus.isOpen ? 'animate-pulse bg-emerald-400' : 'bg-amber-400'}`} />
+            <span>{storeStatus.text}</span>
+          </div>
+        </div>
       </div>
 
-      {/* Main Navigation Bar */}
-      {/* [FIXED]: Expanded container from max-w-7xl (1280px) to max-w-[1600px] with responsive xl:flex links and zero button clipping */}
+      {/* Main Luxury Glass Navbar - strict max-w-7xl container with non-clipping responsive flex layout */}
       <header
-        className={`sticky top-0 z-40 transition-all duration-300 w-full max-w-full overflow-x-clip ${
+        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-ivory-50/98 dark:bg-[#130F0C]/98 backdrop-blur-md shadow-md border-b border-gold-200/60 dark:border-gold-900/50 py-2.5 sm:py-3'
-            : 'bg-ivory-50/95 dark:bg-[#12100E]/95 backdrop-blur-sm border-b border-gold-100 dark:border-gold-900/30 py-3 sm:py-3.5'
+            ? 'border-b border-gold-300/40 bg-ivory-50/95 py-2.5 shadow-md backdrop-blur-xl dark:border-gold-800/40 dark:bg-[#14100D]/95 sm:py-3'
+            : 'border-b border-gold-200/30 bg-ivory-50/85 py-3 backdrop-blur-md dark:border-gold-900/30 dark:bg-[#15110E]/85 sm:py-3.5'
         }`}
       >
-        <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-3 sm:gap-6">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
             
-            {/* Brand Logo & Store Badge */}
-            <a href="#" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-gold-400 via-gold-500 to-gold-700 p-0.5 shadow-md group-hover:scale-105 group-hover:shadow-gold-500/30 transition-all duration-300 flex-shrink-0">
-                <div className="w-full h-full rounded-full bg-ivory-50 dark:bg-[#1C1713] flex items-center justify-center p-1 border border-gold-200 dark:border-gold-700">
-                  <span className="text-base sm:text-lg select-none" role="img" aria-label="Cherry Sweets">🍒</span>
+            {/* Brand Logo Crest */}
+            <a href="#" className="group flex shrink-0 items-center gap-2.5 text-left sm:gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-700 p-0.5 shadow-md transition-all duration-300 group-hover:scale-105 sm:h-11 sm:w-11">
+                <div className="flex h-full w-full items-center justify-center rounded-[14px] border border-gold-200/60 bg-gradient-to-b from-[#FFFDF9] to-ivory-100 dark:border-gold-700/60 dark:from-[#221A15] dark:to-[#17120E]">
+                  <span className="select-none text-xl" role="img" aria-label="Cherry's Sweets">🍒</span>
                 </div>
               </div>
-              <div className="flex flex-col text-left">
+
+              <div className="flex flex-col">
                 <div className="flex items-baseline gap-1.5 whitespace-nowrap">
-                  <span className="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight group-hover:text-gold-700 dark:group-hover:text-gold-400 transition-colors whitespace-nowrap">
-                    Cherry's
+                  <span className="font-serif text-lg font-bold tracking-tight text-stone-900 transition-colors group-hover:text-gold-700 dark:text-white dark:group-hover:text-gold-400 sm:text-xl">
+                    Cherry&apos;s
                   </span>
-                  <span className="font-serif italic text-gold-600 dark:text-gold-400 text-xs sm:text-sm font-semibold whitespace-nowrap">
+                  <span className="font-serif text-xs font-semibold italic text-gold-600 dark:text-gold-400 sm:text-sm">
                     Sweet Mart
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] text-slate-500 dark:text-slate-400 leading-none whitespace-nowrap">
-                  <span className="font-medium text-slate-700 dark:text-slate-300">चेरीज स्वीट कॉर्नर</span>
+                <div className="hidden items-center gap-1.5 text-[10px] text-stone-500 dark:text-stone-400 sm:flex">
+                  <span className="font-semibold text-stone-800 dark:text-stone-300">चेरीज स्वीट कॉर्नर</span>
                   <span className="text-gold-500">•</span>
                   <span>Spine Rd, Nigdi</span>
                 </div>
               </div>
             </a>
 
-            {/* Desktop Navigation Links - Guaranteed 1-Line with animated golden underlines */}
-            {/* [FIXED]: Switched breakpoint to xl:flex with compact gap-3.5 2xl:gap-6, guaranteeing 140px-380px breathing room */}
-            <nav className="hidden xl:flex items-center gap-3.5 2xl:gap-6 text-[13px] 2xl:text-sm font-semibold text-slate-700 dark:text-slate-200 flex-shrink-0">
-              <a href="#menu" className="relative group py-1.5 hover:text-gold-700 dark:hover:text-gold-400 transition-colors whitespace-nowrap">
-                <span>Sweets Menu</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold-500 to-amber-600 rounded-full group-hover:w-full transition-all duration-300" />
+            {/* Desktop Navigation Links - Curated 5 Core destinations to prevent width crowding at 1280px-1440px */}
+            <nav className="hidden items-center gap-4 text-xs font-semibold text-stone-700 xl:flex 2xl:gap-6 dark:text-stone-200">
+              <a href="#menu" className="group relative py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400">
+                <span>Sweets Catalog</span>
+                <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </a>
-              <a href="#signature" className="relative group py-1.5 hover:text-gold-700 dark:hover:text-gold-400 transition-colors whitespace-nowrap">
+
+              <a href="#signature" className="group relative py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400">
                 <span>Signatures</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold-500 to-amber-600 rounded-full group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </a>
+
               <button
                 onClick={onOpenHamper}
-                className="relative group py-1.5 hover:text-gold-700 dark:hover:text-gold-400 transition-colors flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+                className="group relative flex items-center gap-1.5 py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400"
               >
                 <span>Gift Hampers</span>
-                <span className="px-2 py-0.5 rounded-full bg-gold-100 dark:bg-gold-950/80 text-gold-800 dark:text-gold-300 text-[10px] font-bold border border-gold-300/80 dark:border-gold-800 shadow-2xs group-hover:scale-105 transition-transform">
-                  Festive
+                <span className="rounded-full bg-gradient-to-r from-gold-500 to-amber-600 px-1.5 py-0.2 text-[9px] font-black uppercase text-white shadow-xs">
+                  Atelier
                 </span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold-500 to-amber-600 rounded-full group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </button>
-              <a href="#story" className="relative group py-1.5 hover:text-gold-700 dark:hover:text-gold-400 transition-colors whitespace-nowrap">
-                <span>Our Story</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold-500 to-amber-600 rounded-full group-hover:w-full transition-all duration-300" />
+
+              <a href="#story" className="group relative py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400">
+                <span>Our Heritage</span>
+                <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </a>
-              <a href="#gallery" className="relative group py-1.5 hover:text-gold-700 dark:hover:text-gold-400 transition-colors whitespace-nowrap">
-                <span>Shop Photos</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold-500 to-amber-600 rounded-full group-hover:w-full transition-all duration-300" />
-              </a>
-              <a href="#reviews" className="relative group py-1.5 hover:text-gold-700 dark:hover:text-gold-400 transition-colors whitespace-nowrap">
+
+              <a href="#reviews" className="group relative py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400">
                 <span>Reviews</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold-500 to-amber-600 rounded-full group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </a>
-              <a href="#location" className="relative group py-1.5 hover:text-gold-700 dark:hover:text-gold-400 transition-colors whitespace-nowrap">
-                <span>Visit Us</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold-500 to-amber-600 rounded-full group-hover:w-full transition-all duration-300" />
+
+              <a href="#location" className="group relative py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400">
+                <span>Visit & FAQs</span>
+                <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </a>
             </nav>
 
-            {/* Right Action Cluster - Perfectly Proportioned & Zero Wrapping */}
-            <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
+            {/* Right Action Cluster - Compact, adaptive padding and gap */}
+            <div className="flex shrink-0 items-center gap-1.5 sm:gap-2.5">
               
-              {/* Dark / Light Theme Mode Switcher */}
+              {/* Hamper Atelier Trigger Button */}
               <button
-                onClick={onToggleDarkMode}
-                className="w-9 h-9 rounded-full bg-white dark:bg-[#1E1914] border border-slate-200 dark:border-gold-800/60 text-slate-700 dark:text-gold-400 hover:bg-gold-50 dark:hover:bg-[#25201A] hover:scale-105 active:scale-95 flex items-center justify-center transition-all shadow-xs cursor-pointer"
-                title={darkMode ? "Switch to Light Theme" : "Switch to Dark Theme"}
-                aria-label="Toggle theme mode"
+                onClick={onOpenHamper}
+                className="flex items-center gap-1.5 rounded-full border border-gold-300/70 bg-gold-50 px-2.5 py-1.5 text-xs font-bold text-primary-900 shadow-xs transition-all hover:bg-gold-100 sm:px-3 sm:py-2 dark:border-gold-800/60 dark:bg-gold-950/40 dark:text-gold-300"
+                title="Open Gift Box Builder"
+                aria-label="Open Gift Box Builder"
               >
-                {darkMode ? <Sun className="w-4 h-4 text-amber-400 animate-spin-slow" /> : <Moon className="w-4 h-4 text-slate-600" />}
+                <Gift className="h-4 w-4 text-gold-700 dark:text-gold-400" />
+                <span className="hidden sm:inline">Hamper</span>
+                {totalCartBadge > 0 && (
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 text-[10px] font-black text-[#2A140E]">
+                    {totalCartBadge}
+                  </span>
+                )}
               </button>
 
-              {/* Direct Call Button */}
-              <a
-                href={`tel:${SHOP_METADATA.phone.replace(/\s+/g, '')}`}
-                className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white dark:bg-[#1E1914] hover:bg-gold-50/70 dark:hover:bg-[#25201A] border border-slate-200 dark:border-gold-800/50 text-slate-800 dark:text-slate-200 text-xs font-semibold whitespace-nowrap hover:-translate-y-0.5 active:scale-95 transition-all shadow-xs"
-                title="Call Cherry's Sweet Mart"
+              {/* Theme Toggle */}
+              <button
+                onClick={onToggleDarkMode}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 shadow-xs transition-all hover:bg-stone-50 dark:border-gold-800/60 dark:bg-[#1E1914] dark:text-gold-400"
+                title={darkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                aria-label="Toggle theme mode"
               >
-                <Phone className="w-3.5 h-3.5 text-gold-600 dark:text-gold-400" />
-                <span>Call Shop</span>
-              </a>
+                {darkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-stone-600" />}
+              </button>
 
               {/* Order Online Dropdown Button */}
               <div className="relative">
                 <button
                   onClick={() => setOrderDropdownOpen(!orderDropdownOpen)}
-                  className="flex items-center gap-1.5 sm:gap-2 px-4 py-2 rounded-full bg-[#3a2119] hover:bg-gold-700 text-white text-xs font-bold whitespace-nowrap shadow-md hover:shadow-lg hover:shadow-gold-600/30 hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 rounded-full bg-[#2A140E] px-3 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-gold-700 active:scale-95 sm:px-3.5 sm:py-2.5"
                   aria-expanded={orderDropdownOpen}
                 >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>Order Online</span>
+                  <ShoppingBag className="h-3.5 w-3.5 text-gold-300" />
+                  <span className="whitespace-nowrap">Order</span>
+                  <ChevronDown className={`h-3 w-3 text-gold-300 transition-transform duration-300 ${orderDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 
+                {/* Dropdown Menu */}
                 {orderDropdownOpen && (
                   <>
                     <div
                       className="fixed inset-0 z-40"
                       onClick={() => setOrderDropdownOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-[#1A1613] rounded-2xl shadow-2xl border border-gold-200 dark:border-gold-800/60 py-2 z-50 animate-fadeIn">
-                      <div className="px-4 py-1.5 border-b border-slate-100 dark:border-stone-800">
-                        <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-stone-400 font-bold">
-                          Instant Food Delivery
+                    <div className="absolute right-0 z-50 mt-2 w-64 rounded-2xl border border-gold-200 bg-white py-2 text-left shadow-2xl animate-fade-in dark:border-gold-800/60 dark:bg-[#1C1713]">
+                      <div className="border-b border-stone-100 px-4 py-1.5 dark:border-stone-800">
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                          Pune & PCMC Express Delivery
                         </p>
                       </div>
 
+                      {/* Swiggy */}
                       <a
                         href={SHOP_METADATA.swiggyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-between px-4 py-2.5 hover:bg-orange-50 dark:hover:bg-orange-950/30 text-slate-800 dark:text-slate-200 text-xs font-semibold transition-colors"
+                        className="flex items-center justify-between px-4 py-2.5 text-xs font-semibold text-stone-800 transition-colors hover:bg-orange-50 dark:text-stone-200 dark:hover:bg-orange-950/30"
                         onClick={() => setOrderDropdownOpen(false)}
                       >
                         <div className="flex items-center gap-2.5">
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#FC8019]"></span>
-                          <span>Order on Swiggy</span>
+                          <span className="h-2.5 w-2.5 rounded-full bg-[#FC8019]" />
+                          <span>Swiggy Express</span>
                         </div>
-                        <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                        <span className="rounded bg-orange-100 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:bg-orange-900/50">
+                          ~30 mins
+                        </span>
                       </a>
 
+                      {/* Zomato */}
                       <a
                         href={SHOP_METADATA.zomatoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-between px-4 py-2.5 hover:bg-red-50 dark:hover:bg-red-950/30 text-slate-800 dark:text-slate-200 text-xs font-semibold transition-colors"
+                        className="flex items-center justify-between px-4 py-2.5 text-xs font-semibold text-stone-800 transition-colors hover:bg-red-50 dark:text-stone-200 dark:hover:bg-red-950/30"
                         onClick={() => setOrderDropdownOpen(false)}
                       >
                         <div className="flex items-center gap-2.5">
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#E23744]"></span>
-                          <span>Order on Zomato</span>
+                          <span className="h-2.5 w-2.5 rounded-full bg-[#E23744]" />
+                          <span>Zomato Delivery</span>
                         </div>
-                        <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                        <span className="rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-600 dark:bg-red-900/50">
+                          4.0★
+                        </span>
                       </a>
 
+                      {/* WhatsApp Concierge */}
                       <a
-                        href={`https://wa.me/${SHOP_METADATA.whatsappOrderNumber}?text=${encodeURIComponent("Hello Cherry's Sweet Mart, I would like to inquire about fresh sweets and festival gift boxes.")}`}
+                        href={`https://wa.me/${SHOP_METADATA.whatsappOrderNumber}?text=${encodeURIComponent("Namaskar Cherry's Sweet Mart, I would like to order fresh sweets from the Spine Road shop.")}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-between px-4 py-2.5 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-slate-800 dark:text-slate-200 text-xs font-semibold transition-colors border-t border-slate-100 dark:border-stone-800"
+                        className="flex items-center justify-between border-t border-stone-100 px-4 py-2.5 text-xs font-semibold text-stone-800 transition-colors hover:bg-emerald-50 dark:border-stone-800 dark:text-stone-200 dark:hover:bg-emerald-950/30"
                         onClick={() => setOrderDropdownOpen(false)}
                       >
                         <div className="flex items-center gap-2.5">
-                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                          <span>Direct WhatsApp Order</span>
+                          <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                          <span>WhatsApp Order</span>
                         </div>
-                        <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                        <ExternalLink className="h-3 w-3 text-stone-400" />
                       </a>
                     </div>
                   </>
                 )}
               </div>
 
-              {/* Mobile / Tablet Hamburger Toggle */}
-              {/* [FIXED]: Aligned breakpoint with desktop nav (hidden xl:flex) to guarantee zero navbar overflow */}
+              {/* Mobile Menu Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-xl text-slate-700 dark:text-slate-200 hover:text-gold-700 hover:bg-ivory-200 dark:hover:bg-stone-800 xl:hidden transition-colors cursor-pointer"
+                className="flex h-9 w-9 items-center justify-center rounded-xl text-stone-700 transition-colors hover:bg-stone-100 xl:hidden dark:text-stone-200 dark:hover:bg-stone-800"
                 aria-label="Toggle navigation menu"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
 
             </div>
@@ -225,101 +304,110 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile / Tablet Dropdown Drawer */}
+        {/* Mobile Dropdown Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="xl:hidden border-t border-gold-200 dark:border-gold-900/50 bg-ivory-50/98 dark:bg-[#16120F]/98 px-4 pt-3 pb-6 space-y-3 mt-2 shadow-2xl animate-fadeIn text-left">
-            
-            {/* Live Timing Status on Mobile */}
-            <div className="flex items-center justify-between px-3.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-300 text-xs font-medium border border-emerald-200 dark:border-emerald-800/40">
+          <div className="border-t border-gold-200/80 bg-ivory-50/98 px-4 pt-3 pb-6 text-left shadow-2xl animate-fade-in xl:hidden dark:border-gold-900/50 dark:bg-[#16120F]/98">
+            {/* Live Timing Status Banner */}
+            <div className="flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-xs font-medium text-emerald-900 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
               <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Open Now · 8:00 AM – 10:30 PM</span>
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>{storeStatus.text}</span>
               </span>
-              <span className="font-semibold text-[11px]">All 7 Days</span>
+              <span className="rounded bg-white px-2 py-0.5 text-[10px] font-semibold dark:bg-emerald-900">All 7 Days</span>
             </div>
 
-            <nav className="flex flex-col space-y-1 text-sm font-medium text-slate-800 dark:text-slate-200 pt-1">
+            <nav className="flex flex-col space-y-1 pt-2 text-sm font-medium text-stone-800 dark:text-stone-200">
               <a
                 href="#menu"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl hover:bg-ivory-200 dark:hover:bg-stone-800"
+                className="flex items-center justify-between rounded-xl px-3.5 py-2.5 hover:bg-gold-50 dark:hover:bg-stone-800"
               >
-                Sweets Catalog (50+ Delights)
+                <span>Sweets Catalog (50+ Varieties)</span>
+                <span className="text-xs text-gold-600 font-bold">Explore →</span>
               </a>
+
               <a
                 href="#signature"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl hover:bg-ivory-200 dark:hover:bg-stone-800"
+                className="rounded-xl px-3.5 py-2.5 hover:bg-gold-50 dark:hover:bg-stone-800"
               >
-                Signature Specialties
+                Signature Masterpieces
               </a>
+
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenHamper();
                 }}
-                className="w-full text-left px-3 py-2 rounded-xl hover:bg-ivory-200 dark:hover:bg-stone-800 flex items-center justify-between text-gold-700 dark:text-gold-400 font-bold"
+                className="flex w-full items-center justify-between rounded-xl border border-gold-300/60 bg-gold-50 px-3.5 py-2.5 text-left font-bold text-primary-900 dark:border-gold-800/40 dark:bg-gold-950/50 dark:text-gold-200"
               >
-                <span>🎁 Custom Gift Hamper Builder</span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-200 dark:bg-gold-900 text-gold-900 dark:text-gold-200">
-                  Popular
+                <span className="flex items-center gap-2">
+                  <Gift className="h-4 w-4 text-gold-700 dark:text-gold-400" />
+                  <span>Curate Gift Hamper Box</span>
+                </span>
+                <span className="rounded-full bg-gold-500 px-2 py-0.5 text-[10px] font-black uppercase text-[#2A140E]">
+                  Atelier
                 </span>
               </button>
+
               <a
                 href="#story"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl hover:bg-ivory-200 dark:hover:bg-stone-800"
+                className="rounded-xl px-3.5 py-2.5 hover:bg-gold-50 dark:hover:bg-stone-800"
               >
-                Our Heritage & Purity Promise
+                Our Heritage & 4 Vows of Purity
               </a>
+
               <a
                 href="#gallery"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl hover:bg-ivory-200 dark:hover:bg-stone-800"
+                className="rounded-xl px-3.5 py-2.5 hover:bg-gold-50 dark:hover:bg-stone-800"
               >
-                Authentic Shop Photos
+                Storefront & Counter Tour
               </a>
+
               <a
                 href="#reviews"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl hover:bg-ivory-200 dark:hover:bg-stone-800"
+                className="rounded-xl px-3.5 py-2.5 hover:bg-gold-50 dark:hover:bg-stone-800"
               >
-                Customer Reviews (3,500+)
+                Patron Reviews (3,500+ Local Voices)
               </a>
+
               <a
                 href="#location"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded-xl hover:bg-ivory-200 dark:hover:bg-stone-800"
+                className="rounded-xl px-3.5 py-2.5 hover:bg-gold-50 dark:hover:bg-stone-800"
               >
-                Store Location & Directions
+                Store Location, Parking & FAQs
               </a>
             </nav>
 
             {/* Quick Action Delivery Buttons on Mobile */}
-            <div className="pt-2 border-t border-gold-200/50 dark:border-gold-900/40 grid grid-cols-2 gap-2">
+            <div className="mt-3 grid grid-cols-2 gap-2 border-t border-gold-200/50 pt-2.5 dark:border-gold-900/40">
               <a
                 href={SHOP_METADATA.swiggyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm"
+                className="flex items-center justify-center gap-1.5 rounded-xl bg-orange-500 p-2.5 text-xs font-bold text-white shadow-sm hover:bg-orange-600"
               >
-                <span>🛵 Swiggy</span>
+                <span>🛵 Swiggy (~30m)</span>
               </a>
               <a
                 href={SHOP_METADATA.zomatoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm"
+                className="flex items-center justify-center gap-1.5 rounded-xl bg-red-600 p-2.5 text-xs font-bold text-white shadow-sm hover:bg-red-700"
               >
-                <span>🍽️ Zomato</span>
+                <span>🍽️ Zomato Delivery</span>
               </a>
               <a
                 href={`https://wa.me/${SHOP_METADATA.whatsappOrderNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="col-span-2 p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm"
+                className="col-span-2 flex items-center justify-center gap-2 rounded-xl bg-emerald-600 p-2.5 text-xs font-bold text-white shadow-sm hover:bg-emerald-700"
               >
-                <span>💬 WhatsApp Direct Order</span>
+                <span>💬 Direct WhatsApp Concierge</span>
               </a>
             </div>
 

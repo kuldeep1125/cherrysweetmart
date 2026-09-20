@@ -17,13 +17,15 @@
     scroll-behavior: smooth;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: hidden;
-    max-width: 100vw;
+    width: 100%;
+    max-width: 100%;
   }
 
   body {
     transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     overflow-x: hidden;
-    max-width: 100vw;
+    width: 100%;
+    max-width: 100%;
     position: relative;
     background:
       radial-gradient(circle at 20% -5%, rgba(213, 178, 108, 0.13), transparent 27rem),
@@ -33,7 +35,8 @@
 
   #root {
     overflow-x: hidden;
-    max-width: 100vw;
+    width: 100%;
+    max-width: 100%;
   }
 }
 
@@ -87,6 +90,14 @@
   transition: opacity .72s cubic-bezier(.16, 1, .3, 1), transform .72s cubic-bezier(.16, 1, .3, 1);
 }
 .reveal-section.is-visible { opacity: 1; transform: translateY(0); }
+
+/* [FIXED] Mobile viewport safeguard: prevent tall sections like #menu (28k px height) from remaining hidden at opacity 0 on mobile devices */
+@media (max-width: 768px) {
+  .reveal-section#menu {
+    opacity: 1;
+    transform: none;
+  }
+}
 
 .premium-surface {
   background: rgba(255, 253, 248, .9);
@@ -229,6 +240,30 @@
   25%, 100% { transform: translateX(100%) rotate(30deg); }
 }
 
+/* [ADDED] Haute Confectionery Styling Utilities */
+.velvet-surface {
+  background: radial-gradient(circle at 50% 0%, rgba(138, 20, 40, 0.95), rgba(58, 10, 18, 0.98));
+  box-shadow: inset 0 2px 12px rgba(255, 215, 0, 0.15), 0 20px 40px -15px rgba(35, 8, 12, 0.6);
+}
+
+.velvet-surface-dark {
+  background: radial-gradient(circle at 50% 0%, rgba(46, 20, 16, 0.95), rgba(20, 10, 8, 0.98));
+  box-shadow: inset 0 2px 10px rgba(212, 175, 55, 0.2), 0 24px 48px -15px rgba(0, 0, 0, 0.8);
+}
+
+.gold-foil-border {
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  background-clip: padding-box;
+}
+
+.gold-foil-border:hover {
+  border-color: rgba(212, 175, 55, 0.7);
+}
+
+.subtle-gold-glow {
+  box-shadow: 0 0 25px -5px rgba(201, 158, 42, 0.25);
+}
+
 /* Hide scrollbar for tabs while maintaining touch/mouse scrolling */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -237,3 +272,4 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
