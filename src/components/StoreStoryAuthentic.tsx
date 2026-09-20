@@ -1,172 +1,199 @@
-// [ADDED] StoreStoryAuthentic component with dark mode support, authentic shop gallery & quality pillars
+// [ADDED] StoreStoryAuthentic with editorial Four Vows of Confectionery Purity, authentic Spine Road lens, and verified credentials
 import React, { useState } from 'react';
-import { Store, MapPin } from 'lucide-react';
-import { AUTHENTIC_SHOP_PHOTOS } from '../data/sweetsData';
+import { Store, MapPin, CheckCircle, Shield, Award, Star, Sparkles } from 'lucide-react';
+import { AUTHENTIC_SHOP_PHOTOS, RATING_METRICS, SHOP_METADATA } from '../data/sweetsData';
 
 export const StoreStoryAuthentic: React.FC = () => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const currentPhoto = AUTHENTIC_SHOP_PHOTOS[selectedPhotoIndex];
 
+  const PURITY_VOWS = [
+    {
+      num: '१',
+      title: '100% Shuddha Desi Cow Ghee',
+      subtitle: 'शुद्ध देशी गायीचे तूप',
+      description: 'Every morning, our heavy brass kadais are filled with pure golden cow ghee for Jalebi, Motichoor Ladoos, and Besan Barfi. Zero palm oil, zero vegetable vanaspati, ever.',
+    },
+    {
+      num: '२',
+      title: 'Fresh Morning Chhena & Khoya',
+      subtitle: 'ताजे मलई छेना आणि खवा',
+      description: 'Our Bengali sweets (Rasmalai, Cham Cham, Rasgulla) are curdled fresh before 6:00 AM daily from full-cream milk, delivering delicate cloud-soft textures.',
+    },
+    {
+      num: '३',
+      title: 'Single-Origin Nuts & Certified Silver Vark',
+      subtitle: 'निवडक काजू आणि शुद्ध चांदीचा वर्क',
+      description: 'Only plump Goan and Mangalorean cashews enter our Kaju Katli paste. Garnished exclusively with certified 99.9% vegetarian silver vark.',
+    },
+    {
+      num: '४',
+      title: 'Auspicious Maharashtrian Craft',
+      subtitle: 'पारंपरिक महाराष्ट्रीयन सणांची परंपरा',
+      description: 'From steaming Ukadiche Modak for Ganpati Bappa to festive Diwali Faral boxes and royal wedding platter hampers, we preserve authentic regional recipes.',
+    },
+  ];
+
   return (
-    <section id="story" className="py-16 sm:py-24 bg-white dark:bg-[#15110E] border-y border-gold-100 dark:border-gold-900/40 relative transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="story" className="relative overflow-hidden bg-white py-20 sm:py-28 transition-colors duration-300 dark:bg-[#150F0C]">
+      {/* Ambient background decoration */}
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-gold-300/40 to-transparent" />
+      
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-50 dark:bg-gold-950/50 border border-gold-200 dark:border-gold-800/40 text-gold-800 dark:text-gold-300 text-xs font-semibold uppercase tracking-wider">
-            <Store className="w-3.5 h-3.5" />
-            <span>Spine Road, Chinchwad • Our Heritage</span>
+        {/* Editorial Section Header */}
+        <div className="mx-auto mb-16 max-w-3xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-gold-300/70 bg-gold-50/70 px-4 py-1 text-xs font-bold uppercase tracking-widest text-primary-900 shadow-xs dark:border-gold-800/40 dark:bg-gold-950/40 dark:text-gold-300">
+            <Store className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
+            <span>Spine Road, Chinchwad · Confectionery Heritage</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Crafted with Tradition, Served with <span className="text-gold-gradient">Pure Purity</span>
+
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-stone-900 sm:text-5xl dark:text-white">
+            Crafted with Tradition, Served with <span className="text-gold-gradient font-normal italic">Pure Purity</span>
           </h2>
-          <p className="font-serif italic text-gold-700 dark:text-gold-400 font-medium text-base sm:text-lg">
+
+          <p className="mt-2 font-display text-base font-semibold italic text-primary-800 dark:text-gold-400 sm:text-lg">
             &ldquo;ग्राहकांच्या विश्वासाची आणि परंपरेची गोड परंपरा&rdquo;
           </p>
-          <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
-            Situated right on Spine Road near Sirvi Corner in Chinchwad East, Cherry&apos;s Sweet Mart has grown from a humble neighborhood confectionery to a destination renowned for authentic Indian mithai, hot snacks, and bespoke festive hampers.
+
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-stone-600 dark:text-stone-300 sm:text-base">
+            Situated right on Spine Road near Sirvi Corner in Chinchwad East, Cherry&apos;s Sweet Mart has grown into a landmark destination renowned for authentic heritage mithai, steaming evening snacks, and bespoke celebration hampers.
           </p>
         </div>
 
-        {/* 2-Column Story & Authentic Photos Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        {/* 2-Column Story Showcase & The Four Purity Vows */}
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
           
-          {/* Left: Authentic Photos Showcase */}
-          <div className="lg:col-span-6 space-y-4">
-            {/* Main Featured Photo */}
-            <div className="relative rounded-3xl overflow-hidden border border-gold-200 dark:border-gold-800/50 shadow-xl h-72 sm:h-96 w-full group bg-slate-900">
+          {/* Left Column: Authentic Shop Visual Lens */}
+          <div className="space-y-5 lg:col-span-6">
+            {/* Featured Photo Display */}
+            <div className="group relative aspect-[4/3.2] w-full overflow-hidden rounded-3xl border border-gold-300/40 bg-stone-900 shadow-2xl">
               <img
                 src={currentPhoto.imageUrl}
                 alt={currentPhoto.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
-              
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <span className="inline-block px-2.5 py-0.5 rounded-full bg-gold-600 text-white text-[11px] font-bold mb-1.5 shadow">
-                  {currentPhoto.verifiedSource}
-                </span>
-                <h3 className="font-display text-lg font-bold">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#140D0B]/90 via-[#140D0B]/30 to-transparent pointer-events-none" />
+
+              <div className="absolute bottom-5 left-5 right-5 text-white">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="rounded-full bg-gold-500 px-3 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#2A140E] shadow">
+                    {currentPhoto.verifiedSource}
+                  </span>
+                  <span className="text-xs text-gold-300 font-medium">
+                    Store View {selectedPhotoIndex + 1} of {AUTHENTIC_SHOP_PHOTOS.length}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-xl font-bold text-white">
                   {currentPhoto.title}
                 </h3>
-                <p className="text-xs text-gold-300 font-serif italic mb-1">
+                <p className="mt-0.5 font-display text-xs italic text-gold-300">
                   {currentPhoto.marathiTitle}
                 </p>
-                <p className="text-xs text-slate-300 line-clamp-2">
+                <p className="mt-1 text-xs text-stone-300 line-clamp-2">
                   {currentPhoto.caption}
                 </p>
               </div>
             </div>
 
             {/* Thumbnail Navigation Row */}
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+            <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-8">
               {AUTHENTIC_SHOP_PHOTOS.map((photo, idx) => (
                 <button
                   key={photo.id}
                   onClick={() => setSelectedPhotoIndex(idx)}
-                  className={`relative rounded-xl overflow-hidden aspect-square border-2 transition-all ${
+                  className={`relative aspect-square overflow-hidden rounded-xl border-2 transition-all ${
                     selectedPhotoIndex === idx
-                      ? 'border-gold-500 ring-2 ring-gold-400 scale-105'
-                      : 'border-slate-200 dark:border-slate-700 opacity-70 hover:opacity-100'
+                      ? 'border-gold-500 ring-2 ring-gold-400 scale-105 shadow-md'
+                      : 'border-stone-200 opacity-65 hover:opacity-100 dark:border-stone-800'
                   }`}
                 >
                   <img
                     src={photo.imageUrl}
                     alt={photo.title}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                 </button>
               ))}
             </div>
 
-            {/* Address Banner Note */}
-            <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 bg-ivory-100 dark:bg-[#1A1613] p-3 rounded-xl border border-gold-100 dark:border-gold-800/40">
-              <MapPin className="w-4 h-4 text-gold-600 dark:text-gold-400 flex-shrink-0" />
+            {/* Spine Road Address Plaque */}
+            <div className="flex items-center gap-3 rounded-2xl border border-gold-200/80 bg-ivory-100/80 p-3.5 text-xs text-stone-700 dark:border-gold-900/40 dark:bg-[#1F1813] dark:text-stone-300">
+              <MapPin className="h-4 w-4 shrink-0 text-gold-600 dark:text-gold-400" />
               <span>
-                <strong>Spine Road Store:</strong> Near Sirvi Corner, Gharkul Chowk, Shivtej Nagar, Chinchwad East, Pune 411019.
+                <strong>Spine Road Flagship:</strong> Near Sirvi Corner, Gharkul Chowk, Shivtej Nagar, Chinchwad East, Pune 411019.
               </span>
             </div>
           </div>
 
-          {/* Right: The Four Pillars of Quality */}
-          <div className="lg:col-span-6 space-y-4">
-            <div className="space-y-3.5">
-              
-              {/* Pillar 1 */}
-              <div className="p-4 rounded-2xl bg-ivory-50 dark:bg-[#1C1713] border border-gold-100 dark:border-gold-800/30 hover:border-gold-300 dark:hover:border-gold-700 transition-colors space-y-1 shadow-xs">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-gold-100 dark:bg-gold-950/50 text-gold-700 dark:text-gold-300 flex items-center justify-center font-bold text-sm">
-                    १
-                  </div>
-                  <h4 className="font-display text-base font-bold text-slate-900 dark:text-white">
-                    100% Shuddha Desi Cow Ghee Preparation
-                  </h4>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm pl-10.5">
-                  Every batch of Jalebi, Motichoor, Besan Ladoo, and Soan Papdi is simmered in genuine golden cow ghee. We never compromise with vegetable oil or artificial shortenings.
-                </p>
-              </div>
-
-              {/* Pillar 2 */}
-              <div className="p-4 rounded-2xl bg-ivory-50 dark:bg-[#1C1713] border border-gold-100 dark:border-gold-800/30 hover:border-gold-300 dark:hover:border-gold-700 transition-colors space-y-1 shadow-xs">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-gold-100 dark:bg-gold-950/50 text-gold-700 dark:text-gold-300 flex items-center justify-center font-bold text-sm">
-                    २
-                  </div>
-                  <h4 className="font-display text-base font-bold text-slate-900 dark:text-white">
-                    Fresh Full-Cream Chhena & Mawa Every Morning
-                  </h4>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm pl-10.5">
-                  Our Bengali Rasgullas, Cham Cham, and Kesar Rasmalai are curdled freshly each day from farm-sourced milk, delivering feather-light sponge and melt-in-mouth richness.
-                </p>
-              </div>
-
-              {/* Pillar 3 */}
-              <div className="p-4 rounded-2xl bg-ivory-50 dark:bg-[#1C1713] border border-gold-100 dark:border-gold-800/30 hover:border-gold-300 dark:hover:border-gold-700 transition-colors space-y-1 shadow-xs">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-gold-100 dark:bg-gold-950/50 text-gold-700 dark:text-gold-300 flex items-center justify-center font-bold text-sm">
-                    ३
-                  </div>
-                  <h4 className="font-display text-base font-bold text-slate-900 dark:text-white">
-                    Hand-Sorted Goan Cashews & Grade-A Dry Fruits
-                  </h4>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm pl-10.5">
-                  Our iconic Kaju Katli and Kaju Pista Rolls are prepared without chemical binders or excessive sugar, coated only with certified 99.9% vegetarian silver vark.
-                </p>
-              </div>
-
-              {/* Pillar 4 */}
-              <div className="p-4 rounded-2xl bg-ivory-50 dark:bg-[#1C1713] border border-gold-100 dark:border-gold-800/30 hover:border-gold-300 dark:hover:border-gold-700 transition-colors space-y-1 shadow-xs">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-gold-100 dark:bg-gold-950/50 text-gold-700 dark:text-gold-300 flex items-center justify-center font-bold text-sm">
-                    ४
-                  </div>
-                  <h4 className="font-display text-base font-bold text-slate-900 dark:text-white">
-                    Auspicious Maharashtrian Festive Catering
-                  </h4>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm pl-10.5">
-                  From holy Ganpati Bappa Ukadiche Modak to Diwali Faral gift hampers, we specialize in authentic regional Maharashtrian taste for weddings and ceremonies.
-                </p>
-              </div>
-
+          {/* Right Column: The Four Vows of Confectionery Purity */}
+          <div className="space-y-4 lg:col-span-6">
+            <div className="mb-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-gold-700 dark:text-gold-400">
+                Purity Manifesto
+              </span>
+              <h3 className="mt-1 font-display text-2xl font-bold text-stone-900 dark:text-white">
+                The Four Vows of Cherry&apos;s Craft
+              </h3>
             </div>
 
-            {/* Bottom Stats Banner */}
-            <div className="pt-2 grid grid-cols-3 gap-3 text-center">
-              <div className="p-3 rounded-xl bg-white dark:bg-[#1A1613] border border-slate-200 dark:border-slate-800">
-                <div className="font-extrabold text-xl sm:text-2xl text-gold-700 dark:text-gold-400">3,500+</div>
-                <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Google Reviews</div>
+            <div className="space-y-3.5">
+              {PURITY_VOWS.map(vow => (
+                <div
+                  key={vow.num}
+                  className="group rounded-2xl border border-gold-200/70 bg-stone-50/60 p-4 transition-all duration-300 hover:border-gold-400 hover:bg-white hover:shadow-md dark:border-gold-900/30 dark:bg-[#1A1410] dark:hover:border-gold-700 dark:hover:bg-[#201914]"
+                >
+                  <div className="flex items-start gap-3.5">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gold-100 font-display text-sm font-bold text-primary-900 dark:bg-gold-950/60 dark:text-gold-300">
+                      {vow.num}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <h4 className="font-display text-sm font-bold text-stone-900 dark:text-white sm:text-base">
+                          {vow.title}
+                        </h4>
+                        <span className="font-display text-xs italic text-primary-800 dark:text-gold-400">
+                          {vow.subtitle}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs leading-relaxed text-stone-600 dark:text-stone-300 sm:text-sm">
+                        {vow.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* High-Trust Proof Statistics Strip */}
+            <div className="grid grid-cols-3 gap-3 pt-3 text-center">
+              <div className="rounded-2xl border border-stone-200 bg-white p-3.5 shadow-xs dark:border-stone-800 dark:bg-[#1C1612]">
+                <div className="flex items-center justify-center gap-1 font-display text-xl font-bold text-gold-600 sm:text-2xl">
+                  <Star className="h-4 w-4 fill-gold-500 text-gold-500" />
+                  <span>{RATING_METRICS.average}★</span>
+                </div>
+                <div className="mt-0.5 text-[11px] font-medium text-stone-500 dark:text-stone-400">
+                  {RATING_METRICS.totalReviews.toLocaleString()}+ Pune Reviews
+                </div>
               </div>
-              <div className="p-3 rounded-xl bg-white dark:bg-[#1A1613] border border-slate-200 dark:border-slate-800">
-                <div className="font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white">50+</div>
-                <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fresh Sweets</div>
+
+              <div className="rounded-2xl border border-stone-200 bg-white p-3.5 shadow-xs dark:border-stone-800 dark:bg-[#1C1612]">
+                <div className="font-display text-xl font-bold text-stone-900 dark:text-white sm:text-2xl">
+                  50+
+                </div>
+                <div className="mt-0.5 text-[11px] font-medium text-stone-500 dark:text-stone-400">
+                  Daily Fresh Sweets
+                </div>
               </div>
-              <div className="p-3 rounded-xl bg-white dark:bg-[#1A1613] border border-slate-200 dark:border-slate-800">
-                <div className="font-extrabold text-xl sm:text-2xl text-emerald-700 dark:text-emerald-400">100%</div>
-                <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Pure Veg</div>
+
+              <div className="rounded-2xl border border-stone-200 bg-white p-3.5 shadow-xs dark:border-stone-800 dark:bg-[#1C1612]">
+                <div className="font-display text-xl font-bold text-emerald-600 dark:text-emerald-400 sm:text-2xl">
+                  100%
+                </div>
+                <div className="mt-0.5 text-[11px] font-medium text-stone-500 dark:text-stone-400">
+                  Shuddha Shakahari
+                </div>
               </div>
             </div>
 

@@ -1,15 +1,17 @@
-// [ADDED] SweetDetailModal component with dark mode styling, deep culinary details & WhatsApp ordering
+// [ADDED] Luxury SweetDetailModal with sensory profile breakdown, portion weight pricing, and WhatsApp & Swiggy order channels
 import React, { useEffect, useState } from 'react';
-import { X, ShieldCheck, Clock, AlertTriangle, Package, ShoppingBag } from 'lucide-react';
+import { X, ShieldCheck, Clock, AlertTriangle, Package, ShoppingBag, MessageCircle, Gift, Thermometer, Coffee, Sparkles } from 'lucide-react';
 import { SweetItem, SHOP_METADATA } from '../data/sweetsData';
 
 interface SweetDetailModalProps {
   sweet: SweetItem | null;
   onClose: () => void;
+  onAddToHamper?: (sweet: SweetItem, weightGrams: number) => void;
 }
 
-export const SweetDetailModal: React.FC<SweetDetailModalProps> = ({ sweet, onClose }) => {
+export const SweetDetailModal: React.FC<SweetDetailModalProps> = ({ sweet, onClose, onAddToHamper }) => {
   const [selectedWeight, setSelectedWeight] = useState<'250g' | '500g' | '1kg'>('500g');
+  const [addedToast, setAddedToast] = useState(false);
 
   useEffect(() => {
     if (!sweet) return;
@@ -24,175 +26,227 @@ export const SweetDetailModal: React.FC<SweetDetailModalProps> = ({ sweet, onClo
 
   const currentPrice =
     selectedWeight === '250g'
-      ? sweet.price250g
+      ? sweet.price250g || Math.round(sweet.price500g * 0.55)
       : selectedWeight === '500g'
       ? sweet.price500g
       : sweet.price1kg;
 
+  const handleAddHamper = () => {
+    const grams = selectedWeight === '250g' ? 250 : selectedWeight === '500g' ? 500 : 1000;
+    if (onAddToHamper) {
+      onAddToHamper(sweet, grams);
+      setAddedToast(true);
+      setTimeout(() => setAddedToast(false), 2200);
+    }
+  };
+
   const whatsappMessage = encodeURIComponent(
-    `Hello Cherry's Sweet Mart (Spine Road), I would like to order:
-Sweet: ${sweet.name} (${sweet.marathiName})
-Quantity: ${selectedWeight}
-Price: ₹${currentPrice}
-Please confirm availability and packaging details.`
+    `Hello Cherry's Sweet Mart (Spine Road Flagship),
+I would like to place an order:
+• Mithai: ${sweet.name} (${sweet.marathiName})
+• Quantity: ${selectedWeight}
+• Price: ₹${currentPrice}
+Please confirm counter availability and packing schedule.`
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn" role="dialog" aria-modal="true" aria-labelledby="sweet-detail-title">
-      {/* Click outside to close */}
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md animate-fade-in"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sweet-detail-title"
+    >
+      {/* Backdrop */}
       <div className="absolute inset-0" onClick={onClose} />
 
-      {/* Modal Content Box */}
-      <div className="relative w-full max-w-2xl sm:max-w-3xl bg-white dark:bg-[#1C1713] rounded-3xl shadow-2xl border border-gold-300 dark:border-gold-800/60 overflow-hidden z-10 max-h-[92vh] flex flex-col text-slate-900 dark:text-slate-100">
+      {/* Modal Dossier Window */}
+      <div className="relative z-10 flex max-h-[92vh] w-full max-w-2xl sm:max-w-3xl flex-col overflow-hidden rounded-3xl border border-gold-300/70 bg-[#FFFDF9] shadow-2xl transition-colors duration-300 dark:border-gold-700/60 dark:bg-[#1A1410]">
         
         {/* Header Bar */}
-        <div className="p-4 sm:p-5 border-b border-gold-100 dark:border-gold-900/40 flex items-center justify-between bg-ivory-50 dark:bg-[#16120E] flex-shrink-0">
+        <div className="flex items-center justify-between border-b border-gold-200/80 bg-gradient-to-r from-[#25140F] via-[#371D15] to-[#25140F] px-5 py-4 text-white sm:px-6">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-gold-700 dark:text-gold-400">
-              {sweet.categoryName}
-            </span>
-            <h3 id="sweet-detail-title" className="font-display text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-gold-300">
+                {sweet.categoryName}
+              </span>
+              <span className="text-stone-400">·</span>
+              <span className="text-[11px] font-medium text-emerald-400">100% Shuddha Veg</span>
+            </div>
+            <h3 id="sweet-detail-title" className="font-display text-lg font-bold text-[#FFF8ED] sm:text-2xl">
               {sweet.name}
             </h3>
-            <p className="text-xs font-serif italic text-gold-600 dark:text-gold-400 font-semibold">
+            <p className="font-display text-xs italic text-gold-300">
               {sweet.marathiName}
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center transition-colors cursor-pointer flex-shrink-0"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-stone-200 transition-colors hover:bg-white/20 hover:text-white"
             aria-label="Close modal"
           >
-            <X className="w-5 h-5" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Scrollable Body */}
-        <div className="p-4 sm:p-6 overflow-y-auto flex-1 min-h-0 space-y-4 sm:space-y-5 text-left scrollbar-thin scrollbar-thumb-gold-400/30 hover:scrollbar-thumb-gold-500">
+        <div className="flex-1 space-y-5 overflow-y-auto p-5 sm:p-7 text-left">
           
-          {/* Main Photo Showcase - 100% full view with zero cropping */}
-          {/* [FIXED]: Replaced aspect-video object-cover with object-contain inside dedicated showcase frame to prevent image clipping */}
-          <div className="relative rounded-2xl overflow-hidden w-full h-56 sm:h-80 bg-gradient-to-b from-stone-50 via-white to-ivory-100 dark:from-[#15110E] dark:via-[#191410] dark:to-[#16120E] border border-gold-200/80 dark:border-gold-800/40 p-2 sm:p-4 flex items-center justify-center shadow-inner">
+          {/* Main Photo Frame */}
+          <div className="relative aspect-[4/2.6] w-full overflow-hidden rounded-2xl border border-gold-300/40 bg-stone-900 shadow-lg sm:aspect-[4/2.2]">
             <img
               src={sweet.image}
               alt={sweet.name}
-              className="w-full h-full object-contain mx-auto rounded-xl drop-shadow-md"
+              className="h-full w-full object-cover object-center"
             />
-            {/* Bestseller Badge */}
-            {sweet.isBestseller && (
-              <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-gold-600 text-white text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-md">
-                ★ Bestseller on Spine Road
-              </div>
-            )}
-            {sweet.isChefSpecial && !sweet.isBestseller && (
-              <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-slate-900/90 dark:bg-black/90 text-gold-300 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-md">
-                Chef Special
-              </div>
-            )}
+
+            {/* Badges */}
+            <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+              {sweet.isBestseller && (
+                <span className="rounded-full bg-gradient-to-r from-gold-500 to-gold-600 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#2A140E] shadow">
+                  ★ Bestseller on Spine Road
+                </span>
+              )}
+              {sweet.isChefSpecial && !sweet.isBestseller && (
+                <span className="rounded-full bg-black/80 px-3 py-1 text-[10px] font-bold text-gold-300 backdrop-blur-sm">
+                  Artisan Batch
+                </span>
+              )}
+            </div>
+
+            <div className="absolute bottom-3 right-3 rounded-lg bg-black/70 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md">
+              Fresh Daily Batch
+            </div>
           </div>
 
-          {/* Dedicated Dietary Badges Row (Positioned below photo, NEVER covering food!) */}
-          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+          {/* Dietary Badges */}
+          <div className="flex flex-wrap items-center gap-1.5">
             {sweet.dietary.map(t => (
               <span
                 key={t}
-                className="px-3 py-1 rounded-full bg-ivory-100 dark:bg-[#25201A] border border-gold-200 dark:border-gold-800/50 text-slate-800 dark:text-gold-300 text-xs font-semibold capitalize flex items-center gap-1 shadow-2xs"
+                className="rounded-full border border-gold-200 bg-gold-50 px-3 py-1 text-xs font-semibold text-primary-900 capitalize dark:border-gold-800/50 dark:bg-gold-950/40 dark:text-gold-300"
               >
-                {t === 'pure-ghee' && '🧈 '}
-                {t === 'sugar-free' && '🌱 '}
-                {t === 'dry-fruit' && '🌰 '}
-                {t === 'bengali-chhena' && '🥛 '}
-                {t === 'khoya-mawa' && '🍯 '}
-                {t === 'eggless' && '🥚 '}
-                <span>{t.replace('-', ' ')}</span>
+                {t.replace('-', ' ')}
               </span>
             ))}
-            <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
+            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
               ✓ 100% Pure Vegetarian
             </span>
           </div>
 
           {/* Description */}
-          <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
+          <p className="text-xs leading-relaxed text-stone-600 sm:text-sm dark:text-stone-300">
             {sweet.description}
           </p>
 
-          {/* Portion Weight Selection */}
-          <div className="p-4 rounded-2xl bg-ivory-50 dark:bg-[#16120E] border border-gold-200 dark:border-gold-800/40 space-y-2">
-            <div className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wide">
-              Select Package Weight:
+          {/* [ADDED] Sensory Profile if available */}
+          {sweet.sensoryProfile && (
+            <div className="rounded-2xl border border-gold-200/80 bg-ivory-100/70 p-4 dark:border-gold-900/40 dark:bg-[#1E1713]">
+              <div className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-wider text-stone-600 dark:text-stone-400">
+                <Sparkles className="h-3.5 w-3.5 text-gold-600" />
+                <span>Sensory Dossier</span>
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <div>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400">Sweetness</span>
+                  <p className="font-bold text-xs text-stone-800 dark:text-stone-200">
+                    {sweet.sensoryProfile.sweetness} / 5 Level
+                  </p>
+                </div>
+                <div>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400">Texture</span>
+                  <p className="font-bold text-xs text-stone-800 dark:text-stone-200">
+                    {sweet.sensoryProfile.texture}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400">Serving Temp</span>
+                  <p className="font-bold text-xs text-stone-800 dark:text-stone-200">
+                    {sweet.sensoryProfile.servingTemp}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-[10px] text-stone-500 dark:text-stone-400">Pairing</span>
+                  <p className="font-bold text-xs text-stone-800 dark:text-stone-200 truncate">
+                    {sweet.sensoryProfile.pairing}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                onClick={() => setSelectedWeight('250g')}
-                className={`p-2.5 rounded-xl border text-center transition-all ${
-                  selectedWeight === '250g'
-                    ? 'bg-gold-600 text-white border-gold-600 shadow-md font-bold'
-                    : 'bg-white dark:bg-[#221D18] text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-gold-300'
-                }`}
-              >
-                <div className="text-xs">250 grams</div>
-                <div className="text-sm font-black mt-0.5">₹{sweet.price250g}</div>
-              </button>
+          )}
 
-              <button
-                onClick={() => setSelectedWeight('500g')}
-                className={`p-2.5 rounded-xl border text-center transition-all ${
-                  selectedWeight === '500g'
-                    ? 'bg-gold-600 text-white border-gold-600 shadow-md font-bold'
-                    : 'bg-white dark:bg-[#221D18] text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-gold-300'
-                }`}
-              >
-                <div className="text-xs">500 grams</div>
-                <div className="text-sm font-black mt-0.5">₹{sweet.price500g}</div>
-              </button>
+          {/* Interactive Packaging Size Selector */}
+          <div className="rounded-2xl border border-stone-200 bg-stone-50/70 p-4 dark:border-gold-900/40 dark:bg-[#201914] space-y-2.5">
+            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wide text-stone-700 dark:text-stone-300">
+              <span>Select Packaging Weight:</span>
+              <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                Packed in Food-Grade Foil
+              </span>
+            </div>
 
-              <button
-                onClick={() => setSelectedWeight('1kg')}
-                className={`p-2.5 rounded-xl border text-center transition-all ${
-                  selectedWeight === '1kg'
-                    ? 'bg-gold-600 text-white border-gold-600 shadow-md font-bold'
-                    : 'bg-white dark:bg-[#221D18] text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-gold-300'
-                }`}
-              >
-                <div className="text-xs">1 Kilogram</div>
-                <div className="text-sm font-black mt-0.5">₹{sweet.price1kg}</div>
-              </button>
+            <div className="grid grid-cols-3 gap-2.5">
+              {(['250g', '500g', '1kg'] as const).map(w => {
+                const price =
+                  w === '250g'
+                    ? sweet.price250g || Math.round(sweet.price500g * 0.55)
+                    : w === '500g'
+                    ? sweet.price500g
+                    : sweet.price1kg;
+
+                const isSelected = selectedWeight === w;
+
+                return (
+                  <button
+                    key={w}
+                    onClick={() => setSelectedWeight(w)}
+                    className={`rounded-xl border p-3 text-center transition-all ${
+                      isSelected
+                        ? 'border-gold-500 bg-white dark:bg-[#2B211A] shadow-md ring-2 ring-gold-400/50'
+                        : 'border-stone-200 bg-white/70 dark:border-stone-800 dark:bg-[#181310] hover:border-gold-300'
+                    }`}
+                  >
+                    <div className="text-xs font-bold text-stone-700 dark:text-stone-300">{w}</div>
+                    <div className="mt-0.5 font-display text-base font-black text-primary-900 dark:text-gold-300">
+                      ₹{price}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Specifications & Hygiene Details */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#221D18] border border-slate-100 dark:border-slate-800 flex items-start gap-2.5">
-              <Clock className="w-4 h-4 text-gold-600 dark:text-gold-400 flex-shrink-0 mt-0.5" />
+          {/* Specifications Grid */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 text-xs">
+            <div className="flex items-start gap-2.5 rounded-xl border border-stone-200/80 bg-white p-3 dark:border-stone-800 dark:bg-[#1E1813]">
+              <Clock className="h-4 w-4 shrink-0 text-gold-600 dark:text-gold-400 mt-0.5" />
               <div>
-                <strong className="text-slate-800 dark:text-white">Fresh Shelf Life:</strong>
-                <p className="text-slate-600 dark:text-slate-400 text-[11px]">{sweet.shelfLife}</p>
+                <strong className="text-stone-800 dark:text-white">Fresh Shelf Life:</strong>
+                <p className="text-[11px] text-stone-500 dark:text-stone-400">{sweet.shelfLife}</p>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#221D18] border border-slate-100 dark:border-slate-800 flex items-start gap-2.5">
-              <Package className="w-4 h-4 text-gold-600 dark:text-gold-400 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2.5 rounded-xl border border-stone-200/80 bg-white p-3 dark:border-stone-800 dark:bg-[#1E1813]">
+              <Package className="h-4 w-4 shrink-0 text-gold-600 dark:text-gold-400 mt-0.5" />
               <div>
-                <strong className="text-slate-800 dark:text-white">Storage Guidance:</strong>
-                <p className="text-slate-600 dark:text-slate-400 text-[11px]">{sweet.storage}</p>
+                <strong className="text-stone-800 dark:text-white">Storage Guidance:</strong>
+                <p className="text-[11px] text-stone-500 dark:text-stone-400">{sweet.storage}</p>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#221D18] border border-slate-100 dark:border-slate-800 flex items-start gap-2.5">
-              <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2.5 rounded-xl border border-stone-200/80 bg-white p-3 dark:border-stone-800 dark:bg-[#1E1813]">
+              <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
               <div>
-                <strong className="text-slate-800 dark:text-white">Allergen Notice:</strong>
-                <p className="text-slate-600 dark:text-slate-400 text-[11px]">{sweet.allergens}</p>
+                <strong className="text-stone-800 dark:text-white">Allergen Notice:</strong>
+                <p className="text-[11px] text-stone-500 dark:text-stone-400">{sweet.allergens}</p>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#221D18] border border-slate-100 dark:border-slate-800 flex items-start gap-2.5">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2.5 rounded-xl border border-stone-200/80 bg-white p-3 dark:border-stone-800 dark:bg-[#1E1813]">
+              <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
               <div>
-                <strong className="text-slate-800 dark:text-white">Purity Guarantee:</strong>
-                <p className="text-slate-600 dark:text-slate-400 text-[11px]">100% Shuddha Desi Cow Ghee / Fresh Milk</p>
+                <strong className="text-stone-800 dark:text-white">Purity Guarantee:</strong>
+                <p className="text-[11px] text-stone-500 dark:text-stone-400">100% Shuddha Cow Ghee / Milk</p>
               </div>
             </div>
           </div>
@@ -200,19 +254,34 @@ Please confirm availability and packaging details.`
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 sm:p-5 border-t border-gold-100 dark:border-gold-900/40 bg-ivory-50 dark:bg-[#16120E] flex flex-col sm:flex-row items-center justify-between gap-3 flex-shrink-0">
-          <div className="flex items-center justify-between w-full sm:w-auto sm:block">
-            <span className="text-xs text-slate-500 dark:text-slate-400 mr-2 sm:mr-0">Total Price:</span>
-            <div className="text-2xl font-black text-slate-900 dark:text-white">₹{currentPrice}</div>
+        <div className="flex flex-col items-center justify-between gap-3.5 border-t border-gold-200/80 bg-[#FAF7F2] p-4 sm:flex-row sm:px-7 dark:border-gold-900/60 dark:bg-[#181310]">
+          <div>
+            <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">
+              Total for {selectedWeight}:
+            </span>
+            <div className="font-display text-2xl font-black text-stone-900 dark:text-white">
+              ₹{currentPrice}
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+            {onAddToHamper && (
+              <button
+                onClick={handleAddHamper}
+                className="flex items-center justify-center gap-1.5 rounded-xl border border-gold-400/80 bg-gold-100/70 px-4 py-2.5 text-xs font-bold text-primary-900 transition-all hover:bg-gold-200 active:scale-95 dark:border-gold-700 dark:bg-gold-950/40 dark:text-gold-200"
+              >
+                <Gift className="h-4 w-4 text-gold-600" />
+                <span>{addedToast ? 'Added to Box!' : 'Add to Gift Box'}</span>
+              </button>
+            )}
+
             <a
               href={`https://wa.me/${SHOP_METADATA.whatsappOrderNumber}?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-none px-5 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 active:scale-95"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow transition-all hover:bg-emerald-700 active:scale-95 sm:flex-initial"
             >
+              <MessageCircle className="h-4 w-4" />
               <span>WhatsApp Order ({selectedWeight})</span>
             </a>
 
@@ -220,10 +289,10 @@ Please confirm availability and packaging details.`
               href={SHOP_METADATA.swiggyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-3 rounded-full bg-[#FC8019] hover:bg-[#e06f14] text-white font-bold text-xs shadow flex items-center justify-center gap-1.5 transition-all hover:-translate-y-0.5 active:scale-95"
-              title="Order on Swiggy"
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#FC8019] px-4 py-2.5 text-xs font-bold text-white shadow transition-all hover:bg-[#e06f14] active:scale-95"
+              title="Order on Swiggy for express delivery"
             >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="h-4 w-4" />
               <span>Swiggy</span>
             </a>
           </div>

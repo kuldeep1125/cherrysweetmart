@@ -1,12 +1,14 @@
-// [ADDED] GiftHamperBuilder component with interactive box builder, compartment filling & confetti celebration
-import React, { useEffect, useState } from 'react';
-import { Gift, X, Check, Plus, Trash2, Sparkles, Send, Award } from 'lucide-react';
+// [ADDED] World-class Artisanal Gift Hamper Atelier with velvet compartment visualizer, ribbon selector, live greeting card preview, and WhatsApp concierge
+import React, { useEffect, useState, useMemo } from 'react';
+import { Gift, X, Sparkles, Send, Award, Check, Trash2, Heart, ShieldCheck } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { SWEETS_CATALOG, SweetItem, SHOP_METADATA } from '../data/sweetsData';
 
 interface GiftHamperBuilderProps {
   isOpen: boolean;
   onClose: () => void;
+  initialSweets?: SweetItem[];
+  onHamperUpdate?: (sweets: SweetItem[]) => void;
 }
 
 interface BoxTier {
@@ -16,40 +18,65 @@ interface BoxTier {
   basePrice: number;
   image: string;
   badge: string;
+  dimensions: string;
 }
 
 const BOX_TIERS: BoxTier[] = [
   {
     id: 'gold-4',
-    name: 'Royal Gold 4-Piece Keepsake Box',
+    name: 'Royal Quad Keepsake Box',
     capacity: 4,
     basePrice: 650,
-    image: '/images/banners/royal_gold_15_piece_gift_box.jpg',
-    badge: 'Popular Family Gift'
+    image: '/images/banners/luxury_royal_gift_box_atelier.jpg',
+    badge: 'Artisanal Selection',
+    dimensions: '22cm × 22cm · Rigid Wood & Gold Foil',
   },
   {
     id: 'velvet-8',
-    name: 'Imperial Velvet 8-Piece Hamper',
+    name: 'Imperial Velvet Octet Hamper',
     capacity: 8,
     basePrice: 1250,
-    image: '/images/sweets/eight_sweets_sampler_grid.jpg',
-    badge: 'Diwali & Corporate Special'
+    image: '/images/banners/luxury_royal_gift_box_atelier.jpg',
+    badge: 'Diwali & Wedding Signature',
+    dimensions: '34cm × 24cm · Deep Crimson Velvet Lined',
   },
   {
-    id: 'brass-thali-12',
-    name: 'Maharaja Brass Thali Celebration Spread',
+    id: 'brass-12',
+    name: 'Maharaja Heritage 12-Piece Spread',
     capacity: 12,
     basePrice: 2250,
-    image: '/images/banners/maharaja_12_katori_platter.jpg',
-    badge: 'Wedding & Housewarming'
-  }
+    image: '/images/banners/hero_grand_confection_feast.jpg',
+    badge: 'Royal Grandeur Banquet',
+    dimensions: '42cm Antique Engraved Brass Platter',
+  },
 ];
 
-export const GiftHamperBuilder: React.FC<GiftHamperBuilderProps> = ({ isOpen, onClose }) => {
-  const [selectedBoxTier, setSelectedBoxTier] = useState<BoxTier>(BOX_TIERS[0]);
-  const [selectedSweets, setSelectedSweets] = useState<SweetItem[]>([]);
-  const [notes, setNotes] = useState('');
+const RIBBON_OPTIONS = [
+  { id: 'crimson', name: 'Royal Crimson Velvet', colorClass: 'bg-[#8E202E] text-white border-[#6B1420]' },
+  { id: 'gold', name: 'Imperial Satin Gold', colorClass: 'bg-[#D9A03E] text-[#2A140E] border-[#B88228]' },
+  { id: 'emerald', name: 'Vedic Emerald Satin', colorClass: 'bg-[#185338] text-white border-[#0E3523]' },
+];
 
+export const GiftHamperBuilder: React.FC<GiftHamperBuilderProps> = ({
+  isOpen,
+  onClose,
+  initialSweets = [],
+  onHamperUpdate,
+}) => {
+  const [selectedBoxTier, setSelectedBoxTier] = useState<BoxTier>(BOX_TIERS[1]); // Default to 8-piece
+  const [selectedSweets, setSelectedSweets] = useState<SweetItem[]>(initialSweets);
+  const [selectedRibbon, setSelectedRibbon] = useState(RIBBON_OPTIONS[0]);
+  const [greetingCardMessage, setGreetingCardMessage] = useState('');
+  const [senderRecipient, setSenderRecipient] = useState({ to: '', from: '' });
+
+  // Sync with initialSweets if provided
+  useEffect(() => {
+    if (initialSweets.length > 0) {
+      setSelectedSweets(initialSweets.slice(0, selectedBoxTier.capacity));
+    }
+  }, [initialSweets, selectedBoxTier.capacity]);
+
+  // Handle escape key
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -67,54 +94,86 @@ export const GiftHamperBuilder: React.FC<GiftHamperBuilderProps> = ({ isOpen, on
     if (selectedSweets.length < selectedBoxTier.capacity) {
       const next = [...selectedSweets, sweet];
       setSelectedSweets(next);
+      if (onHamperUpdate) onHamperUpdate(next);
+
       if (next.length === selectedBoxTier.capacity) {
         confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 }
+          particleCount: 90,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#D9A03E', '#8E202E', '#FFFFFF'],
         });
       }
     }
   };
 
   const handleRemoveSweet = (index: number) => {
-    setSelectedSweets(prev => prev.filter((_, i) => i !== index));
+    const next = selectedSweets.filter((_, i) => i !== index);
+    setSelectedSweets(next);
+    if (onHamperUpdate) onHamperUpdate(next);
+  };
+
+  const handleClear = () => {
+    setSelectedSweets([]);
+    if (onHamperUpdate) onHamperUpdate([]);
   };
 
   const handleTierChange = (tier: BoxTier) => {
     setSelectedBoxTier(tier);
     if (selectedSweets.length > tier.capacity) {
-      setSelectedSweets(selectedSweets.slice(0, tier.capacity));
+      const trimmed = selectedSweets.slice(0, tier.capacity);
+      setSelectedSweets(trimmed);
+      if (onHamperUpdate) onHamperUpdate(trimmed);
     }
   };
 
-  const sweetNamesList = selectedSweets.map((s, idx) => `${idx + 1}. ${s.name}`).join('\n');
-  const whatsappQuery = encodeURIComponent(
-    `Hello Cherry's Sweet Mart (Spine Road), I would like a quote for a customized Gift Hamper:
-Box: ${selectedBoxTier.name} (Estimated ₹${selectedBoxTier.basePrice})
-Selected Confections:
-${sweetNamesList || 'Assorted Chef Choice'}
-Special Note: ${notes || 'Standard festive packaging'}
-Please advise availability and delivery details.`
+  const sweetListText = selectedSweets
+    .map((s, idx) => `  ${idx + 1}. ${s.name} (${s.marathiName})`)
+    .join('\n');
+
+  const whatsappMessage = encodeURIComponent(
+    `Namaskar Cherry's Sweet Mart (Spine Road Concierge),
+
+I would like to order a Bespoke Artisanal Gift Hamper:
+• Presentation Tier: ${selectedBoxTier.name} (₹${selectedBoxTier.basePrice})
+• Velvet Ribbon: ${selectedRibbon.name}
+• To: ${senderRecipient.to || 'Family / Client'}
+• From: ${senderRecipient.from || 'Customer'}
+• Greeting Note: "${greetingCardMessage || 'Heartiest Celebrations & Warm Wishes'}"
+
+Curated Sweets in Compartments:
+${sweetListText || '  (Please curate Chef Choice Bestsellers)'}
+
+Please share final box availability, packing schedule, and delivery/pickup details.`
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-fadeIn" role="dialog" aria-modal="true" aria-labelledby="gift-hamper-title">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md animate-fade-in"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="atelier-title"
+    >
       <div className="absolute inset-0" onClick={onClose} />
 
-      <div className="relative w-full max-w-3xl bg-white dark:bg-[#181310] rounded-3xl shadow-2xl border border-gold-300 dark:border-gold-700/60 overflow-hidden z-10 max-h-[92vh] flex flex-col transition-colors duration-300">
+      <div className="relative z-10 flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-gold-300/60 bg-[#FFFDF9] shadow-2xl transition-colors duration-300 dark:border-gold-700/50 dark:bg-[#181310]">
         
-        {/* Modal Top Bar */}
-        <div className="p-4 sm:p-5 border-b border-gold-100 dark:border-gold-900/50 bg-gradient-to-r from-ivory-100 via-white to-gold-50 dark:from-[#241D17] dark:via-[#1E1813] dark:to-[#241D17] flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gold-100 dark:bg-gold-950/80 border border-gold-300 dark:border-gold-700/60 flex items-center justify-center text-gold-700 dark:text-gold-400">
-              <Gift className="w-5 h-5" />
+        {/* Atelier Header */}
+        <div className="flex items-center justify-between border-b border-gold-200/80 bg-gradient-to-r from-[#24130F] via-[#351B14] to-[#24130F] px-5 py-4 text-white sm:px-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-400/40 bg-gold-400/15 text-gold-300">
+              <Gift className="h-5 w-5" />
             </div>
             <div>
-              <h3 id="gift-hamper-title" className="font-display text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-                Custom Mithai Gift Box Builder
-              </h3>
-              <p className="text-xs text-gold-700 dark:text-gold-400 font-medium">
+              <div className="flex items-center gap-2">
+                <h3 id="atelier-title" className="font-display text-lg font-bold tracking-tight text-[#FFF8ED] sm:text-xl">
+                  Artisanal Hamper Atelier
+                </h3>
+                <span className="rounded-full bg-gold-400/20 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-gold-200">
+                  Custom Curated
+                </span>
+              </div>
+              <p className="font-display text-xs italic text-gold-300/90">
                 चेरीज स्वीट कॉर्नर — सणांसाठी व लग्नकार्यासाठी खास भेट बॉक्सेस
               </p>
             </div>
@@ -122,140 +181,62 @@ Please advise availability and delivery details.`
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-slate-100 dark:bg-stone-800 hover:bg-slate-200 dark:hover:bg-stone-700 text-slate-600 dark:text-stone-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-stone-200 transition-colors hover:bg-white/20 hover:text-white"
+            aria-label="Close atelier"
           >
-            <X className="w-5 h-5" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-5 sm:p-6 overflow-y-auto space-y-6 text-left">
+        {/* Atelier Scrollable Content */}
+        <div className="flex-1 space-y-7 overflow-y-auto p-5 sm:p-7 text-left">
           
-          {/* Step 1: Select Box Style */}
-          <div className="space-y-2.5">
+          {/* Step 1: Select Box Presentation Tier */}
+          <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-gold-300">
-                Step 1: Choose Box Presentation
+              <span className="text-xs font-bold uppercase tracking-widest text-stone-800 dark:text-gold-300">
+                1. Select Box Presentation & Capacity
               </span>
-              <span className="text-[11px] text-slate-500 dark:text-stone-400">Premium velvet-lined packaging</span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {BOX_TIERS.map(tier => (
-                <button
-                  key={tier.id}
-                  onClick={() => handleTierChange(tier)}
-                  className={`p-3 rounded-2xl border text-left transition-all relative overflow-hidden flex flex-col justify-between ${
-                    selectedBoxTier.id === tier.id
-                      ? 'bg-gold-50/80 dark:bg-gold-950/50 border-gold-500 ring-2 ring-gold-400 dark:ring-gold-500 shadow-sm'
-                      : 'bg-white dark:bg-[#201A15] border-slate-200 dark:border-stone-800 hover:border-gold-300 dark:hover:border-gold-700'
-                  }`}
-                >
-                  <div className="space-y-1">
-                    <span className="inline-block px-2 py-0.5 rounded-full bg-gold-600 dark:bg-gold-700 text-white text-[9px] font-bold">
-                      {tier.badge}
-                    </span>
-                    <h4 className="font-display text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                      {tier.name}
-                    </h4>
-                    <p className="text-[11px] text-slate-500 dark:text-stone-400">Capacity: {tier.capacity} Sweets</p>
-                  </div>
-                  <div className="mt-3 pt-2 border-t border-slate-100 dark:border-stone-800 flex items-baseline justify-between">
-                    <span className="text-xs text-slate-400 dark:text-stone-500">Approx.</span>
-                    <span className="text-base font-black text-gold-700 dark:text-gold-400">₹{tier.basePrice}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Step 2: Compartment Slots Status */}
-          <div className="p-4 rounded-2xl bg-ivory-50 dark:bg-[#201A15] border border-gold-200 dark:border-gold-800/60 space-y-3">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-800 dark:text-stone-200">
-                Step 2: Fill Your Compartments ({selectedSweets.length} / {selectedBoxTier.capacity})
-              </span>
-              <span className="text-gold-700 dark:text-gold-400 font-semibold">
-                {remainingSlots > 0 ? `${remainingSlots} more to complete` : '🎉 Hamper is Complete!'}
+              <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">
+                Lined with food-grade gold foil cups
               </span>
             </div>
 
-            {/* Visual Slots Grid */}
-            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-              {Array.from({ length: selectedBoxTier.capacity }).map((_, index) => {
-                const sweet = selectedSweets[index];
-                return (
-                  <div
-                    key={index}
-                    className={`relative rounded-xl aspect-square border-2 flex items-center justify-center p-1 text-center transition-all ${
-                      sweet
-                        ? 'border-gold-400 dark:border-gold-500 bg-white dark:bg-[#181310] shadow-xs'
-                        : 'border-dashed border-slate-300 dark:border-stone-700 bg-white/60 dark:bg-stone-900/40 text-slate-400 dark:text-stone-500'
-                    }`}
-                  >
-                    {sweet ? (
-                      <div className="relative w-full h-full group">
-                        <img
-                          src={sweet.image}
-                          alt={sweet.name}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                        <button
-                          onClick={() => handleRemoveSweet(index)}
-                          className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center shadow hover:scale-110 transition-transform"
-                          title="Remove item"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                        <div className="absolute inset-x-0 bottom-0 bg-black/60 rounded-b-lg p-0.5 text-[8px] text-white truncate px-1">
-                          {sweet.name.split(' ')[0]}
-                        </div>
-                      </div>
-                    ) : (
-                      <span className="text-[10px] font-bold text-slate-400 dark:text-stone-500">
-                        Slot {index + 1}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Step 3: Pick Sweets to Add */}
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-800 dark:text-gold-300 uppercase tracking-wider">
-              <span>Step 3: Click to Add Sweets</span>
-              <span className="text-[11px] text-slate-500 dark:text-stone-400 font-normal">Showing popular celebratory picks</span>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-h-56 overflow-y-auto p-1.5 border border-slate-200 dark:border-stone-800 rounded-2xl bg-slate-50/50 dark:bg-[#15110E]">
-              {SWEETS_CATALOG.slice(0, 16).map(sweet => {
-                const isFull = selectedSweets.length >= selectedBoxTier.capacity;
-
+            <div className="mt-3 grid grid-cols-1 gap-3.5 sm:grid-cols-3">
+              {BOX_TIERS.map(tier => {
+                const isSelected = selectedBoxTier.id === tier.id;
                 return (
                   <button
-                    key={sweet.id}
-                    onClick={() => handleAddSweet(sweet)}
-                    disabled={isFull}
-                    className={`p-2 rounded-xl border text-left flex items-center gap-2 transition-all ${
-                      isFull
-                        ? 'opacity-50 cursor-not-allowed border-slate-200 dark:border-stone-800 bg-slate-100 dark:bg-stone-900/40'
-                        : 'hover:border-gold-400 dark:hover:border-gold-600 hover:bg-gold-50/60 dark:hover:bg-gold-950/40 border-slate-200 dark:border-stone-800 bg-white dark:bg-[#201A15]'
+                    key={tier.id}
+                    onClick={() => handleTierChange(tier)}
+                    className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border p-3.5 text-left transition-all ${
+                      isSelected
+                        ? 'border-gold-500 bg-gold-50/80 shadow-md ring-2 ring-gold-400/50 dark:border-gold-500 dark:bg-gold-950/40'
+                        : 'border-stone-200 bg-white hover:border-gold-300 dark:border-stone-800 dark:bg-[#1F1914] dark:hover:border-gold-700'
                     }`}
                   >
-                    <img
-                      src={sweet.image}
-                      alt={sweet.name}
-                      className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[11px] font-bold text-slate-900 dark:text-stone-100 truncate">
-                        {sweet.name}
+                    <div>
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="rounded-full bg-primary-800 px-2 py-0.5 text-[9px] font-bold text-gold-200">
+                          {tier.badge}
+                        </span>
+                        <span className="text-xs font-bold text-stone-700 dark:text-stone-300">
+                          {tier.capacity} Compartments
+                        </span>
                       </div>
-                      <div className="text-[10px] text-gold-700 dark:text-gold-400 font-semibold">
-                        ₹{sweet.price250g}/250g
-                      </div>
+                      <h4 className="mt-2 font-display text-sm font-bold text-stone-900 dark:text-white">
+                        {tier.name}
+                      </h4>
+                      <p className="mt-1 text-[11px] text-stone-500 dark:text-stone-400">
+                        {tier.dimensions}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 flex items-baseline justify-between border-t border-stone-100 pt-2 dark:border-stone-800">
+                      <span className="text-[10px] uppercase font-semibold text-stone-400">Complete Box</span>
+                      <span className="font-display text-base font-black text-primary-900 dark:text-gold-300">
+                        ₹{tier.basePrice}
+                      </span>
                     </div>
                   </button>
                 );
@@ -263,46 +244,233 @@ Please advise availability and delivery details.`
             </div>
           </div>
 
-          {/* Notes Input */}
+          {/* Step 2: Velvet Compartment Visualizer */}
+          <div className="rounded-2xl border border-gold-200/80 bg-gradient-to-b from-[#FAF6F0] to-[#F5EFE6] p-4.5 shadow-inner dark:border-gold-900/40 dark:from-[#211A15] dark:to-[#19130F]">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-stone-800 dark:text-stone-200">
+                  2. Velvet Compartments ({selectedSweets.length} of {selectedBoxTier.capacity} slots filled)
+                </span>
+              </div>
+              <span className={`font-bold ${remainingSlots === 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-gold-700 dark:text-gold-400'}`}>
+                {remainingSlots === 0 ? '🎉 Royal Hamper Box is Complete!' : `Select ${remainingSlots} more sweets below`}
+              </span>
+            </div>
+
+            {/* Grid of Compartment Slots */}
+            <div className="mt-3.5 grid grid-cols-4 gap-2.5 sm:grid-cols-6 lg:grid-cols-8">
+              {Array.from({ length: selectedBoxTier.capacity }).map((_, index) => {
+                const sweet = selectedSweets[index];
+                return (
+                  <div
+                    key={index}
+                    className={`group relative aspect-square rounded-xl border-2 p-1 transition-all ${
+                      sweet
+                        ? 'border-gold-400 bg-white shadow-sm dark:border-gold-500 dark:bg-[#251E18]'
+                        : 'border-dashed border-stone-300 bg-white/60 text-stone-400 dark:border-stone-700 dark:bg-stone-900/30 dark:text-stone-500'
+                    }`}
+                  >
+                    {sweet ? (
+                      <div className="relative h-full w-full overflow-hidden rounded-lg">
+                        <img
+                          src={sweet.image}
+                          alt={sweet.name}
+                          className="h-full w-full object-cover"
+                        />
+                        <button
+                          onClick={() => handleRemoveSweet(index)}
+                          className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-white shadow transition-transform hover:scale-110 active:scale-95"
+                          title="Remove item"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                        <div className="absolute inset-x-0 bottom-0 bg-black/70 px-1 py-0.5 text-center text-[9px] font-bold text-white truncate">
+                          {sweet.name.split(' ')[0]}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex h-full w-full flex-col items-center justify-center">
+                        <span className="text-[10px] font-extrabold text-stone-400 dark:text-stone-500">
+                          {index + 1}
+                        </span>
+                        <span className="text-[8px] uppercase tracking-wider text-stone-400">Empty</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step 3: Confection Picker Carousel */}
           <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-stone-300 mb-1">
-              Custom Message or Ribbon Preference (Optional):
-            </label>
-            <input
-              type="text"
-              value={notes}
-              onChange={e => setNotes(e.target.value)}
-              placeholder="e.g. Diwali Corporate Gifting with Golden Ribbon & Greeting Card"
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-stone-800 bg-white dark:bg-[#201A15] text-slate-900 dark:text-white text-xs outline-none focus:border-gold-500"
-            />
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold uppercase tracking-widest text-stone-800 dark:text-gold-300">
+                3. Click Any Sweet to Place into Compartment
+              </span>
+              <span className="text-[11px] text-stone-500 dark:text-stone-400">
+                Showing top 16 festive confections
+              </span>
+            </div>
+
+            <div className="mt-2.5 grid max-h-56 grid-cols-2 gap-2 overflow-y-auto rounded-2xl border border-stone-200 bg-stone-50/50 p-2 sm:grid-cols-4 dark:border-stone-800 dark:bg-[#140F0C]">
+              {SWEETS_CATALOG.slice(0, 16).map(sweet => {
+                const isFull = selectedSweets.length >= selectedBoxTier.capacity;
+                return (
+                  <button
+                    key={sweet.id}
+                    onClick={() => handleAddSweet(sweet)}
+                    disabled={isFull}
+                    className={`flex items-center gap-2 rounded-xl border p-2 text-left transition-all ${
+                      isFull
+                        ? 'cursor-not-allowed opacity-50 border-stone-200 bg-stone-100 dark:border-stone-800 dark:bg-stone-900/30'
+                        : 'border-stone-200 bg-white hover:border-gold-400 hover:bg-gold-50/60 dark:border-stone-800 dark:bg-[#1E1813] dark:hover:border-gold-600'
+                    }`}
+                  >
+                    <img
+                      src={sweet.image}
+                      alt={sweet.name}
+                      className="h-10 w-10 shrink-0 rounded-lg object-cover"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-display text-[11px] font-bold text-stone-900 dark:text-white">
+                        {sweet.name}
+                      </p>
+                      <p className="text-[10px] font-semibold text-primary-800 dark:text-gold-400">
+                        {sweet.marathiName}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step 4: Ribbon & Personal Greeting Card Customizer */}
+          <div className="grid grid-cols-1 gap-5 rounded-2xl border border-gold-200/80 bg-white p-4.5 sm:grid-cols-12 dark:border-gold-800/40 dark:bg-[#1C1612]">
+            
+            {/* Left Column: Ribbon Selector & Card Details */}
+            <div className="space-y-4 sm:col-span-6">
+              <div>
+                <label className="text-xs font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+                  4. Select Satin / Velvet Ribbon
+                </label>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {RIBBON_OPTIONS.map(ribbon => (
+                    <button
+                      key={ribbon.id}
+                      onClick={() => setSelectedRibbon(ribbon)}
+                      className={`rounded-full border px-3 py-1 text-xs font-bold transition-all ${
+                        selectedRibbon.id === ribbon.id
+                          ? `${ribbon.colorClass} shadow-sm ring-2 ring-gold-400`
+                          : 'border-stone-200 bg-stone-50 text-stone-700 hover:bg-stone-100 dark:border-stone-800 dark:bg-[#251E18] dark:text-stone-300'
+                      }`}
+                    >
+                      {ribbon.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="text-[11px] font-bold text-stone-600 dark:text-stone-400">To (Recipient)</label>
+                  <input
+                    type="text"
+                    value={senderRecipient.to}
+                    onChange={e => setSenderRecipient(prev => ({ ...prev, to: e.target.value }))}
+                    placeholder="e.g. Sharma Family"
+                    className="mt-1 w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-1.5 text-xs text-stone-800 outline-none focus:border-gold-500 dark:border-stone-800 dark:bg-[#251E18] dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-stone-600 dark:text-stone-400">From (Sender)</label>
+                  <input
+                    type="text"
+                    value={senderRecipient.from}
+                    onChange={e => setSenderRecipient(prev => ({ ...prev, from: e.target.value }))}
+                    placeholder="e.g. Rahul & Sunita"
+                    className="mt-1 w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-1.5 text-xs text-stone-800 outline-none focus:border-gold-500 dark:border-stone-800 dark:bg-[#251E18] dark:text-white"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[11px] font-bold text-stone-600 dark:text-stone-400">
+                  Gold Foil Message Card Inscription
+                </label>
+                <input
+                  type="text"
+                  value={greetingCardMessage}
+                  onChange={e => setGreetingCardMessage(e.target.value)}
+                  placeholder="e.g. Wishing you sweetness, joy & prosperity this festive season!"
+                  className="mt-1 w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 text-xs text-stone-800 outline-none focus:border-gold-500 dark:border-stone-800 dark:bg-[#251E18] dark:text-white"
+                />
+              </div>
+            </div>
+
+            {/* Right Column: Live Gold-Bordered Greeting Card Preview */}
+            <div className="flex flex-col justify-between rounded-xl border border-gold-300/70 bg-[#FFFDF9] p-4 text-center shadow-sm sm:col-span-6 dark:border-gold-700/60 dark:bg-[#211A15]">
+              <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-widest text-gold-700 dark:text-gold-400">
+                <span>Cherry&apos;s Confectionery Note</span>
+                <Sparkles className="h-3 w-3" />
+              </div>
+
+              <div className="my-3 space-y-1.5">
+                <p className="text-[11px] font-bold text-stone-500 dark:text-stone-400">
+                  {senderRecipient.to ? `For: ${senderRecipient.to}` : 'For: Your Loved Ones'}
+                </p>
+                <p className="font-display text-sm font-medium italic text-stone-800 dark:text-[#FFF8ED]">
+                  &ldquo;{greetingCardMessage || 'Wishing you boundless warmth, prosperity, and the sweetness of authentic celebration.'}&rdquo;
+                </p>
+                <p className="text-[11px] font-bold text-gold-800 dark:text-gold-300">
+                  {senderRecipient.from ? `With warmth, ${senderRecipient.from}` : 'With warmest blessings'}
+                </p>
+              </div>
+
+              <div className="border-t border-gold-200/50 pt-1.5 text-[9px] text-stone-400">
+                Sealed with {selectedRibbon.name} & Pure Cow Ghee Assurance
+              </div>
+            </div>
+
           </div>
 
         </div>
 
-        {/* Modal Bottom Bar */}
-        <div className="p-4 sm:p-5 border-t border-gold-100 dark:border-gold-900/50 bg-ivory-50 dark:bg-[#201A15] flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Modal Bottom Concierge Action Bar */}
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-gold-200/80 bg-[#FAF7F2] p-4 sm:flex-row sm:px-7 dark:border-gold-900/60 dark:bg-[#181310]">
           <div>
-            <span className="text-xs text-slate-500 dark:text-stone-400">Estimated Hamper Price:</span>
-            <div className="text-xl font-black text-slate-900 dark:text-white">
-              ₹{selectedBoxTier.basePrice} <span className="text-xs text-slate-400 dark:text-stone-500 font-normal">(incl. luxury box)</span>
+            <div className="text-[11px] font-medium text-stone-500 dark:text-stone-400">
+              Complete Gift Hamper Estimation:
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-display text-2xl font-black text-stone-900 dark:text-white">
+                ₹{selectedBoxTier.basePrice}
+              </span>
+              <span className="text-xs text-stone-400">
+                (Includes {selectedBoxTier.name} + Ribbon + Custom Card)
+              </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <button
-              onClick={() => setSelectedSweets([])}
-              className="px-4 py-2.5 rounded-full border border-slate-300 dark:border-stone-700 text-slate-700 dark:text-stone-300 text-xs font-bold hover:bg-slate-100 dark:hover:bg-stone-800"
-            >
-              Reset
-            </button>
+          <div className="flex w-full items-center gap-2.5 sm:w-auto">
+            {selectedSweets.length > 0 && (
+              <button
+                onClick={handleClear}
+                className="rounded-xl border border-stone-300 px-3.5 py-2.5 text-xs font-bold text-stone-600 transition-colors hover:bg-stone-100 dark:border-stone-700 dark:text-stone-300 dark:hover:bg-stone-800"
+              >
+                Clear
+              </button>
+            )}
+
             <a
-              href={`https://wa.me/${SHOP_METADATA.whatsappOrderNumber}?text=${whatsappQuery}`}
+              href={`https://wa.me/${SHOP_METADATA.whatsappOrderNumber}?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-none px-6 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-3 text-xs font-extrabold text-white shadow-lg transition-all hover:from-emerald-700 hover:to-emerald-800 active:scale-95 sm:flex-initial"
             >
-              <Send className="w-3.5 h-3.5" />
-              <span>Send Hamper Inquiry on WhatsApp</span>
+              <Send className="h-4 w-4" />
+              <span>Inquire & Order via WhatsApp</span>
             </a>
           </div>
         </div>

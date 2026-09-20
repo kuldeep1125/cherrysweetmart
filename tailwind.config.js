@@ -50,13 +50,17 @@ export default {
         }
       },
       fontFamily: {
+        // [FIXED] Mapped both serif and display to Playfair Display for cohesive, warm luxury editorial typography
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        display: ['"Cinzel"', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
+        // [ADDED] Layered luxury shadows with subtle gold and warm umber undertones
         'luxury': '0 10px 40px -10px rgba(184, 134, 11, 0.12), 0 4px 15px -3px rgba(0, 0, 0, 0.05)',
-        'luxury-hover': '0 20px 50px -12px rgba(184, 134, 11, 0.22), 0 8px 25px -4px rgba(0, 0, 0, 0.08)',
+        'luxury-hover': '0 24px 60px -12px rgba(184, 134, 11, 0.25), 0 10px 28px -4px rgba(43, 25, 21, 0.12)',
+        'luxury-dark': '0 20px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(212, 175, 55, 0.25)',
+        'gold-glow': '0 0 35px -5px rgba(212, 175, 55, 0.35)',
         'glass': '0 8px 32px 0 rgba(199, 155, 60, 0.08)',
       },
       animation: {

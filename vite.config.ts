@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     open: false,
     watch: {
-      ignored: ['**/*.zip', '**/cherry sweet mart - Google Search/**', '**/.git/**', '**/public/**']
+      ignored: ['**/*.zip', '**/cherry sweet mart - Google Search/**', '**/.git/**']
     }
   }
 });

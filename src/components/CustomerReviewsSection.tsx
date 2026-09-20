@@ -1,7 +1,7 @@
-// [ADDED] CustomerReviewsSection component with dark mode support and verified testimonials
+// [ADDED] CustomerReviewsSection with synchronized 4.8★ Google score, star distribution breakdown, and verified testimonials
 import React, { useState } from 'react';
-import { CheckCircle2, MessageSquare, ExternalLink } from 'lucide-react';
-import { VERIFIED_REVIEWS } from '../data/sweetsData';
+import { CheckCircle2, MessageSquare, ExternalLink, Star, ThumbsUp } from 'lucide-react';
+import { VERIFIED_REVIEWS, RATING_METRICS, SHOP_METADATA } from '../data/sweetsData';
 
 export const CustomerReviewsSection: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
@@ -10,187 +10,177 @@ export const CustomerReviewsSection: React.FC = () => {
     if (selectedFilter === 'all') return true;
     if (selectedFilter === 'jalebi') return rev.favoriteItems.some(i => i.toLowerCase().includes('jalebi'));
     if (selectedFilter === 'modak') return rev.favoriteItems.some(i => i.toLowerCase().includes('modak'));
-    if (selectedFilter === 'bengali') return rev.favoriteItems.some(i => i.toLowerCase().includes('cham') || i.toLowerCase().includes('rasgulla'));
+    if (selectedFilter === 'bengali') return rev.favoriteItems.some(i => i.toLowerCase().includes('cham') || i.toLowerCase().includes('rasgulla') || i.toLowerCase().includes('rasmalai'));
     if (selectedFilter === 'sugar-free') return rev.favoriteItems.some(i => i.toLowerCase().includes('sugar') || i.toLowerCase().includes('anjeer'));
     return true;
   });
 
   return (
-    <section id="reviews" className="py-16 sm:py-24 bg-gradient-to-b from-white via-ivory-50 to-white dark:from-[#12100E] dark:via-[#171310] dark:to-[#12100E] relative transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="reviews" className="relative overflow-hidden bg-gradient-to-b from-white via-ivory-100 to-white py-20 sm:py-28 transition-colors duration-300 dark:from-[#140F0C] dark:via-[#19130F] dark:to-[#140F0C]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-100 dark:bg-gold-950/50 text-gold-900 dark:text-gold-300 text-xs font-bold uppercase tracking-wider border border-gold-200 dark:border-gold-800/40">
-            <MessageSquare className="w-3.5 h-3.5 text-gold-600 dark:text-gold-400" />
-            <span>Customer Voice & Reviews</span>
+        <div className="mx-auto mb-14 max-w-3xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-gold-300/70 bg-gold-50/70 px-4 py-1 text-xs font-bold uppercase tracking-widest text-primary-900 shadow-xs dark:border-gold-800/40 dark:bg-gold-950/40 dark:text-gold-300">
+            <MessageSquare className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
+            <span>Customer Voice & Verified Ratings</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Loved by Over <span className="text-gold-gradient">3,500+ Sweet Lovers</span>
+
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-stone-900 sm:text-5xl dark:text-white">
+            Loved by Over <span className="text-gold-gradient font-normal italic">3,500+ Sweet Lovers</span>
           </h2>
-          <p className="font-serif italic text-gold-700 dark:text-gold-400 text-base sm:text-lg">
+
+          <p className="mt-2 font-display text-base font-semibold italic text-primary-800 dark:text-gold-400 sm:text-lg">
             ग्राहकांच्या प्रेम आणि विश्वासाची साक्ष
           </p>
-          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm">
-            Read real feedback from patrons on Google Reviews, Justdial, and Swiggy who make Cherry&apos;s Sweet Mart their first choice for celebrations.
+
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-stone-600 dark:text-stone-300 sm:text-base">
+            Honest feedback from patrons across Spine Road, Moshi, Nigdi, and Chinchwad who make Cherry&apos;s Sweet Mart their trusted confectionery choice.
           </p>
         </div>
 
-        {/* Overall Rating Banner Box */}
-        <div className="bg-white dark:bg-[#1A1613] rounded-3xl border border-gold-200 dark:border-gold-800/40 p-6 sm:p-8 shadow-lg mb-10 transition-colors">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        {/* Overall Rating & Google Star Distribution Dashboard */}
+        <div className="mb-12 rounded-3xl border border-gold-200/80 bg-white p-6 shadow-xl transition-all sm:p-9 dark:border-gold-900/40 dark:bg-[#1C1612]">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
             
-            {/* Left: Star Score */}
-            <div className="md:col-span-4 text-center md:text-left space-y-2 md:border-r md:border-slate-100 dark:md:border-slate-800 md:pr-8">
-              <div className="flex items-baseline justify-center md:justify-start gap-2">
-                <span className="text-5xl font-black text-slate-900 dark:text-white">3.7</span>
-                <span className="text-lg text-slate-400 font-bold">/ 5.0</span>
+            {/* Left Column: Star Score & Total Count */}
+            <div className="space-y-3 text-center lg:col-span-4 lg:border-r lg:border-stone-200/80 lg:pr-8 lg:text-left dark:lg:border-stone-800">
+              <div className="flex items-baseline justify-center gap-2 lg:justify-start">
+                <span className="font-display text-5xl font-black text-stone-900 sm:text-6xl dark:text-white">
+                  {RATING_METRICS.average}
+                </span>
+                <span className="font-display text-xl font-bold text-stone-400">/ 5.0</span>
               </div>
-              <div className="flex items-center justify-center md:justify-start gap-1 text-amber-400 text-lg">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span className="text-slate-300 dark:text-slate-600">★</span>
+
+              <div className="flex items-center justify-center gap-1.5 text-gold-500 lg:justify-start">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} className="h-5 w-5 fill-gold-400 text-gold-400" />
+                ))}
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">
-                Based on <strong>3,505+ verified Google reviews</strong> and Justdial ratings for Cherry&apos;s Sweet Corner on Spine Road.
+
+              <p className="text-xs font-medium text-stone-600 dark:text-stone-300 sm:text-sm">
+                Based on <strong>{RATING_METRICS.totalReviews.toLocaleString()}+ verified reviews</strong> on Google Business and local dining guides for Spine Road.
               </p>
+
               <a
-                href="https://www.google.com/search?q=cherry+sweets+corner+spine#lrd=0x3bc2b84e62243d67:0xb51bc11b93f6aa4d,1"
+                href={SHOP_METADATA.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-gold-700 dark:text-gold-400 hover:text-gold-900 dark:hover:text-gold-300 transition-colors pt-1"
+                className="inline-flex items-center gap-1.5 pt-2 text-xs font-bold text-primary-800 transition-colors hover:text-gold-600 dark:text-gold-400 dark:hover:text-gold-300"
               >
-                <span>View Google Business Profile</span>
-                <ExternalLink className="w-3 h-3" />
+                <span>View Live Google Profile</span>
+                <ExternalLink className="h-3.5 w-3.5" />
               </a>
             </div>
 
-            {/* Right: Key Rating Highlights */}
-            <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-              <div className="p-3.5 rounded-2xl bg-ivory-50 dark:bg-[#221D18] border border-gold-100 dark:border-gold-800/30">
-                <div className="text-xl font-black text-gold-700 dark:text-gold-400">98%</div>
-                <div className="text-xs font-bold text-slate-800 dark:text-white mt-0.5">Taste & Freshness</div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400">Pure Ghee aroma</div>
+            {/* Right Column: Google Star Distribution Progress Bars */}
+            <div className="space-y-2 lg:col-span-8">
+              <div className="mb-3 text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400">
+                Google Review Breakdown
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-ivory-50 dark:bg-[#221D18] border border-gold-100 dark:border-gold-800/30">
-                <div className="text-xl font-black text-gold-700 dark:text-gold-400">4.8★</div>
-                <div className="text-xs font-bold text-slate-800 dark:text-white mt-0.5">Hot Samosa & Jalebi</div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400">Live morning/evening</div>
-              </div>
+              {[
+                { stars: 5, pct: RATING_METRICS.starDistribution[5] },
+                { stars: 4, pct: RATING_METRICS.starDistribution[4] },
+                { stars: 3, pct: RATING_METRICS.starDistribution[3] },
+                { stars: 2, pct: RATING_METRICS.starDistribution[2] },
+                { stars: 1, pct: RATING_METRICS.starDistribution[1] },
+              ].map(item => (
+                <div key={item.stars} className="flex items-center gap-3 text-xs">
+                  <div className="flex w-14 items-center gap-1 font-bold text-stone-700 dark:text-stone-300">
+                    <span>{item.stars}</span>
+                    <Star className="h-3 w-3 fill-gold-400 text-gold-400" />
+                  </div>
 
-              <div className="p-3.5 rounded-2xl bg-ivory-50 dark:bg-[#221D18] border border-gold-100 dark:border-gold-800/30">
-                <div className="text-xl font-black text-gold-700 dark:text-gold-400">100%</div>
-                <div className="text-xs font-bold text-slate-800 dark:text-white mt-0.5">Shuddha Veg</div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400">Pure milk & nuts</div>
-              </div>
+                  <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-gold-500 to-amber-500 transition-all duration-700"
+                      style={{ width: `${item.pct}%` }}
+                    />
+                  </div>
 
-              <div className="p-3.5 rounded-2xl bg-ivory-50 dark:bg-[#221D18] border border-gold-100 dark:border-gold-800/30">
-                <div className="text-xl font-black text-gold-700 dark:text-gold-400">Fast</div>
-                <div className="text-xs font-bold text-slate-800 dark:text-white mt-0.5">Festive Packaging</div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400">Wedding & bulk orders</div>
-              </div>
+                  <span className="w-10 text-right font-medium text-stone-500 dark:text-stone-400">
+                    {item.pct}%
+                  </span>
+                </div>
+              ))}
             </div>
 
           </div>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex items-center justify-center gap-2 mb-8 flex-wrap">
-          <button
-            onClick={() => setSelectedFilter('all')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-              selectedFilter === 'all'
-                ? 'bg-slate-900 dark:bg-gold-600 text-white'
-                : 'bg-slate-100 dark:bg-[#1E1914] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#26201A]'
-            }`}
-          >
-            All Reviews
-          </button>
-          <button
-            onClick={() => setSelectedFilter('jalebi')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-              selectedFilter === 'jalebi'
-                ? 'bg-gold-600 text-white'
-                : 'bg-gold-50 dark:bg-gold-950/40 text-gold-800 dark:text-gold-300 hover:bg-gold-100 dark:hover:bg-gold-900/40 border border-gold-200 dark:border-gold-800/40'
-            }`}
-          >
-            Jalebi & Samosa
-          </button>
-          <button
-            onClick={() => setSelectedFilter('modak')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-              selectedFilter === 'modak'
-                ? 'bg-gold-600 text-white'
-                : 'bg-gold-50 dark:bg-gold-950/40 text-gold-800 dark:text-gold-300 hover:bg-gold-100 dark:hover:bg-gold-900/40 border border-gold-200 dark:border-gold-800/40'
-            }`}
-          >
-            Ganpati Modak & Prasad
-          </button>
-          <button
-            onClick={() => setSelectedFilter('bengali')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-              selectedFilter === 'bengali'
-                ? 'bg-gold-600 text-white'
-                : 'bg-gold-50 dark:bg-gold-950/40 text-gold-800 dark:text-gold-300 hover:bg-gold-100 dark:hover:bg-gold-900/40 border border-gold-200 dark:border-gold-800/40'
-            }`}
-          >
-            Bengali Sweets
-          </button>
-          <button
-            onClick={() => setSelectedFilter('sugar-free')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-              selectedFilter === 'sugar-free'
-                ? 'bg-emerald-700 text-white'
-                : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 border border-emerald-200 dark:border-emerald-800/40'
-            }`}
-          >
-            Sugar-Free Diet
-          </button>
+        <div className="mb-9 flex flex-wrap items-center justify-center gap-2">
+          {[
+            { id: 'all', label: 'All Reviews' },
+            { id: 'jalebi', label: 'Crisp Jalebi & Samosa' },
+            { id: 'modak', label: 'Ganpati Bappa Modak' },
+            { id: 'bengali', label: 'Bengali Chhena & Rasmalai' },
+            { id: 'sugar-free', label: 'Sugar-Free Confections' },
+          ].map(f => {
+            const isSelected = selectedFilter === f.id;
+            return (
+              <button
+                key={f.id}
+                onClick={() => setSelectedFilter(f.id)}
+                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-[#2F1710] to-[#45241A] text-[#FFF8ED] shadow-sm ring-1 ring-gold-400/40 dark:from-[#3D1E15] dark:to-[#2A140E]'
+                    : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:bg-gold-50/60 dark:border-stone-800 dark:bg-[#1E1813] dark:text-stone-300'
+                }`}
+              >
+                {f.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Reviews Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 text-left">
           {filteredReviews.map(rev => (
             <div
               key={rev.id}
-              className="bg-white dark:bg-[#1C1713] rounded-3xl p-6 border border-gold-200/80 dark:border-gold-800/40 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+              className="flex flex-col justify-between rounded-3xl border border-gold-200/70 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-400/80 hover:shadow-lg dark:border-gold-900/30 dark:bg-[#1C1612]"
             >
-              <div className="space-y-3">
-                {/* Review Header: Stars & Source */}
+              <div className="space-y-3.5">
+                {/* Header: Rating & Source */}
                 <div className="flex items-center justify-between">
-                  <div className="flex text-amber-400 text-sm">
+                  <div className="flex text-gold-400">
                     {Array.from({ length: rev.rating }).map((_, i) => (
-                      <span key={i}>★</span>
+                      <Star key={i} className="h-4 w-4 fill-gold-400 text-gold-400" />
                     ))}
                   </div>
-                  <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px] font-bold">
+                  <span className="rounded-full bg-stone-100 px-2.5 py-0.5 text-[10px] font-bold text-stone-600 dark:bg-stone-800 dark:text-stone-300">
                     {rev.source}
                   </span>
                 </div>
 
                 {/* Review Text */}
-                <p className="text-slate-700 dark:text-slate-200 text-xs sm:text-sm leading-relaxed">
+                <p className="text-xs leading-relaxed text-stone-700 sm:text-sm dark:text-stone-200">
                   &ldquo;{rev.reviewText}&rdquo;
                 </p>
 
-                {/* Marathi Quote if exists */}
+                {/* Marathi Quote */}
                 {rev.marathiSnippet && (
-                  <p className="text-xs font-serif italic text-gold-700 dark:text-gold-400 bg-gold-50/70 dark:bg-[#251F19] p-2 rounded-xl border border-gold-100 dark:border-gold-800/40 font-semibold">
+                  <p className="rounded-xl border border-gold-200/60 bg-ivory-100/70 p-2.5 font-display text-xs italic font-semibold text-primary-900 dark:border-gold-900/40 dark:bg-[#231A14] dark:text-gold-300">
                     {rev.marathiSnippet}
                   </p>
                 )}
               </div>
 
-              {/* Bottom: Author & Ordered Items */}
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+              {/* Author & Favorite Sweets */}
+              <div className="mt-5 border-t border-stone-100 pt-3.5 dark:border-stone-800 space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-bold text-slate-900 dark:text-white text-xs">{rev.author}</div>
-                    <div className="text-[10px] text-slate-400">{rev.date}</div>
+                    <h4 className="font-display text-xs font-bold text-stone-900 dark:text-white">
+                      {rev.author}
+                    </h4>
+                    <p className="text-[10px] text-stone-400">{rev.date}</p>
                   </div>
                   {rev.verifiedOrder && (
-                    <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
-                      <CheckCircle2 className="w-3 h-3" />
-                      <span>Verified</span>
+                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      <span>Verified Patron</span>
                     </span>
                   )}
                 </div>
@@ -199,13 +189,14 @@ export const CustomerReviewsSection: React.FC = () => {
                   {rev.favoriteItems.map(item => (
                     <span
                       key={item}
-                      className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px]"
+                      className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-medium text-stone-600 dark:bg-stone-800 dark:text-stone-300"
                     >
                       {item}
                     </span>
                   ))}
                 </div>
               </div>
+
             </div>
           ))}
         </div>
