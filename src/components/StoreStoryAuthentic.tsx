@@ -144,8 +144,9 @@ export const StoreStoryAuthentic: React.FC = () => {
                   key={vow.num}
                   className="group rounded-2xl border border-gold-200/70 bg-stone-50/60 p-4 transition-all duration-300 hover:border-gold-400 hover:bg-white hover:shadow-md dark:border-gold-900/30 dark:bg-[#1A1410] dark:hover:border-gold-700 dark:hover:bg-[#201914]"
                 >
+                  {/* [FIXED] Issue 23: Aligned badge flush with heading cap-height and tightened spacing */}
                   <div className="flex items-start gap-3.5">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gold-100 font-display text-sm font-bold text-primary-900 dark:bg-gold-950/60 dark:text-gold-300">
+                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gold-100 font-display text-xs font-bold text-primary-900 dark:bg-gold-950/80 dark:text-gold-300">
                       {vow.num}
                     </div>
                     <div className="flex-1">

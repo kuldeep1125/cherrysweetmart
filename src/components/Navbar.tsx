@@ -89,18 +89,20 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       {/* Top Announcement & Live Atelier Status Bar - strictly constrained to prevent any horizontal overflow */}
       <div className="relative z-50 w-full overflow-hidden border-b border-gold-400/20 bg-gradient-to-r from-[#25130F] via-[#381E16] to-[#25130F] px-3 py-1.5 text-center text-white shadow-sm sm:px-4">
-        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2.5 text-[11px] font-medium tracking-wide">
+        {/* [FIXED] Issue 6: Increased container text size to standard text-xs (12px) */}
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2.5 text-xs font-medium tracking-wide">
           <div className="flex shrink-0 items-center gap-1.5 text-gold-300">
-            <Sparkles className="h-3 w-3 animate-pulse text-gold-300" />
-            <span className="hidden text-[10px] font-bold uppercase tracking-wider sm:inline">Purity Heritage:</span>
+            <Sparkles className="h-3.5 w-3.5 animate-pulse text-gold-300" />
+            {/* [FIXED] Issue 5: Removed all-caps, set standard text-xs font */}
+            <span className="hidden text-xs font-semibold text-gold-300 sm:inline">Purity Heritage:</span>
           </div>
 
           <span className="truncate text-stone-200">
-            100% Shuddha Desi Cow Ghee & Daily Fresh Chhena • Spine Road, Pune
+            100% Shuddha Desi Cow Ghee &amp; Daily Fresh Chhena • Spine Road, Pune
           </span>
 
-          {/* Live Status Pill */}
-          <div className="hidden shrink-0 items-center gap-1.5 rounded-full border border-gold-300/25 bg-white/10 px-2.5 py-0.5 text-[10px] text-gold-200 lg:inline-flex">
+          {/* [FIXED] Issue 7: Increased live status text size from 10px to 12px (text-xs) */}
+          <div className="hidden shrink-0 items-center gap-1.5 rounded-full border border-gold-300/25 bg-white/10 px-3 py-0.5 text-xs text-gold-200 lg:inline-flex">
             <span className={`h-1.5 w-1.5 rounded-full ${storeStatus.isOpen ? 'animate-pulse bg-emerald-400' : 'bg-amber-400'}`} />
             <span>{storeStatus.text}</span>
           </div>
@@ -121,7 +123,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Brand Logo Crest */}
             <a href="#" className="group flex shrink min-w-0 items-center gap-2 sm:gap-3 text-left">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-gold-400 via-gold-500 to-gold-700 p-0.5 shadow-md transition-all duration-300 group-hover:scale-105 sm:h-11 sm:w-11 sm:rounded-2xl">
-                <div className="flex h-full w-full items-center justify-center rounded-[10px] sm:rounded-[14px] border border-gold-200/60 bg-gradient-to-b from-[#FFFDF9] to-ivory-100 dark:border-gold-700/60 dark:from-[#221A15] dark:to-[#17120E]">
+                {/* [FIXED] Issue 3: Standardized corner radii replacing arbitrary bracketed values */}
+                <div className="flex h-full w-full items-center justify-center rounded-xl sm:rounded-2xl border border-gold-200/60 bg-gradient-to-b from-[#FFFDF9] to-ivory-100 dark:border-gold-700/60 dark:from-[#221A15] dark:to-[#17120E]">
                   <span className="select-none text-lg sm:text-xl" role="img" aria-label="Cherry's Sweets">🍒</span>
                 </div>
               </div>
@@ -135,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     Sweet Mart
                   </span>
                 </div>
-                <div className="hidden items-center gap-1.5 text-[10px] text-stone-500 dark:text-stone-400 sm:flex">
+                <div className="hidden items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400 sm:flex">
                   <span className="font-semibold text-stone-800 dark:text-stone-300">चेरीज स्वीट कॉर्नर</span>
                   <span className="text-gold-500">•</span>
                   <span>Spine Rd, Nigdi</span>
@@ -155,12 +158,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </a>
 
+              {/* [FIXED] Issue 24: Increased breathing room between Gift Hampers and Atelier badge */}
               <button
                 onClick={onOpenHamper}
-                className="group relative flex items-center gap-1.5 py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400"
+                className="group relative flex items-center gap-2 py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400"
               >
                 <span>Gift Hampers</span>
-                <span className="rounded-full bg-gradient-to-r from-gold-500 to-amber-600 px-1.5 py-0.2 text-[9px] font-black uppercase text-white shadow-xs">
+                <span className="ml-1 rounded-full bg-gradient-to-r from-gold-500 to-amber-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-xs">
                   Atelier
                 </span>
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
@@ -177,18 +181,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               </a>
 
               <a href="#location" className="group relative py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400">
-                <span>Visit & FAQs</span>
+                <span>Visit &amp; FAQs</span>
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </a>
             </nav>
 
-            {/* Right Action Cluster - Compact, adaptive padding and gap */}
-            <div className="flex shrink-0 items-center gap-1.5 sm:gap-2.5">
+            {/* [FIXED] Issue 21 & 25: Clear hierarchy with adjacent commerce actions and right-aligned theme utility */}
+            <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
               
-              {/* Hamper Atelier Trigger Button */}
+              {/* Commerce Action 1: Hamper Atelier Trigger Button */}
               <button
                 onClick={onOpenHamper}
-                className="relative flex items-center justify-center h-9 w-9 sm:h-auto sm:w-auto sm:gap-1.5 rounded-full border border-gold-300/70 bg-gold-50 sm:px-3 sm:py-2 text-xs font-bold text-primary-900 shadow-xs transition-all hover:bg-gold-100 dark:border-gold-800/60 dark:bg-gold-950/40 dark:text-gold-300"
+                className="relative flex items-center justify-center h-9 w-9 sm:h-auto sm:w-auto sm:gap-1.5 rounded-xl border border-gold-300/70 bg-gold-50/80 sm:px-3 sm:py-2 text-xs font-semibold text-primary-900 shadow-xs transition-all hover:bg-gold-100 dark:border-gold-800/60 dark:bg-gold-950/40 dark:text-gold-300"
                 title="Open Gift Box Builder"
                 aria-label="Open Gift Box Builder"
               >
@@ -201,21 +205,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 )}
               </button>
 
-              {/* Theme Toggle */}
-              <button
-                onClick={onToggleDarkMode}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 shadow-xs transition-all hover:bg-stone-50 dark:border-gold-800/60 dark:bg-[#1E1914] dark:text-gold-400"
-                title={darkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
-                aria-label="Toggle theme mode"
-              >
-                {darkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-stone-600" />}
-              </button>
-
-              {/* Order Online Dropdown Button - Visible on tablet/desktop (sm:flex); mobile has persistent bottom bar & drawer options */}
+              {/* Commerce Action 2: Primary Order Online Dropdown Button */}
               <div className="relative hidden sm:block">
                 <button
                   onClick={() => setOrderDropdownOpen(!orderDropdownOpen)}
-                  className="flex items-center gap-1.5 rounded-full bg-[#2A140E] px-3.5 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-gold-700 active:scale-95"
+                  className="flex items-center gap-1.5 rounded-xl bg-[#2A140E] px-4 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-gold-700 active:scale-95"
                   aria-expanded={orderDropdownOpen}
                 >
                   <ShoppingBag className="h-3.5 w-3.5 text-gold-300" />
@@ -233,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <div className="absolute right-0 z-50 mt-2 w-64 rounded-2xl border border-gold-200 bg-white py-2 text-left shadow-2xl animate-fade-in dark:border-gold-800/60 dark:bg-[#1C1713]">
                       <div className="border-b border-stone-100 px-4 py-1.5 dark:border-stone-800">
                         <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                          Pune & PCMC Express Delivery
+                          Pune &amp; PCMC Express Delivery
                         </p>
                       </div>
 
@@ -289,6 +283,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </>
                 )}
               </div>
+
+              {/* [FIXED] Issue 25: Theme Toggle placed at the outer boundary of action cluster */}
+              <button
+                onClick={onToggleDarkMode}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-stone-200 bg-white text-stone-700 shadow-xs transition-all hover:bg-stone-50 dark:border-gold-800/60 dark:bg-[#1E1914] dark:text-gold-400"
+                title={darkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                aria-label="Toggle theme mode"
+              >
+                {darkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-stone-600" />}
+              </button>
 
               {/* Mobile Menu Hamburger Button */}
               <button

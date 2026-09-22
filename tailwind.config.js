@@ -49,6 +49,27 @@ export default {
           saffron: '#FF9933',
         }
       },
+      // [FIXED] Standardized typography scale (Issue 1) ensuring legible minimum text (12px) and cohesive scale
+      fontSize: {
+        'xs': ['0.75rem', { lineHeight: '1rem' }],       // 12px
+        'sm': ['0.875rem', { lineHeight: '1.25rem' }],   // 14px
+        'base': ['1rem', { lineHeight: '1.5rem' }],       // 16px
+        'lg': ['1.125rem', { lineHeight: '1.75rem' }],   // 18px
+        'xl': ['1.25rem', { lineHeight: '1.75rem' }],    // 20px
+        '2xl': ['1.5rem', { lineHeight: '2rem' }],       // 24px
+        '3xl': ['1.875rem', { lineHeight: '2.25rem' }],  // 30px
+        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],    // 36px
+        '5xl': ['3rem', { lineHeight: '1.1' }],          // 48px
+        '6xl': ['3.75rem', { lineHeight: '1.1' }],       // 60px
+      },
+      // [FIXED] Standardized 4-tier corner radii scale (Issue 3) eliminating arbitrary bracketed values
+      borderRadius: {
+        'lg': '0.5rem',    // 8px (chips & inputs)
+        'xl': '0.75rem',   // 12px (buttons)
+        '2xl': '1rem',     // 16px (cards)
+        '3xl': '1.5rem',   // 24px (feature panels & modals)
+        'full': '9999px',  // pills & badges
+      },
       fontFamily: {
         // [FIXED] Mapped both serif and display to Playfair Display for cohesive, warm luxury editorial typography
         serif: ['"Playfair Display"', 'Georgia', 'serif'],

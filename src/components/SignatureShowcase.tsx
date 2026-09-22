@@ -71,7 +71,7 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
           </p>
         </div>
 
-        {/* Masterpiece Horizontal Pill Carousel/Tabs */}
+        {/* [FIXED] Issue 22 & 27: Distinct showcase switcher style with explicit text indicator badge */}
         <div className="mb-10 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
           {signatures.map((sweet, index) => {
             const isActive = activeIndex === index;
@@ -82,17 +82,19 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                   setActiveIndex(index);
                   setSelectedWeight('500g');
                 }}
-                className={`group relative flex items-center gap-2.5 rounded-full px-4 py-2.5 text-xs font-bold transition-all duration-300 sm:px-5 sm:py-3 sm:text-sm ${
+                className={`group relative flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:text-sm ${
                   isActive
-                    ? 'bg-gradient-to-r from-[#2F1710] to-[#43231A] text-[#FFF8ED] shadow-luxury ring-2 ring-gold-400/50 dark:from-[#3D1E15] dark:to-[#2A140E]'
-                    : 'bg-white text-stone-700 hover:bg-gold-50 hover:text-stone-900 border border-stone-200/80 shadow-xs dark:bg-[#201A15] dark:text-stone-300 dark:border-gold-900/40 dark:hover:bg-[#2A231C]'
+                    ? 'border-2 border-gold-500 bg-gold-50 text-stone-900 shadow-md ring-2 ring-gold-400/40 dark:border-gold-400 dark:bg-gold-950/60 dark:text-gold-200'
+                    : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:text-stone-900 shadow-xs dark:border-stone-800 dark:bg-[#201A15] dark:text-stone-400 dark:hover:bg-[#2A231C]'
                 }`}
               >
                 <span>{sweet.name.split('(')[0].trim()}</span>
                 {sweet.isBestseller && (
-                  <span className="flex h-2 w-2 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-500" />
+                  <span
+                    className="inline-flex items-center rounded-full bg-gold-400/20 px-1.5 py-0.5 text-[10px] font-bold text-gold-700 dark:text-gold-300"
+                    aria-label="Bestseller selection"
+                  >
+                    ★ Top Pick
                   </span>
                 )}
               </button>
@@ -116,39 +118,37 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                 {/* Gradient shade */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
 
-                {/* Top Badge: Bestseller / Category */}
-                <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                  {activeSweet.isBestseller && (
-                    <div className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-gold-500 to-gold-600 px-3.5 py-1 text-[11px] font-extrabold tracking-wide text-[#2A140E] shadow-md">
-                      <Sparkles className="h-3 w-3" />
-                      <span>Spine Road Bestseller</span>
-                    </div>
-                  )}
-                  <div className="rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-md">
-                    {activeSweet.categoryName}
+                {/* [FIXED] Issue 26: Single clean bestseller overlay on photo */}
+                {activeSweet.isBestseller && (
+                  <div className="absolute top-3.5 left-3.5 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-gold-500 to-gold-600 px-3 py-1 text-xs font-bold text-[#2A140E] shadow-md">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    <span>Spine Road Bestseller</span>
                   </div>
-                </div>
+                )}
+              </div>
 
-                {/* Bottom Dietary Badges */}
-                <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex flex-wrap gap-1.5">
-                    {activeSweet.dietary.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-md border border-white/20 bg-black/50 px-2.5 py-0.5 text-[10px] font-medium text-stone-200 backdrop-blur-sm"
-                      >
-                        {tag.replace('-', ' ')}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-[11px] font-medium text-gold-200">
-                    Shelf Life: {activeSweet.shelfLife}
+              {/* [FIXED] Issue 26: Consolidated metadata strip beneath image */}
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="rounded-md bg-stone-100 px-2.5 py-0.5 text-xs font-semibold text-stone-700 dark:bg-stone-800 dark:text-stone-300">
+                    {activeSweet.categoryName}
                   </span>
+                  {activeSweet.dietary.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-md border border-stone-200 px-2 py-0.5 text-xs text-stone-600 dark:border-stone-800 dark:text-stone-400"
+                    >
+                      {tag.replace('-', ' ')}
+                    </span>
+                  ))}
                 </div>
+                <span className="text-xs text-stone-500 dark:text-stone-400">
+                  Shelf Life: {activeSweet.shelfLife}
+                </span>
               </div>
 
               {/* Verified Ghee Guarantee Tag */}
-              <div className="mt-3 flex items-center justify-between text-xs text-stone-500 dark:text-stone-400">
+              <div className="mt-2.5 flex items-center justify-between text-xs text-stone-500 dark:text-stone-400">
                 <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-medium">
                   <ShieldCheck className="h-4 w-4" />
                   100% Shuddha Desi Cow Ghee
@@ -186,14 +186,15 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
               {/* [ADDED] Interactive Sensory Profile Meters */}
               {activeSweet.sensoryProfile && (
                 <div className="rounded-2xl border border-gold-200/70 bg-ivory-50/70 p-4 dark:border-gold-900/40 dark:bg-[#16120E]">
-                  <div className="text-[11px] font-extrabold uppercase tracking-wider text-stone-600 dark:text-stone-400">
+                  <div className="text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400">
                     Confectioner&apos;s Sensory Dossier
                   </div>
 
-                  <div className="mt-3 grid grid-cols-2 gap-3.5 sm:grid-cols-3">
+                  {/* [FIXED] Issue 15: Consistent 3-column grid layout across all screen sizes with subtle dividers */}
+                  <div className="mt-3 grid grid-cols-3 gap-2 sm:gap-3.5 divide-x divide-gold-200/50 dark:divide-gold-900/40">
                     {/* Sweetness Bar */}
-                    <div>
-                      <div className="flex items-center justify-between text-[11px] font-medium text-stone-700 dark:text-stone-300">
+                    <div className="pr-2">
+                      <div className="flex items-center justify-between text-xs font-medium text-stone-700 dark:text-stone-300">
                         <span>Sweetness</span>
                         <span className="font-bold text-gold-600 dark:text-gold-400">{activeSweet.sensoryProfile.sweetness}/5</span>
                       </div>
@@ -212,20 +213,20 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                     </div>
 
                     {/* Texture */}
-                    <div>
-                      <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">Texture</span>
-                      <p className="mt-0.5 text-xs font-bold text-stone-800 dark:text-stone-200">
+                    <div className="px-2">
+                      <span className="text-xs font-medium text-stone-500 dark:text-stone-400">Texture</span>
+                      <p className="mt-0.5 text-xs font-bold text-stone-800 dark:text-stone-200 truncate">
                         {activeSweet.sensoryProfile.texture}
                       </p>
                     </div>
 
                     {/* Serving Temp */}
-                    <div>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-stone-500 dark:text-stone-400">
-                        <Thermometer className="h-3 w-3 text-gold-600" />
-                        Serving Temp
+                    <div className="pl-2">
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-stone-500 dark:text-stone-400">
+                        <Thermometer className="h-3.5 w-3.5 text-gold-600" />
+                        <span className="truncate">Serving Temp</span>
                       </span>
-                      <p className="mt-0.5 text-xs font-bold text-stone-800 dark:text-stone-200">
+                      <p className="mt-0.5 text-xs font-bold text-stone-800 dark:text-stone-200 truncate">
                         {activeSweet.sensoryProfile.servingTemp}
                       </p>
                     </div>
@@ -280,14 +281,14 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3.5 pt-2">
+              {/* [FIXED] Issue 28: Full-width matching 2-column grid flush with packaging cards above */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-2">
                 <button
                   onClick={() => onSelectSweet(activeSweet)}
-                  className="inline-flex min-h-[46px] items-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 px-6 py-2.5 text-xs font-extrabold text-[#2A140E] shadow-luxury transition-all duration-300 hover:brightness-105 active:scale-95"
+                  className="inline-flex w-full min-h-[46px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 px-4 py-2.5 text-xs font-extrabold text-[#2A140E] shadow-luxury transition-all duration-300 hover:brightness-105 active:scale-95"
                 >
                   <Eye className="h-4 w-4" />
-                  <span>Inspect Full Dossier & Nutrition</span>
+                  <span>Inspect Full Dossier</span>
                 </button>
 
                 <a
@@ -296,7 +297,7 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[46px] items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md transition-all duration-300 hover:bg-emerald-700 active:scale-95"
+                  className="inline-flex w-full min-h-[46px] items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white shadow-md transition-all duration-300 hover:bg-emerald-700 active:scale-95"
                 >
                   <MessageCircle className="h-4 w-4" />
                   <span>Order {selectedWeight} via WhatsApp</span>

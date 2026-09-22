@@ -64,7 +64,8 @@ export const LocationHoursVisit: React.FC = () => {
         <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-12 lg:gap-10">
           
           {/* Left Column: Contact & Schedule Dossier */}
-          <div className="flex flex-col justify-between space-y-4 lg:col-span-5">
+          {/* [FIXED] Issue 17: h-full flex flex-col justify-between to align vertical finish with right column */}
+          <div className="flex h-full flex-col justify-between space-y-4 lg:col-span-5">
             
             {/* Physical Address Card */}
             <div className="rounded-3xl border border-gold-200/80 bg-stone-50/60 p-6 shadow-sm transition-all duration-300 hover:border-gold-400 hover:bg-white hover:shadow-lg dark:border-gold-900/40 dark:bg-[#1C1612] dark:hover:bg-[#221B16] text-left">
@@ -88,10 +89,10 @@ export const LocationHoursVisit: React.FC = () => {
                 <p className="font-semibold text-stone-900 dark:text-white">
                   {SHOP_METADATA.address.city}, {SHOP_METADATA.address.state} - {SHOP_METADATA.address.pincode}
                 </p>
-                <div className="pt-2">
-                  <span className="inline-block rounded-md border border-gold-300/60 bg-gold-50 px-2.5 py-1 text-[11px] font-bold text-primary-900 dark:border-gold-800/40 dark:bg-gold-950/40 dark:text-gold-300">
-                    Landmark: Near Sirvi Corner / Gharkul Chowk
-                  </span>
+                {/* [FIXED] Issue 20: Typographic label replacing button-like box to prevent false affordance */}
+                <div className="pt-2 flex items-center gap-1.5 text-xs text-stone-600 dark:text-stone-300">
+                  <span className="font-bold text-gold-700 dark:text-gold-400">Landmark:</span>
+                  <span>Near Sirvi Corner / Gharkul Chowk</span>
                 </div>
               </div>
 
@@ -116,7 +117,7 @@ export const LocationHoursVisit: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-display text-base font-bold text-stone-900 dark:text-white">
-                    Daily Timings & Schedule
+                    Daily Timings &amp; Schedule
                   </h3>
                   <div className={`mt-0.5 flex items-center gap-1.5 text-xs font-bold ${storeStatus.textColor}`}>
                     <span className={`h-2 w-2 rounded-full ${storeStatus.badgeColor} animate-ping`} />
@@ -125,18 +126,22 @@ export const LocationHoursVisit: React.FC = () => {
                 </div>
               </div>
 
+              {/* [FIXED] Issue 18: Dot leaders bridging the gap between food item labels and times */}
               <div className="mt-4 space-y-2 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
-                <div className="flex justify-between border-b border-stone-200/60 pb-1.5 dark:border-stone-800">
+                <div className="flex items-baseline justify-between border-b border-stone-200/60 pb-1.5 dark:border-stone-800">
                   <span className="font-medium text-stone-800 dark:text-stone-200">Monday – Sunday (7 Days)</span>
+                  <span className="mx-2 flex-1 border-b border-dotted border-stone-300 dark:border-stone-700" aria-hidden="true" />
                   <span className="font-bold text-stone-900 dark:text-white">8:00 AM – 10:30 PM</span>
                 </div>
-                <div className="flex justify-between border-b border-stone-200/60 pb-1.5 text-[11px] text-stone-500 dark:border-stone-800 dark:text-stone-400">
-                  <span>Live Desi Ghee Jalebi & Fafda</span>
-                  <span className="font-semibold text-stone-700 dark:text-stone-300">Daily from 8:30 AM</span>
+                <div className="flex items-baseline justify-between border-b border-stone-200/60 pb-1.5 text-xs text-stone-600 dark:border-stone-800 dark:text-stone-400">
+                  <span>Live Desi Ghee Jalebi &amp; Fafda</span>
+                  <span className="mx-2 flex-1 border-b border-dotted border-stone-300 dark:border-stone-700" aria-hidden="true" />
+                  <span className="font-semibold text-stone-800 dark:text-stone-300">Daily from 8:30 AM</span>
                 </div>
-                <div className="flex justify-between text-[11px] text-stone-500 dark:text-stone-400">
-                  <span>Hot Punjabi Samosa & Kachori</span>
-                  <span className="font-semibold text-stone-700 dark:text-stone-300">4:00 PM – 9:30 PM</span>
+                <div className="flex items-baseline justify-between text-xs text-stone-600 dark:text-stone-400">
+                  <span>Hot Punjabi Samosa &amp; Kachori</span>
+                  <span className="mx-2 flex-1 border-b border-dotted border-stone-300 dark:border-stone-700" aria-hidden="true" />
+                  <span className="font-semibold text-stone-800 dark:text-stone-300">4:00 PM – 9:30 PM</span>
                 </div>
               </div>
             </div>
@@ -148,7 +153,7 @@ export const LocationHoursVisit: React.FC = () => {
                   <Phone className="h-5 w-5 text-gold-300" />
                   <span className="font-display font-bold text-sm">Direct Store Calling Desk</span>
                 </div>
-                <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold text-gold-200">
+                <span className="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-bold text-gold-200">
                   Daily 8 AM - 10:30 PM
                 </span>
               </div>
@@ -176,7 +181,8 @@ export const LocationHoursVisit: React.FC = () => {
           </div>
 
           {/* Right Column: Google Maps Embed & Curbside Details */}
-          <div className="flex flex-col space-y-4 lg:col-span-7">
+          {/* [FIXED] Issue 17: Aligned vertical finish with left column using h-full flex flex-col */}
+          <div className="flex h-full flex-col justify-between space-y-4 lg:col-span-7">
             <div className="relative flex-1 min-h-[380px] overflow-hidden rounded-3xl border border-gold-300/50 bg-stone-100 shadow-2xl dark:border-gold-800/60 dark:bg-stone-900">
               <iframe
                 title="Cherry's Sweet Mart Spine Road Location"
@@ -191,27 +197,36 @@ export const LocationHoursVisit: React.FC = () => {
                 <h4 className="font-display text-xs font-bold text-stone-900 dark:text-white">
                   Cherry&apos;s Sweet Mart (चेरीज स्वीट कॉर्नर)
                 </h4>
-                <p className="text-[11px] text-stone-500 dark:text-stone-400">
+                <p className="text-xs text-stone-500 dark:text-stone-400">
                   Spine Road, Chinchwad East, Pune
                 </p>
-                <div className="mt-1 flex items-center gap-1.5 text-[11px] font-bold text-gold-600 dark:text-gold-400">
+                <div className="mt-1 flex items-center gap-1.5 text-xs font-bold text-gold-600 dark:text-gold-400">
                   <span>★ {RATING_METRICS.average}</span>
                   <span className="text-stone-400 font-normal">({RATING_METRICS.totalReviews.toLocaleString()}+ Google Reviews)</span>
                 </div>
               </div>
             </div>
 
-            {/* Parking & Curbside Note */}
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-stone-200 bg-stone-50/80 p-4 text-xs text-stone-600 dark:border-stone-800 dark:bg-[#1A1410] dark:text-stone-400">
-              <div className="flex items-center gap-2">
-                <Car className="h-4 w-4 shrink-0 text-gold-600 dark:text-gold-400" />
-                <span>
-                  <strong>Convenient Roadside Parking:</strong> Ample two-wheeler & four-wheeler parking right outside our Spine Road showroom.
-                </span>
-              </div>
-              <div className="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400">
-                <CheckCircle2 className="h-3.5 w-3.5" />
-                <span>Express Curbside Pickup</span>
+            {/* [FIXED] Issue 17 & 19: Elevated Parking block into a first-class card container matching Address & Timings */}
+            <div className="rounded-3xl border border-gold-200/80 bg-stone-50/60 p-6 shadow-sm transition-all duration-300 hover:border-gold-400 hover:bg-white hover:shadow-lg dark:border-gold-900/40 dark:bg-[#1C1612] text-left">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold-500 text-[#2A140E] shadow">
+                    <Car className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-base font-bold text-stone-900 dark:text-white">
+                      Convenient Roadside Parking
+                    </h3>
+                    <p className="mt-0.5 text-xs text-stone-600 dark:text-stone-400">
+                      Ample two-wheeler &amp; four-wheeler parking right outside our Spine Road showroom.
+                    </p>
+                  </div>
+                </div>
+                <div className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  <span>Express Curbside Pickup</span>
+                </div>
               </div>
             </div>
           </div>

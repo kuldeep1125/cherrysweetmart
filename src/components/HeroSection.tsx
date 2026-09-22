@@ -61,8 +61,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
               <span className="hidden text-stone-300 sm:inline">{currentBatchStatus.detail}</span>
             </div>
 
-            {/* Sub-label */}
-            <p className="mb-3 font-sans text-xs font-bold uppercase tracking-[0.25em] text-gold-300/90 sm:text-sm">
+            {/* [FIXED] Issue 8: Replaced all-caps on Marathi/English sublabel with readable formatting */}
+            <p className="mb-3 font-sans text-xs font-semibold tracking-wider text-gold-300/90 sm:text-sm">
               चेरीज स्वीट कॉर्नर · Spine Road, Pune
             </p>
 
@@ -77,11 +77,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
               Authentic Indian confectionery prepared fresh twice daily in pure cow ghee and fresh milk khoya. Honoring traditional kadai recipes on Spine Road for every festival, wedding, and family milestone.
             </p>
 
-            {/* Primary Action Buttons */}
+            {/* [FIXED] Issue 14: Standardized button styles to cohesive rounded-xl design language */}
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
               <button
                 onClick={onExploreClick}
-                className="group relative inline-flex min-h-[52px] items-center gap-2.5 rounded-xl bg-gradient-to-r from-gold-400 via-gold-300 to-gold-400 px-7 py-3.5 text-sm font-bold text-[#2A140E] shadow-luxury transition-all duration-300 hover:scale-[1.02] hover:shadow-gold-glow active:scale-[0.98]"
+                className="group relative inline-flex min-h-[48px] items-center gap-2.5 rounded-xl bg-gradient-to-r from-gold-400 via-gold-300 to-gold-400 px-7 py-3 text-sm font-bold text-[#2A140E] shadow-luxury transition-all duration-300 hover:scale-[1.02] hover:shadow-gold-glow active:scale-[0.98]"
               >
                 <span>Explore Mithai Collection</span>
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -89,7 +89,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
 
               <button
                 onClick={onOpenHamper}
-                className="group inline-flex min-h-[52px] items-center gap-2.5 rounded-xl border border-gold-300/40 bg-white/[0.07] px-6 py-3.5 text-sm font-semibold text-[#FFF8ED] backdrop-blur-md transition-all duration-300 hover:bg-white/[0.14] hover:border-gold-300/70 active:scale-[0.98]"
+                className="group inline-flex min-h-[48px] items-center gap-2.5 rounded-xl border border-gold-300/60 bg-gold-500/10 px-6 py-3 text-sm font-bold text-gold-200 backdrop-blur-md transition-all duration-300 hover:bg-gold-500/20 active:scale-[0.98]"
               >
                 <Award className="h-4 w-4 text-gold-300 transition-transform duration-300 group-hover:rotate-12" />
                 <span>Curate Gift Hamper</span>
@@ -139,9 +139,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
                       <Sparkles className="h-3 w-3 text-gold-300" />
                       Artisanal Kadai Craft
                     </div>
-                    <h3 className="font-display text-xl font-medium tracking-tight sm:text-2xl text-[#FFF8ED]">
-                      Pure Cow Ghee & Real Saffron
-                    </h3>
+                    {/* [FIXED] Issue 11: Restored heading hierarchy (H1 -> H2) with no skipped levels */}
+                    <h2 className="font-display text-xl font-medium tracking-tight sm:text-2xl text-[#FFF8ED]">
+                      Pure Cow Ghee &amp; Real Saffron
+                    </h2>
                     <p className="mt-0.5 text-xs text-stone-300">
                       Slow-stirred in traditional heavy-bottom brass vessels
                     </p>
@@ -165,7 +166,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
               <p className="mt-1 font-display text-xs font-bold leading-snug text-[#2C1810] sm:text-sm">
                 Zero Palm Oil · Pure Cow Milk Khoya
               </p>
-              <p className="text-[10px] text-stone-500 sm:text-[11px]">Boxed fresh to order in food-grade gold foil</p>
+              {/* [FIXED] Issue 9: Body text minimum 12px (text-xs) */}
+              <p className="text-xs text-stone-500">Boxed fresh to order in food-grade gold foil</p>
             </div>
 
             {/* Decorative Corner Accent */}

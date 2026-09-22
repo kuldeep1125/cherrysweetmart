@@ -17,12 +17,20 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
   // Track selected portion weight per sweet ID: '250g' | '500g' | '1kg'
   const [selectedWeights, setSelectedWeights] = useState<Record<string, '250g' | '500g' | '1kg'>>({});
 
+  // [ADDED] Issue 13: Progressive disclosure pagination state (12 items per batch)
+  const [displayCount, setDisplayCount] = useState<number>(12);
+
   // Toast feedback for hamper additions
   const [hamperToastSweet, setHamperToastSweet] = useState<string | null>(null);
 
   // Category scroll container reference
   const categoryRailRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Reset pagination whenever search query, category, or dietary filter changes
+  useEffect(() => {
+    setDisplayCount(12);
+  }, [activeCategory, selectedDietary, searchQuery]);
 
   // [ADDED] Keyboard shortcut: Press '/' to focus search
   useEffect(() => {
@@ -148,21 +156,23 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
               )}
             </div>
 
-            {/* Dietary Filter Pills */}
+            {/* [FIXED] Issue 31: Distinct dietary attribute tags to avoid confusing overlap with categories */}
             <div className="flex w-full flex-wrap items-center justify-start gap-2 md:w-auto md:justify-end">
+              <span className="text-xs font-semibold text-stone-500 dark:text-stone-400">Dietary:</span>
               {[
-                { id: 'all', label: 'All Confections' },
+                { id: 'all', label: 'All Items' },
                 { id: 'bestseller', label: '★ Bestsellers' },
                 { id: 'pure-ghee', label: '🧈 100% Desi Ghee' },
                 { id: 'sugar-free', label: '🌱 Sugar-Free' },
-                { id: 'dry-fruit', label: '🌰 Dry Fruit Exclusives' },
+                { id: 'dry-fruit', label: '🌰 Dry Fruit' },
               ].map(tag => {
                 const isSelected = selectedDietary === tag.id;
                 return (
                   <button
                     key={tag.id}
                     onClick={() => setSelectedDietary(tag.id)}
-                    className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition-all ${
+                    aria-pressed={isSelected}
+                    className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
                       isSelected
                         ? 'bg-gradient-to-r from-[#2F1710] to-[#4A2419] text-[#FFF8ED] shadow-sm ring-1 ring-gold-400/40 dark:from-[#3D1E15] dark:to-[#2A140E]'
                         : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:bg-gold-50/50 dark:border-gold-900/40 dark:bg-[#221B16] dark:text-stone-300'
@@ -217,7 +227,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                     }`}
                   >
                     <span>{cat.name}</span>
-                    <span className="ml-1.5 text-[11px] opacity-75">({count})</span>
+                    <span className="ml-1.5 text-xs opacity-75">({count})</span>
                   </button>
                 );
               })}
@@ -239,16 +249,16 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
         {/* Counter & Active Filter Bar */}
         <div className="mb-6 flex items-center justify-between px-2 text-xs font-medium text-stone-500 dark:text-stone-400">
           <span>
-            Displaying <strong className="text-stone-900 dark:text-white">{filteredSweets.length}</strong> artisanal confections
+            Displaying <strong className="text-stone-900 dark:text-white">{Math.min(displayCount, filteredSweets.length)}</strong> of <strong className="text-stone-900 dark:text-white">{filteredSweets.length}</strong> artisanal confections
           </span>
           {searchQuery && (
             <span>Matching: &ldquo;{searchQuery}&rdquo;</span>
           )}
         </div>
 
-        {/* Sweets Grid - Uniform Fixed Geometry Luxury Cards */}
+        {/* [FIXED] Issue 13: Progressive disclosure with Load More pattern to break up continuous dense catalog */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch">
-          {filteredSweets.map(sweet => {
+          {filteredSweets.slice(0, displayCount).map(sweet => {
             const weight = selectedWeights[sweet.id] || '500g';
             const price = weight === '250g'
               ? sweet.price250g || Math.round(sweet.price500g * 0.55)
@@ -279,12 +289,12 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                   {/* Top Status Badges */}
                   <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
                     {sweet.isBestseller && (
-                      <span className="rounded-full bg-gradient-to-r from-gold-500 to-gold-600 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#2A140E] shadow-sm">
+                      <span className="rounded-full bg-gradient-to-r from-gold-500 to-gold-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-[#2A140E] shadow-sm">
                         ★ Bestseller
                       </span>
                     )}
                     {sweet.isChefSpecial && !sweet.isBestseller && (
-                      <span className="rounded-full bg-black/80 px-2.5 py-0.5 text-[10px] font-bold text-gold-300 backdrop-blur-sm">
+                      <span className="rounded-full bg-black/80 px-2.5 py-0.5 text-xs font-bold text-gold-300 backdrop-blur-sm">
                         Artisan Batch
                       </span>
                     )}
@@ -299,7 +309,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                   </div>
 
                   {/* Bottom Shelf Life Indicator */}
-                  <div className="absolute bottom-2 right-2.5 text-[10px] font-medium text-white/90">
+                  <div className="absolute bottom-2 right-2.5 text-xs font-medium text-white/90">
                     Shelf life: {sweet.shelfLife}
                   </div>
                 </div>
@@ -308,7 +318,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                 <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
                   <div>
                     {/* Category Label */}
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-gold-700 dark:text-gold-400">
+                    <div className="text-xs font-bold uppercase tracking-widest text-gold-700 dark:text-gold-400">
                       {sweet.categoryName}
                     </div>
 
@@ -332,30 +342,31 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                     </p>
                   </div>
 
-                  {/* Portion Weight & Price Action Container */}
+                  {/* [FIXED] Issue 16 & 30: Grouped weight selector and price tightly with enhanced affordance */}
                   <div className="mt-4 border-t border-stone-100 pt-3 dark:border-stone-800/80 space-y-2.5">
                     
                     {/* Price and Portion Segmented Control */}
-                    <div className="flex items-center justify-between">
-                      <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-baseline gap-1">
                         <span className="font-display text-lg font-black text-stone-900 dark:text-white">
                           ₹{price}
                         </span>
-                        <span className="ml-1 text-[11px] font-medium text-stone-400">
+                        <span className="text-xs font-medium text-stone-500 dark:text-stone-400">
                           /{weight}
                         </span>
                       </div>
 
-                      {/* Weight Selector */}
-                      <div className="flex items-center rounded-lg border border-stone-200 bg-stone-100 p-0.5 dark:border-stone-800 dark:bg-[#251D17]">
+                      {/* [FIXED] Issue 30: Enlarge touch target and improve button affordance */}
+                      <div className="flex items-center rounded-lg border border-stone-200 bg-stone-100 p-0.5 dark:border-stone-800 dark:bg-[#251D17]" role="group" aria-label="Select portion size">
                         {(['250g', '500g', '1kg'] as const).map(w => (
                           <button
                             key={w}
                             onClick={() => handleWeightChange(sweet.id, w)}
-                            className={`rounded-md px-2 py-0.5 text-[10px] font-bold transition-all ${
+                            aria-pressed={weight === w}
+                            className={`min-h-[30px] rounded-md px-2.5 py-1 text-xs font-bold transition-all ${
                               weight === w
-                                ? 'bg-white text-stone-900 shadow-xs dark:bg-[#3B2C21] dark:text-gold-300'
-                                : 'text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white'
+                                ? 'bg-stone-900 text-white shadow-xs dark:bg-gold-500 dark:text-[#2A140E]'
+                                : 'text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white'
                             }`}
                           >
                             {w}
@@ -364,22 +375,22 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                       </div>
                     </div>
 
-                    {/* Dual Action Buttons: Add to Hamper + WhatsApp Quick Order */}
+                    {/* [FIXED] Issue 29: Swapped CTA dominance: Add to Box is primary gold fill, WhatsApp is secondary */}
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         onClick={() => handleAddHamper(sweet, weight)}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-gold-300/70 bg-gold-50/70 py-2 px-2.5 text-[11px] font-bold text-primary-900 transition-all hover:bg-gold-100 active:scale-95 dark:border-gold-800 dark:bg-gold-950/30 dark:text-gold-200 dark:hover:bg-gold-950/60"
+                        className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 py-2 px-2.5 text-xs font-bold text-[#2A140E] shadow-sm transition-all hover:brightness-105 active:scale-95"
                         title="Add this sweet to the custom gift box atelier"
                       >
-                        <Gift className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
+                        <Gift className="h-3.5 w-3.5" />
                         <span>Add to Box</span>
                       </button>
 
                       <button
                         onClick={() => onOrderQuick(sweet, weight, price)}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-[#2F1710] to-[#45241A] py-2 px-2.5 text-[11px] font-bold text-[#FFF8ED] shadow-sm transition-all hover:brightness-110 active:scale-95 dark:from-[#3D1E15] dark:to-[#2A140E]"
+                        className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-stone-200 bg-white py-2 px-2.5 text-xs font-bold text-stone-800 transition-all hover:bg-stone-50 active:scale-95 dark:border-stone-700 dark:bg-[#221B16] dark:text-stone-200 dark:hover:bg-stone-800"
                       >
-                        <MessageCircle className="h-3.5 w-3.5 text-emerald-400" />
+                        <MessageCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>WhatsApp</span>
                       </button>
                     </div>
@@ -392,6 +403,18 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
             );
           })}
         </div>
+
+        {/* [FIXED] Issue 13: Load More Button for progressive catalog expansion */}
+        {displayCount < filteredSweets.length && (
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => setDisplayCount(prev => Math.min(prev + 12, filteredSweets.length))}
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 px-8 py-3.5 text-xs font-bold text-[#2A140E] shadow-luxury transition-all hover:scale-105 active:scale-95"
+            >
+              <span>Load More Confections ({filteredSweets.length - displayCount} remaining)</span>
+            </button>
+          </div>
+        )}
 
         {/* Empty Catalog Fallback */}
         {filteredSweets.length === 0 && (

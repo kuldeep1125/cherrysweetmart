@@ -47,11 +47,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
             </p>
 
             <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-800/60 bg-emerald-950/60 px-3 py-1 text-[11px] font-medium text-emerald-300">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-800/60 bg-emerald-950/60 px-3 py-1 text-xs font-medium text-emerald-300">
                 <ShieldCheck className="h-3.5 w-3.5" />
                 <span>100% Pure Vegetarian</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-800/60 bg-gold-950/60 px-3 py-1 text-[11px] font-bold text-gold-300">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-800/60 bg-gold-950/60 px-3 py-1 text-xs font-bold text-gold-300">
                 <span>★ {RATING_METRICS.average} ({RATING_METRICS.totalReviews.toLocaleString()}+ Google Reviews)</span>
               </span>
             </div>
@@ -59,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
 
           {/* Col 2: Sweet Categories (3 cols) */}
           <div className="space-y-3.5 lg:col-span-3">
-            <h4 className="font-display text-xs font-bold uppercase tracking-widest text-gold-300">
+            <h4 className="font-display text-sm font-bold text-gold-300">
               Confectionery Collections
             </h4>
             <ul className="space-y-2 text-xs text-stone-400">
@@ -83,7 +83,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
 
           {/* Col 3: Quick Navigation & Services (2 cols) */}
           <div className="space-y-3.5 lg:col-span-2">
-            <h4 className="font-display text-xs font-bold uppercase tracking-widest text-gold-300">
+            <h4 className="font-display text-sm font-bold text-gold-300">
               Direct Channels
             </h4>
             <ul className="space-y-2.5 text-xs">
@@ -140,7 +140,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
 
           {/* Col 4: Store Contact & Timings (3 cols) */}
           <div className="space-y-3.5 lg:col-span-3">
-            <h4 className="font-display text-xs font-bold uppercase tracking-widest text-gold-300">
+            <h4 className="font-display text-sm font-bold text-gold-300">
               Flagship Showroom
             </h4>
             <div className="space-y-3 text-xs text-stone-400">
@@ -157,7 +157,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
                 <Clock className="h-4 w-4 shrink-0 text-gold-400 mt-0.5" />
                 <div>
                   <p className="font-medium text-white">8:00 AM – 10:30 PM</p>
-                  <p className="text-[11px]">Open All 7 Days of the Week</p>
+                  <p className="text-xs text-stone-400">Open All 7 Days of the Week</p>
                 </div>
               </div>
 
@@ -180,7 +180,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
           <div>
             © {new Date().getFullYear()} Cherry&apos;s Sweet Mart (चेरीज स्वीट कॉर्नर). All rights reserved.
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[11px] text-stone-400 md:justify-end">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs text-stone-400 md:justify-end">
             <span>Spine Road</span>
             <span>•</span>
             <span>Moshi</span>

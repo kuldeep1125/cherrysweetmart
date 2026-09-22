@@ -172,13 +172,14 @@ export const CustomerReviewsSection: React.FC = () => {
               <div className="mt-5 border-t border-stone-100 pt-3.5 dark:border-stone-800 space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-display text-xs font-bold text-stone-900 dark:text-white">
+                    {/* [FIXED] Issue 12: Heading level sequence restored (H2 -> H3) with no skipped levels */}
+                    <h3 className="font-display text-xs font-bold text-stone-900 dark:text-white">
                       {rev.author}
-                    </h4>
-                    <p className="text-[10px] text-stone-400">{rev.date}</p>
+                    </h3>
+                    <p className="text-xs text-stone-400">{rev.date}</p>
                   </div>
                   {rev.verifiedOrder && (
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                    <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
                       <CheckCircle2 className="h-3.5 w-3.5" />
                       <span>Verified Patron</span>
                     </span>
