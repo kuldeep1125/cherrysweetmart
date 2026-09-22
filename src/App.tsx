@@ -212,12 +212,13 @@ export const App: React.FC = () => {
 
         <button
           onClick={() => setIsHamperOpen(true)}
-          className="relative flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-gold-300/60 bg-gold-50 py-2 text-center text-xs font-bold text-primary-900 transition-colors hover:bg-gold-100 dark:border-gold-800/60 dark:bg-gold-950/50 dark:text-gold-200"
+          className="relative flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-gold-300/60 bg-gold-50 py-2 text-center text-xs font-bold text-stone-900 transition-colors hover:bg-gold-100 dark:border-gold-600/60 dark:bg-[#251A10] dark:text-gold-200"
         >
           <Gift className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
           <span>Hamper</span>
+          {/* [FIXED] Issue #1: Standardize mobile badge font size to text-xs */}
           {hamperItems.length > 0 && (
-            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 text-[10px] font-black text-[#2A140E]">
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 text-xs font-black text-[#2A140E]">
               {hamperItems.length}
             </span>
           )}

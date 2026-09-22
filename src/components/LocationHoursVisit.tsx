@@ -42,7 +42,8 @@ export const LocationHoursVisit: React.FC = () => {
         
         {/* Section Header */}
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold-300/70 bg-gold-50/70 px-4 py-1 text-xs font-bold uppercase tracking-widest text-primary-900 shadow-xs dark:border-gold-800/40 dark:bg-gold-950/40 dark:text-gold-300">
+          {/* [FIXED] Standardized section badge with guaranteed dark mode contrast */}
+          <div className="section-badge">
             <MapPin className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
             <span>Store Flagship & Visit Guide</span>
           </div>
@@ -97,13 +98,14 @@ export const LocationHoursVisit: React.FC = () => {
               </div>
 
               <div className="mt-5">
+                {/* [FIXED] Issue 18: Elevated Get Driving Directions to high-contrast primary CTA */}
                 <a
                   href={SHOP_METADATA.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#2F1710] to-[#45241A] px-5 py-2.5 text-xs font-bold text-[#FFF8ED] shadow-sm transition-all hover:brightness-110 active:scale-95 dark:from-[#3D1E15] dark:to-[#2A140E]"
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 px-6 py-2.5 text-xs font-bold text-[#2A140E] shadow-luxury transition-all hover:brightness-105 hover:scale-[1.02] active:scale-95"
                 >
-                  <Navigation className="h-3.5 w-3.5 text-gold-300" />
+                  <Navigation className="h-3.5 w-3.5 text-[#2A140E]" />
                   <span>Get Driving Directions</span>
                 </a>
               </div>
@@ -126,21 +128,18 @@ export const LocationHoursVisit: React.FC = () => {
                 </div>
               </div>
 
-              {/* [FIXED] Issue 18: Dot leaders bridging the gap between food item labels and times */}
-              <div className="mt-4 space-y-2 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
-                <div className="flex items-baseline justify-between border-b border-stone-200/60 pb-1.5 dark:border-stone-800">
+              {/* [FIXED] Issue 19: Clean modern list without dotted leaders and with generous vertical padding */}
+              <div className="mt-5 space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
+                <div className="flex items-center justify-between border-b border-stone-200/60 pb-2.5 dark:border-stone-800">
                   <span className="font-medium text-stone-800 dark:text-stone-200">Monday – Sunday (7 Days)</span>
-                  <span className="mx-2 flex-1 border-b border-dotted border-stone-300 dark:border-stone-700" aria-hidden="true" />
                   <span className="font-bold text-stone-900 dark:text-white">8:00 AM – 10:30 PM</span>
                 </div>
-                <div className="flex items-baseline justify-between border-b border-stone-200/60 pb-1.5 text-xs text-stone-600 dark:border-stone-800 dark:text-stone-400">
+                <div className="flex items-center justify-between border-b border-stone-200/60 pb-2.5 text-xs text-stone-600 dark:border-stone-800 dark:text-stone-400">
                   <span>Live Desi Ghee Jalebi &amp; Fafda</span>
-                  <span className="mx-2 flex-1 border-b border-dotted border-stone-300 dark:border-stone-700" aria-hidden="true" />
                   <span className="font-semibold text-stone-800 dark:text-stone-300">Daily from 8:30 AM</span>
                 </div>
-                <div className="flex items-baseline justify-between text-xs text-stone-600 dark:text-stone-400">
+                <div className="flex items-center justify-between text-xs text-stone-600 dark:text-stone-400 pt-0.5">
                   <span>Hot Punjabi Samosa &amp; Kachori</span>
-                  <span className="mx-2 flex-1 border-b border-dotted border-stone-300 dark:border-stone-700" aria-hidden="true" />
                   <span className="font-semibold text-stone-800 dark:text-stone-300">4:00 PM – 9:30 PM</span>
                 </div>
               </div>
@@ -252,7 +251,7 @@ export const LocationHoursVisit: React.FC = () => {
                 >
                   <button
                     onClick={() => toggleFaq(faq.id)}
-                    className="flex w-full items-center justify-between p-5 text-left transition-colors hover:bg-gold-50/40 dark:hover:bg-gold-950/20"
+                    className="flex w-full items-center justify-between p-5 text-left transition-colors hover:bg-gold-50/40 dark:hover:bg-[#281F18]"
                     aria-expanded={isOpen}
                   >
                     <span className="font-display text-sm font-bold text-stone-900 dark:text-white sm:text-base">

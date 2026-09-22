@@ -43,7 +43,8 @@ export const StoreStoryAuthentic: React.FC = () => {
         
         {/* Editorial Section Header */}
         <div className="mx-auto mb-16 max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold-300/70 bg-gold-50/70 px-4 py-1 text-xs font-bold uppercase tracking-widest text-primary-900 shadow-xs dark:border-gold-800/40 dark:bg-gold-950/40 dark:text-gold-300">
+          {/* [FIXED] Dark mode badge visibility fix: Use high-contrast section-badge token with dark:bg-[#23180D] and dark:text-gold-200 */}
+          <div className="section-badge">
             <Store className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
             <span>Spine Road, Chinchwad · Confectionery Heritage</span>
           </div>
@@ -77,7 +78,7 @@ export const StoreStoryAuthentic: React.FC = () => {
 
               <div className="absolute bottom-5 left-5 right-5 text-white">
                 <div className="mb-2 flex items-center gap-2">
-                  <span className="rounded-full bg-gold-500 px-3 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#2A140E] shadow">
+                  <span className="rounded-full bg-gold-500 px-3 py-0.5 text-xs font-black uppercase tracking-wider text-[#2A140E] shadow">
                     {currentPhoto.verifiedSource}
                   </span>
                   <span className="text-xs text-gold-300 font-medium">
@@ -146,7 +147,7 @@ export const StoreStoryAuthentic: React.FC = () => {
                 >
                   {/* [FIXED] Issue 23: Aligned badge flush with heading cap-height and tightened spacing */}
                   <div className="flex items-start gap-3.5">
-                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gold-100 font-display text-xs font-bold text-primary-900 dark:bg-gold-950/80 dark:text-gold-300">
+                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-gold-300/60 bg-gold-100 font-display text-xs font-bold text-stone-900 shadow-xs dark:border-gold-600/50 dark:bg-[#251A10] dark:text-gold-200">
                       {vow.num}
                     </div>
                     <div className="flex-1">
@@ -174,7 +175,7 @@ export const StoreStoryAuthentic: React.FC = () => {
                   <Star className="h-4 w-4 fill-gold-500 text-gold-500" />
                   <span>{RATING_METRICS.average}★</span>
                 </div>
-                <div className="mt-0.5 text-[11px] font-medium text-stone-500 dark:text-stone-400">
+                <div className="mt-0.5 text-xs font-medium text-stone-500 dark:text-stone-400">
                   {RATING_METRICS.totalReviews.toLocaleString()}+ Pune Reviews
                 </div>
               </div>
@@ -183,7 +184,7 @@ export const StoreStoryAuthentic: React.FC = () => {
                 <div className="font-display text-xl font-bold text-stone-900 dark:text-white sm:text-2xl">
                   50+
                 </div>
-                <div className="mt-0.5 text-[11px] font-medium text-stone-500 dark:text-stone-400">
+                <div className="mt-0.5 text-xs font-medium text-stone-500 dark:text-stone-400">
                   Daily Fresh Sweets
                 </div>
               </div>
@@ -192,7 +193,7 @@ export const StoreStoryAuthentic: React.FC = () => {
                 <div className="font-display text-xl font-bold text-emerald-600 dark:text-emerald-400 sm:text-2xl">
                   100%
                 </div>
-                <div className="mt-0.5 text-[11px] font-medium text-stone-500 dark:text-stone-400">
+                <div className="mt-0.5 text-xs font-medium text-stone-500 dark:text-stone-400">
                   Shuddha Shakahari
                 </div>
               </div>

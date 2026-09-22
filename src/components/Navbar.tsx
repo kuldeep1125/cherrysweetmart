@@ -158,13 +158,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
               </a>
 
-              {/* [FIXED] Issue 24: Increased breathing room between Gift Hampers and Atelier badge */}
+              {/* [FIXED] Issue 26: Atelier badge restyled with neutral stone tokens to eliminate visual conflict with hero CTA */}
               <button
                 onClick={onOpenHamper}
                 className="group relative flex items-center gap-2 py-1.5 transition-colors hover:text-gold-700 dark:hover:text-gold-400"
               >
                 <span>Gift Hampers</span>
-                <span className="ml-1 rounded-full bg-gradient-to-r from-gold-500 to-amber-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-xs">
+                <span className="ml-1 rounded-full border border-stone-200 bg-stone-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-stone-600 shadow-xs dark:border-stone-800 dark:bg-stone-800 dark:text-stone-300">
                   Atelier
                 </span>
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 rounded-full bg-gold-500 transition-all duration-300 group-hover:w-full" />
@@ -186,35 +186,35 @@ export const Navbar: React.FC<NavbarProps> = ({
               </a>
             </nav>
 
-            {/* [FIXED] Issue 21 & 25: Clear hierarchy with adjacent commerce actions and right-aligned theme utility */}
+            {/* [FIXED] Issue 21 & 25: Clear hierarchy with primary Order CTA and secondary Hamper action */}
             <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
               
-              {/* Commerce Action 1: Hamper Atelier Trigger Button */}
+              {/* Commerce Action 1: Hamper Atelier Button (Secondary Outlined) */}
               <button
                 onClick={onOpenHamper}
-                className="relative flex items-center justify-center h-9 w-9 sm:h-auto sm:w-auto sm:gap-1.5 rounded-xl border border-gold-300/70 bg-gold-50/80 sm:px-3 sm:py-2 text-xs font-semibold text-primary-900 shadow-xs transition-all hover:bg-gold-100 dark:border-gold-800/60 dark:bg-gold-950/40 dark:text-gold-300"
+                className="relative flex items-center justify-center h-9 w-9 sm:h-auto sm:w-auto sm:gap-1.5 rounded-xl border border-stone-300/80 bg-white/80 dark:border-stone-800 dark:bg-[#1E1914] sm:px-3 sm:py-2 text-xs font-semibold text-stone-700 dark:text-stone-300 shadow-xs transition-all hover:border-gold-400 hover:text-stone-900 dark:hover:text-white"
                 title="Open Gift Box Builder"
                 aria-label="Open Gift Box Builder"
               >
-                <Gift className="h-4 w-4 text-gold-700 dark:text-gold-400" />
+                <Gift className="h-4 w-4 text-gold-600 dark:text-gold-400" />
                 <span className="hidden sm:inline">Hamper</span>
                 {totalCartBadge > 0 && (
-                  <span className="absolute -top-1 -right-1 sm:static flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 text-[10px] font-black text-[#2A140E]">
+                  <span className="absolute -top-1 -right-1 sm:static flex h-4 w-4 items-center justify-center rounded-full bg-gold-500 text-xs font-black text-[#2A140E]">
                     {totalCartBadge}
                   </span>
                 )}
               </button>
 
-              {/* Commerce Action 2: Primary Order Online Dropdown Button */}
+              {/* Commerce Action 2: Primary Order Online Button (Solid High-Contrast CTA) */}
               <div className="relative hidden sm:block">
                 <button
                   onClick={() => setOrderDropdownOpen(!orderDropdownOpen)}
-                  className="flex items-center gap-1.5 rounded-xl bg-[#2A140E] px-4 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-gold-700 active:scale-95"
+                  className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 px-4 py-2 text-xs font-bold text-[#2A140E] shadow-luxury transition-all hover:brightness-105 active:scale-95"
                   aria-expanded={orderDropdownOpen}
                 >
-                  <ShoppingBag className="h-3.5 w-3.5 text-gold-300" />
+                  <ShoppingBag className="h-3.5 w-3.5 text-[#2A140E]" />
                   <span className="whitespace-nowrap">Order</span>
-                  <ChevronDown className={`h-3 w-3 text-gold-300 transition-transform duration-300 ${orderDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`h-3 w-3 text-[#2A140E] transition-transform duration-300 ${orderDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {/* Dropdown Menu */}
@@ -226,7 +226,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     />
                     <div className="absolute right-0 z-50 mt-2 w-64 rounded-2xl border border-gold-200 bg-white py-2 text-left shadow-2xl animate-fade-in dark:border-gold-800/60 dark:bg-[#1C1713]">
                       <div className="border-b border-stone-100 px-4 py-1.5 dark:border-stone-800">
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                        <p className="text-xs font-bold uppercase tracking-wider text-stone-400">
                           Pune &amp; PCMC Express Delivery
                         </p>
                       </div>
@@ -243,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           <span className="h-2.5 w-2.5 rounded-full bg-[#FC8019]" />
                           <span>Swiggy Express</span>
                         </div>
-                        <span className="rounded bg-orange-100 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:bg-orange-900/50">
+                        <span className="rounded-lg bg-orange-100 px-1.5 py-0.5 text-xs font-bold text-orange-600 dark:bg-orange-900/50">
                           ~30 mins
                         </span>
                       </a>
@@ -260,7 +260,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           <span className="h-2.5 w-2.5 rounded-full bg-[#E23744]" />
                           <span>Zomato Delivery</span>
                         </div>
-                        <span className="rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-600 dark:bg-red-900/50">
+                        <span className="rounded-lg bg-red-100 px-1.5 py-0.5 text-xs font-bold text-red-600 dark:bg-red-900/50">
                           4.0★
                         </span>
                       </a>
@@ -317,7 +317,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span>{storeStatus.text}</span>
               </span>
-              <span className="rounded bg-white px-2 py-0.5 text-[10px] font-semibold dark:bg-emerald-900">All 7 Days</span>
+              <span className="rounded-lg bg-white px-2 py-0.5 text-xs font-semibold dark:bg-emerald-900">All 7 Days</span>
             </div>
 
             <nav className="flex flex-col space-y-1 pt-2 text-sm font-medium text-stone-800 dark:text-stone-200">
@@ -343,13 +343,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setMobileMenuOpen(false);
                   onOpenHamper();
                 }}
-                className="flex w-full items-center justify-between rounded-xl border border-gold-300/60 bg-gold-50 px-3.5 py-2.5 text-left font-bold text-primary-900 dark:border-gold-800/40 dark:bg-gold-950/50 dark:text-gold-200"
+                className="flex w-full items-center justify-between rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-left font-bold text-stone-900 dark:border-stone-800 dark:bg-stone-900/50 dark:text-stone-200"
               >
                 <span className="flex items-center gap-2">
-                  <Gift className="h-4 w-4 text-gold-700 dark:text-gold-400" />
+                  <Gift className="h-4 w-4 text-gold-600 dark:text-gold-400" />
                   <span>Curate Gift Hamper Box</span>
                 </span>
-                <span className="rounded-full bg-gold-500 px-2 py-0.5 text-[10px] font-black uppercase text-[#2A140E]">
+                <span className="rounded-full border border-stone-200 bg-stone-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-stone-600 dark:border-stone-800 dark:bg-stone-800 dark:text-stone-300">
                   Atelier
                 </span>
               </button>

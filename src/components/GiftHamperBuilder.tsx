@@ -169,7 +169,8 @@ Please share final box availability, packing schedule, and delivery/pickup detai
                 <h3 id="atelier-title" className="font-display text-lg font-bold tracking-tight text-[#FFF8ED] sm:text-xl">
                   Artisanal Hamper Atelier
                 </h3>
-                <span className="rounded-full bg-gold-400/20 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-gold-200">
+                {/* [FIXED] Issue #1: Standardized badge font size to text-xs */}
+                <span className="rounded-full bg-gold-400/20 px-2.5 py-0.5 text-xs font-extrabold uppercase tracking-wider text-gold-200">
                   Custom Curated
                 </span>
               </div>
@@ -197,7 +198,7 @@ Please share final box availability, packing schedule, and delivery/pickup detai
               <span className="text-xs font-bold uppercase tracking-widest text-stone-800 dark:text-gold-300">
                 1. Select Box Presentation & Capacity
               </span>
-              <span className="text-[11px] font-medium text-stone-500 dark:text-stone-400">
+              <span className="text-xs font-medium text-stone-500 dark:text-stone-400">
                 Lined with food-grade gold foil cups
               </span>
             </div>
@@ -211,13 +212,13 @@ Please share final box availability, packing schedule, and delivery/pickup detai
                     onClick={() => handleTierChange(tier)}
                     className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border p-3.5 text-left transition-all ${
                       isSelected
-                        ? 'border-gold-500 bg-gold-50/80 shadow-md ring-2 ring-gold-400/50 dark:border-gold-500 dark:bg-gold-950/40'
-                        : 'border-stone-200 bg-white hover:border-gold-300 dark:border-stone-800 dark:bg-[#1F1914] dark:hover:border-gold-700'
+                        ? 'border-gold-500 bg-gold-50/90 shadow-md ring-2 ring-gold-400/50 dark:border-gold-400 dark:bg-[#2C1D13] dark:ring-gold-500/30'
+                        : 'border-stone-200 bg-white hover:border-gold-300 dark:border-stone-800 dark:bg-[#1E1712] dark:hover:border-gold-700'
                     }`}
                   >
                     <div>
                       <div className="flex items-center justify-between gap-1">
-                        <span className="rounded-full bg-primary-800 px-2 py-0.5 text-[9px] font-bold text-gold-200">
+                        <span className="rounded-full bg-primary-800 px-2 py-0.5 text-xs font-bold text-gold-200 dark:bg-gold-500/20 dark:text-gold-200">
                           {tier.badge}
                         </span>
                         <span className="text-xs font-bold text-stone-700 dark:text-stone-300">
@@ -227,13 +228,13 @@ Please share final box availability, packing schedule, and delivery/pickup detai
                       <h4 className="mt-2 font-display text-sm font-bold text-stone-900 dark:text-white">
                         {tier.name}
                       </h4>
-                      <p className="mt-1 text-[11px] text-stone-500 dark:text-stone-400">
+                      <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
                         {tier.dimensions}
                       </p>
                     </div>
 
                     <div className="mt-4 flex items-baseline justify-between border-t border-stone-100 pt-2 dark:border-stone-800">
-                      <span className="text-[10px] uppercase font-semibold text-stone-400">Complete Box</span>
+                      <span className="text-xs uppercase font-semibold text-stone-400">Complete Box</span>
                       <span className="font-display text-base font-black text-primary-900 dark:text-gold-300">
                         ₹{tier.basePrice}
                       </span>
@@ -284,16 +285,16 @@ Please share final box availability, packing schedule, and delivery/pickup detai
                         >
                           <X className="h-3 w-3" />
                         </button>
-                        <div className="absolute inset-x-0 bottom-0 bg-black/70 px-1 py-0.5 text-center text-[9px] font-bold text-white truncate">
+                        <div className="absolute inset-x-0 bottom-0 bg-black/70 px-1 py-0.5 text-center text-xs font-bold text-white truncate">
                           {sweet.name.split(' ')[0]}
                         </div>
                       </div>
                     ) : (
                       <div className="flex h-full w-full flex-col items-center justify-center">
-                        <span className="text-[10px] font-extrabold text-stone-400 dark:text-stone-500">
+                        <span className="text-xs font-extrabold text-stone-400 dark:text-stone-500">
                           {index + 1}
                         </span>
-                        <span className="text-[8px] uppercase tracking-wider text-stone-400">Empty</span>
+                        <span className="text-xs uppercase tracking-wider text-stone-400">Empty</span>
                       </div>
                     )}
                   </div>
@@ -308,7 +309,7 @@ Please share final box availability, packing schedule, and delivery/pickup detai
               <span className="font-bold uppercase tracking-widest text-stone-800 dark:text-gold-300">
                 3. Click Any Sweet to Place into Compartment
               </span>
-              <span className="text-[11px] text-stone-500 dark:text-stone-400">
+              <span className="text-xs text-stone-500 dark:text-stone-400">
                 Showing top 16 festive confections
               </span>
             </div>
@@ -333,10 +334,10 @@ Please share final box availability, packing schedule, and delivery/pickup detai
                       className="h-10 w-10 shrink-0 rounded-lg object-cover"
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-display text-[11px] font-bold text-stone-900 dark:text-white">
+                      <p className="truncate font-display text-xs font-bold text-stone-900 dark:text-white">
                         {sweet.name}
                       </p>
-                      <p className="text-[10px] font-semibold text-primary-800 dark:text-gold-400">
+                      <p className="text-xs font-semibold text-primary-800 dark:text-gold-400">
                         {sweet.marathiName}
                       </p>
                     </div>
@@ -374,7 +375,7 @@ Please share final box availability, packing schedule, and delivery/pickup detai
 
               <div className="grid grid-cols-2 gap-2.5">
                 <div>
-                  <label className="text-[11px] font-bold text-stone-600 dark:text-stone-400">To (Recipient)</label>
+                  <label className="text-xs font-bold text-stone-600 dark:text-stone-400">To (Recipient)</label>
                   <input
                     type="text"
                     value={senderRecipient.to}
@@ -384,7 +385,7 @@ Please share final box availability, packing schedule, and delivery/pickup detai
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold text-stone-600 dark:text-stone-400">From (Sender)</label>
+                  <label className="text-xs font-bold text-stone-600 dark:text-stone-400">From (Sender)</label>
                   <input
                     type="text"
                     value={senderRecipient.from}
@@ -396,7 +397,7 @@ Please share final box availability, packing schedule, and delivery/pickup detai
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-stone-600 dark:text-stone-400">
+                <label className="text-xs font-bold text-stone-600 dark:text-stone-400">
                   Gold Foil Message Card Inscription
                 </label>
                 <input
@@ -411,24 +412,24 @@ Please share final box availability, packing schedule, and delivery/pickup detai
 
             {/* Right Column: Live Gold-Bordered Greeting Card Preview */}
             <div className="flex flex-col justify-between rounded-xl border border-gold-300/70 bg-[#FFFDF9] p-4 text-center shadow-sm sm:col-span-6 dark:border-gold-700/60 dark:bg-[#211A15]">
-              <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-widest text-gold-700 dark:text-gold-400">
+              <div className="flex items-center justify-between text-xs font-extrabold uppercase tracking-widest text-gold-700 dark:text-gold-400">
                 <span>Cherry&apos;s Confectionery Note</span>
                 <Sparkles className="h-3 w-3" />
               </div>
 
               <div className="my-3 space-y-1.5">
-                <p className="text-[11px] font-bold text-stone-500 dark:text-stone-400">
+                <p className="text-xs font-bold text-stone-500 dark:text-stone-400">
                   {senderRecipient.to ? `For: ${senderRecipient.to}` : 'For: Your Loved Ones'}
                 </p>
                 <p className="font-display text-sm font-medium italic text-stone-800 dark:text-[#FFF8ED]">
                   &ldquo;{greetingCardMessage || 'Wishing you boundless warmth, prosperity, and the sweetness of authentic celebration.'}&rdquo;
                 </p>
-                <p className="text-[11px] font-bold text-gold-800 dark:text-gold-300">
+                <p className="text-xs font-bold text-gold-800 dark:text-gold-300">
                   {senderRecipient.from ? `With warmth, ${senderRecipient.from}` : 'With warmest blessings'}
                 </p>
               </div>
 
-              <div className="border-t border-gold-200/50 pt-1.5 text-[9px] text-stone-400">
+              <div className="border-t border-gold-200/50 pt-1.5 text-xs text-stone-400">
                 Sealed with {selectedRibbon.name} & Pure Cow Ghee Assurance
               </div>
             </div>
@@ -440,7 +441,7 @@ Please share final box availability, packing schedule, and delivery/pickup detai
         {/* Modal Bottom Concierge Action Bar */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-gold-200/80 bg-[#FAF7F2] p-4 sm:flex-row sm:px-7 dark:border-gold-900/60 dark:bg-[#181310]">
           <div>
-            <div className="text-[11px] font-medium text-stone-500 dark:text-stone-400">
+            <div className="text-xs font-medium text-stone-500 dark:text-stone-400">
               Complete Gift Hamper Estimation:
             </div>
             <div className="flex items-baseline gap-2">

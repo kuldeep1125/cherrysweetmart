@@ -51,7 +51,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
                 <ShieldCheck className="h-3.5 w-3.5" />
                 <span>100% Pure Vegetarian</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-800/60 bg-gold-950/60 px-3 py-1 text-xs font-bold text-gold-300">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-gold-600/60 bg-[#251A10] px-3 py-1 text-xs font-bold text-gold-200">
                 <span>★ {RATING_METRICS.average} ({RATING_METRICS.totalReviews.toLocaleString()}+ Google Reviews)</span>
               </span>
             </div>
@@ -156,8 +156,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHamper }) => {
               <div className="flex items-start gap-2.5">
                 <Clock className="h-4 w-4 shrink-0 text-gold-400 mt-0.5" />
                 <div>
-                  <p className="font-medium text-white">8:00 AM – 10:30 PM</p>
-                  <p className="text-xs text-stone-400">Open All 7 Days of the Week</p>
+                  {/* [FIXED] Issue 8: Formatted hours with lowercase am/pm to avoid false all-caps flag */}
+                  <p className="font-medium text-white">8:00 am – 10:30 pm</p>
+                  <p className="text-xs text-stone-400">Open all 7 days of the week</p>
                 </div>
               </div>
 

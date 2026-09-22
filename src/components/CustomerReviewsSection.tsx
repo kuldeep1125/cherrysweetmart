@@ -21,7 +21,8 @@ export const CustomerReviewsSection: React.FC = () => {
         
         {/* Section Header */}
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold-300/70 bg-gold-50/70 px-4 py-1 text-xs font-bold uppercase tracking-widest text-primary-900 shadow-xs dark:border-gold-800/40 dark:bg-gold-950/40 dark:text-gold-300">
+          {/* [FIXED] Standardized section badge with guaranteed dark mode contrast */}
+          <div className="section-badge">
             <MessageSquare className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
             <span>Customer Voice & Verified Ratings</span>
           </div>
@@ -62,15 +63,18 @@ export const CustomerReviewsSection: React.FC = () => {
                 Based on <strong>{RATING_METRICS.totalReviews.toLocaleString()}+ verified reviews</strong> on Google Business and local dining guides for Spine Road.
               </p>
 
-              <a
-                href={SHOP_METADATA.googleMapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 pt-2 text-xs font-bold text-primary-800 transition-colors hover:text-gold-600 dark:text-gold-400 dark:hover:text-gold-300"
-              >
-                <span>View Live Google Profile</span>
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
+              {/* [FIXED] Issue 30: Prominently elevated live Google proof link */}
+              <div className="pt-2">
+                <a
+                  href={SHOP_METADATA.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-gold-300/80 bg-gold-50/90 px-3.5 py-2 text-xs font-bold text-stone-900 shadow-xs transition-all hover:border-gold-400 hover:bg-gold-100 dark:border-gold-500/60 dark:bg-[#251A10] dark:text-gold-200 dark:hover:bg-[#342418]"
+                >
+                  <span>View Live Google Profile</span>
+                  <ExternalLink className="h-3.5 w-3.5 text-gold-700 dark:text-gold-400" />
+                </a>
+              </div>
             </div>
 
             {/* Right Column: Google Star Distribution Progress Bars */}
@@ -109,7 +113,7 @@ export const CustomerReviewsSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Filter Pills */}
+        {/* [FIXED] Issue 22: Standardized tab pills */}
         <div className="mb-9 flex flex-wrap items-center justify-center gap-2">
           {[
             { id: 'all', label: 'All Reviews' },
@@ -125,7 +129,7 @@ export const CustomerReviewsSection: React.FC = () => {
                 onClick={() => setSelectedFilter(f.id)}
                 className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
                   isSelected
-                    ? 'bg-gradient-to-r from-[#2F1710] to-[#45241A] text-[#FFF8ED] shadow-sm ring-1 ring-gold-400/40 dark:from-[#3D1E15] dark:to-[#2A140E]'
+                    ? 'bg-gradient-to-r from-gold-500 to-gold-600 text-[#2A140E] shadow-sm ring-1 ring-gold-400/40'
                     : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:bg-gold-50/60 dark:border-stone-800 dark:bg-[#1E1813] dark:text-stone-300'
                 }`}
               >
@@ -135,14 +139,14 @@ export const CustomerReviewsSection: React.FC = () => {
           })}
         </div>
 
-        {/* Reviews Cards Grid */}
+        {/* [FIXED] Issue 16: Reviews Cards Grid with uniform card heights */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 text-left">
           {filteredReviews.map(rev => (
             <div
               key={rev.id}
-              className="flex flex-col justify-between rounded-3xl border border-gold-200/70 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-400/80 hover:shadow-lg dark:border-gold-900/30 dark:bg-[#1C1612]"
+              className="flex h-full flex-col justify-between rounded-3xl border border-gold-200/70 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold-400/80 hover:shadow-lg dark:border-gold-900/30 dark:bg-[#1C1612]"
             >
-              <div className="space-y-3.5">
+              <div className="flex-1 space-y-3.5">
                 {/* Header: Rating & Source */}
                 <div className="flex items-center justify-between">
                   <div className="flex text-gold-400">
@@ -150,21 +154,23 @@ export const CustomerReviewsSection: React.FC = () => {
                       <Star key={i} className="h-4 w-4 fill-gold-400 text-gold-400" />
                     ))}
                   </div>
-                  <span className="rounded-full bg-stone-100 px-2.5 py-0.5 text-[10px] font-bold text-stone-600 dark:bg-stone-800 dark:text-stone-300">
+                  <span className="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-bold text-stone-600 dark:bg-stone-800 dark:text-stone-300">
                     {rev.source}
                   </span>
                 </div>
 
                 {/* Review Text */}
-                <p className="text-xs leading-relaxed text-stone-700 sm:text-sm dark:text-stone-200">
+                <p className="min-h-[4.25rem] text-xs leading-relaxed text-stone-700 sm:text-sm dark:text-stone-200">
                   &ldquo;{rev.reviewText}&rdquo;
                 </p>
 
-                {/* Marathi Quote */}
-                {rev.marathiSnippet && (
-                  <p className="rounded-xl border border-gold-200/60 bg-ivory-100/70 p-2.5 font-display text-xs italic font-semibold text-primary-900 dark:border-gold-900/40 dark:bg-[#231A14] dark:text-gold-300">
-                    {rev.marathiSnippet}
+                {/* [FIXED] Issue 17: Clean typographic Marathi quote without dark box fill */}
+                {rev.marathiSnippet ? (
+                  <p className="min-h-[2.5rem] border-l-2 border-gold-400/60 pl-3 font-display text-xs italic font-medium text-stone-600 dark:text-gold-300/90">
+                    &ldquo;{rev.marathiSnippet}&rdquo;
                   </p>
+                ) : (
+                  <div className="min-h-[2.5rem]" aria-hidden="true" />
                 )}
               </div>
 
@@ -190,7 +196,7 @@ export const CustomerReviewsSection: React.FC = () => {
                   {rev.favoriteItems.map(item => (
                     <span
                       key={item}
-                      className="rounded-md bg-stone-100 px-2 py-0.5 text-[10px] font-medium text-stone-600 dark:bg-stone-800 dark:text-stone-300"
+                      className="rounded-lg bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-600 dark:bg-stone-800 dark:text-stone-300"
                     >
                       {item}
                     </span>

@@ -52,8 +52,9 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Editorial Section Header */}
-        <div className="mx-auto mb-12 max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold-300/60 bg-gold-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary-900 shadow-sm dark:border-gold-700/50 dark:bg-gold-950/60 dark:text-gold-300">
+        <div className="mx-auto mb-8 max-w-3xl text-center">
+          {/* [FIXED] Standardized section badge with guaranteed dark mode contrast */}
+          <div className="section-badge">
             <Sparkles className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
             <span>Artisanal Confectionery Stage</span>
           </div>
@@ -71,8 +72,8 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
           </p>
         </div>
 
-        {/* [FIXED] Issue 22 & 27: Distinct showcase switcher style with explicit text indicator badge */}
-        <div className="mb-10 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
+        {/* [FIXED] Issue 9, 10, 22 & 23: Balanced responsive grid (3x2 or 6x1), reduced proximity gap, and single Top Pick */}
+        <div className="mb-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-2.5 max-w-5xl mx-auto">
           {signatures.map((sweet, index) => {
             const isActive = activeIndex === index;
             return (
@@ -82,17 +83,18 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                   setActiveIndex(index);
                   setSelectedWeight('500g');
                 }}
-                className={`group relative flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:text-sm ${
+                className={`group relative flex w-full flex-col items-center justify-center gap-1 rounded-xl p-2.5 text-center text-xs font-bold transition-all sm:text-xs ${
                   isActive
-                    ? 'border-2 border-gold-500 bg-gold-50 text-stone-900 shadow-md ring-2 ring-gold-400/40 dark:border-gold-400 dark:bg-gold-950/60 dark:text-gold-200'
-                    : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:text-stone-900 shadow-xs dark:border-stone-800 dark:bg-[#201A15] dark:text-stone-400 dark:hover:bg-[#2A231C]'
+                    ? 'border-2 border-gold-500 bg-gold-50 text-stone-900 shadow-md ring-2 ring-gold-400/40 dark:border-gold-400 dark:bg-[#2A1D13] dark:text-gold-100 dark:ring-gold-500/30'
+                    : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:text-stone-900 shadow-xs dark:border-stone-800 dark:bg-[#1E1712] dark:text-stone-300 dark:hover:border-gold-700 dark:hover:bg-[#251D16] dark:hover:text-gold-200'
                 }`}
               >
-                <span>{sweet.name.split('(')[0].trim()}</span>
-                {sweet.isBestseller && (
+                <span className="line-clamp-2 leading-tight">{sweet.name.split('(')[0].trim()}</span>
+                {/* [FIXED] Issue 23 & Dark Mode: High-contrast Top Pick badge */}
+                {index === 0 && (
                   <span
-                    className="inline-flex items-center rounded-full bg-gold-400/20 px-1.5 py-0.5 text-[10px] font-bold text-gold-700 dark:text-gold-300"
-                    aria-label="Bestseller selection"
+                    className="inline-flex items-center rounded-full bg-gold-500/20 px-1.5 py-0.5 text-xs font-bold text-gold-800 dark:bg-gold-400/20 dark:text-gold-200"
+                    aria-label="Flagship Bestseller"
                   >
                     ★ Top Pick
                   </span>
@@ -267,7 +269,7 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                         onClick={() => setSelectedWeight(wt)}
                         className={`rounded-xl border p-2.5 text-center transition-all ${
                           isSelected
-                            ? 'border-gold-500 bg-white dark:bg-[#251E18] shadow-md ring-2 ring-gold-400/40'
+                            ? 'border-gold-500 bg-white dark:bg-stone-800 dark:border-gold-400 shadow-md ring-2 ring-gold-400/40'
                             : 'border-stone-200 bg-white/60 dark:border-stone-800 dark:bg-stone-900/40 hover:border-gold-300'
                         }`}
                       >
@@ -281,13 +283,13 @@ export const SignatureShowcase: React.FC<SignatureShowcaseProps> = ({ onSelectSw
                 </div>
               </div>
 
-              {/* [FIXED] Issue 28: Full-width matching 2-column grid flush with packaging cards above */}
+              {/* [FIXED] Issue 28 & 29: Full-width matching 2-column grid with ghost secondary Inspect button */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-2">
                 <button
                   onClick={() => onSelectSweet(activeSweet)}
-                  className="inline-flex w-full min-h-[46px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 px-4 py-2.5 text-xs font-extrabold text-[#2A140E] shadow-luxury transition-all duration-300 hover:brightness-105 active:scale-95"
+                  className="inline-flex w-full min-h-[46px] items-center justify-center gap-2 rounded-xl border border-stone-300/80 bg-white/80 dark:border-stone-700 dark:bg-stone-800/80 px-4 py-2.5 text-xs font-bold text-stone-800 dark:text-stone-200 shadow-xs transition-all duration-300 hover:border-gold-400 hover:text-gold-700 dark:hover:text-gold-300 active:scale-95"
                 >
-                  <Eye className="h-4 w-4" />
+                  <Eye className="h-4 w-4 text-gold-600 dark:text-gold-400" />
                   <span>Inspect Full Dossier</span>
                 </button>
 

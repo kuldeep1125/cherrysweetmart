@@ -17,6 +17,7 @@ export default {
           400: '#DED3C0',
           500: '#CFBF9F',
         },
+        // [FIXED] Added 950 step to gold palette for dark mode contrast and defined primary palette
         gold: {
           50: '#FCF9EE',
           100: '#F7F0D4',
@@ -28,6 +29,20 @@ export default {
           700: '#8A6419',
           800: '#6E4E18',
           900: '#5A3F17',
+          950: '#23180D',
+        },
+        primary: {
+          50: '#FDF8F5',
+          100: '#F9EEE7',
+          200: '#F3DCD1',
+          300: '#E7C1B0',
+          400: '#D59D84',
+          500: '#BA775A',
+          600: '#9C583E',
+          700: '#7B402B',
+          800: '#5C2D1C',
+          900: '#2A140E',
+          950: '#190A06',
         },
         rosewood: {
           50: '#FFF1F2',

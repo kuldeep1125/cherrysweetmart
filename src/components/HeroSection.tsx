@@ -51,7 +51,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
           {/* Left Hero Narrative Column */}
           <div className="relative z-10 text-center lg:col-span-6 lg:text-left">
             {/* Live Counter Pill */}
-            <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-gold-300/30 bg-white/5 px-4 py-1.5 text-[11px] font-semibold tracking-wide text-gold-200 backdrop-blur-md shadow-sm sm:text-xs">
+            <div className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-gold-300/30 bg-white/5 px-4 py-1.5 text-xs font-semibold tracking-wide text-gold-200 backdrop-blur-md shadow-sm">
               <span className="relative flex h-2.5 w-2.5">
                 <span className={`absolute inline-flex h-full w-full rounded-full ${currentBatchStatus.active ? 'animate-ping bg-emerald-400 opacity-75' : 'bg-gold-400'}`} />
                 <span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${currentBatchStatus.active ? 'bg-emerald-400' : 'bg-gold-400'}`} />
@@ -66,18 +66,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
               चेरीज स्वीट कॉर्नर · Spine Road, Pune
             </p>
 
-            {/* Editorial Heading */}
-            <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight text-[#FFF8ED] sm:text-6xl lg:text-[4.25rem]">
+            {/* [FIXED] Issue 1 & 27: Standardized H1 font size to 6xl scale and tightened vertical leading for cohesive grouping */}
+            <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight text-[#FFF8ED] sm:text-6xl lg:text-6xl">
               The sweeter side
-              <span className="mt-1 block font-normal italic text-gold-300">of every celebration.</span>
+              <span className="block font-normal italic text-gold-300">of every celebration.</span>
             </h1>
 
             {/* Atmospheric copy */}
-            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-stone-200/90 sm:text-lg lg:mx-0">
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-stone-200/90 sm:text-lg lg:mx-0">
               Authentic Indian confectionery prepared fresh twice daily in pure cow ghee and fresh milk khoya. Honoring traditional kadai recipes on Spine Road for every festival, wedding, and family milestone.
             </p>
 
-            {/* [FIXED] Issue 14: Standardized button styles to cohesive rounded-xl design language */}
+            {/* [FIXED] Issue 20 & 28: Clarified CTA hierarchy and reinforced secondary button border affordance */}
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
               <button
                 onClick={onExploreClick}
@@ -89,7 +89,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
 
               <button
                 onClick={onOpenHamper}
-                className="group inline-flex min-h-[48px] items-center gap-2.5 rounded-xl border border-gold-300/60 bg-gold-500/10 px-6 py-3 text-sm font-bold text-gold-200 backdrop-blur-md transition-all duration-300 hover:bg-gold-500/20 active:scale-[0.98]"
+                className="group inline-flex min-h-[48px] items-center gap-2.5 rounded-xl border-2 border-gold-400/80 bg-stone-950/70 px-6 py-3 text-sm font-bold text-white backdrop-blur-md transition-all duration-300 hover:bg-gold-500/20 hover:text-gold-200 active:scale-[0.98]"
               >
                 <Award className="h-4 w-4 text-gold-300 transition-transform duration-300 group-hover:rotate-12" />
                 <span>Curate Gift Hamper</span>
@@ -118,15 +118,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
           </div>
 
           {/* Right Hero Visual Showcase Column */}
-          <div className="relative mx-auto w-full max-w-lg lg:col-span-6 lg:max-w-none">
-            {/* Visual Frame */}
-            <div className="group relative aspect-[4/4.2] overflow-hidden rounded-2xl border border-gold-300/30 bg-[#2E1812] p-2.5 shadow-2xl transition-all duration-500 hover:border-gold-300/60 sm:aspect-[5/4] lg:aspect-[4/3.9]">
-              <div className="relative h-full w-full overflow-hidden rounded-xl">
-                {/* Bespoke Ultra-HD Generated Visual Asset */}
+          <div className="relative mt-8 lg:col-span-6 lg:mt-0">
+            <div className="relative mx-auto max-w-lg lg:max-w-none">
+              
+              {/* Outer Glow Halo */}
+              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-gold-500/30 to-primary-900/30 blur-xl" />
+
+              {/* Main Visual Frame */}
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gold-300/40 bg-stone-900 shadow-2xl">
                 <img
                   src="/images/banners/hero_grand_confection_feast.jpg"
                   alt="A majestic royal brass platter loaded with fresh Cherry's Sweet Mart mithai, including Kesar Rasmalai, Desi Ghee Jalebi, and Kaju Katli"
-                  className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
                 />
                 
                 {/* Vignette & Contrast Overlay */}
@@ -135,7 +138,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
                 {/* Bottom Story Plaque */}
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-left text-white sm:bottom-6 sm:left-6 sm:right-6">
                   <div>
-                    <div className="mb-1.5 inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold-300 backdrop-blur-md">
+                    <div className="mb-1.5 inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-gold-300 backdrop-blur-md">
                       <Sparkles className="h-3 w-3 text-gold-300" />
                       Artisanal Kadai Craft
                     </div>
@@ -151,7 +154,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
                   {/* Rating Stamp */}
                   <div className="shrink-0 rounded-xl border border-gold-300/40 bg-black/40 p-3 text-center backdrop-blur-md">
                     <div className="font-display text-lg font-bold leading-none text-gold-300">4.8★</div>
-                    <div className="mt-1 text-[9px] font-medium tracking-wider text-stone-300 uppercase">Google</div>
+                    <div className="mt-1 text-xs font-medium tracking-wider text-stone-300 uppercase">Google</div>
                   </div>
                 </div>
               </div>
@@ -159,14 +162,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onOpen
 
             {/* Floating Artisan Pledge Card - Positioned at top-left to avoid colliding with bottom story plaque */}
             <div className="absolute -top-4 -left-3 z-20 hidden rounded-xl border border-gold-300/40 bg-[#FFFDF9] p-3.5 text-left shadow-luxury-hover sm:block sm:-top-5 sm:-left-5">
-              <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-widest text-primary-800">
+              {/* [FIXED] Issue 5: Elevated body copy from 10px to WCAG-compliant text-xs (12px) */}
+              <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-primary-800">
                 <span className="h-1.5 w-1.5 rounded-full bg-primary-600" />
                 <span>The Spine Road Promise</span>
               </div>
               <p className="mt-1 font-display text-xs font-bold leading-snug text-[#2C1810] sm:text-sm">
                 Zero Palm Oil · Pure Cow Milk Khoya
               </p>
-              {/* [FIXED] Issue 9: Body text minimum 12px (text-xs) */}
               <p className="text-xs text-stone-500">Boxed fresh to order in food-grade gold foil</p>
             </div>
 

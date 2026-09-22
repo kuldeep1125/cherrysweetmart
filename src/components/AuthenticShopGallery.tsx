@@ -84,63 +84,45 @@ export const AuthenticShopGallery: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-50 dark:bg-gold-950/50 border border-gold-200 dark:border-gold-800/40 text-gold-800 dark:text-gold-300 text-xs font-semibold uppercase tracking-wider">
+          {/* [FIXED] Standardized section badge with guaranteed dark mode contrast */}
+          <div className="section-badge">
             <Camera className="w-3.5 h-3.5" />
             <span>Spine Road Shop Tour</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-stone-900 dark:text-white tracking-tight">
             Step Inside <span className="text-gold-gradient">Cherry&apos;s Sweet Mart</span>
           </h2>
           <p className="font-serif italic text-gold-700 dark:text-gold-400 text-base sm:text-lg">
             प्रत्यक्ष दुकानातील स्वच्छता, व्यवस्था आणि ताजी मिठाई
           </p>
-          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm">
+          <p className="text-stone-600 dark:text-stone-300 text-xs sm:text-sm">
             Verified photographs of our physical storefront, temperature-controlled displays, live jalebi kadai, and warm hospitality team.
           </p>
         </div>
 
-        {/* Filter Navigation */}
+        {/* [FIXED] Issue 22: Standardized tab pills */}
         <div className="flex items-center justify-center gap-2 mb-8 flex-wrap">
-          <button
-            onClick={() => setActiveTab('all')}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-              activeTab === 'all'
-                ? 'bg-gold-600 text-white shadow'
-                : 'bg-slate-100 dark:bg-[#1E1914] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#25201A]'
-            }`}
-          >
-            All Photos ({galleryItems.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('store')}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-              activeTab === 'store'
-                ? 'bg-gold-600 text-white shadow'
-                : 'bg-slate-100 dark:bg-[#1E1914] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#25201A]'
-            }`}
-          >
-            Storefront & Counter
-          </button>
-          <button
-            onClick={() => setActiveTab('displays')}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-              activeTab === 'displays'
-                ? 'bg-gold-600 text-white shadow'
-                : 'bg-slate-100 dark:bg-[#1E1914] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#25201A]'
-            }`}
-          >
-            Sweet Display Cases
-          </button>
-          <button
-            onClick={() => setActiveTab('farsan')}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-              activeTab === 'farsan'
-                ? 'bg-gold-600 text-white shadow'
-                : 'bg-slate-100 dark:bg-[#1E1914] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#25201A]'
-            }`}
-          >
-            Live Kitchen & Jalebi
-          </button>
+          {[
+            { id: 'all', label: `All Photos (${galleryItems.length})` },
+            { id: 'store', label: 'Storefront & Counter' },
+            { id: 'displays', label: 'Sweet Display Cases' },
+            { id: 'farsan', label: 'Live Kitchen & Jalebi' },
+          ].map(tab => {
+            const isSelected = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-gold-500 to-gold-600 text-[#2A140E] shadow-sm ring-1 ring-gold-400/40'
+                    : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:bg-gold-50/50 dark:border-stone-800 dark:bg-[#1E1914] dark:text-stone-300'
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Gallery Grid */}
@@ -150,7 +132,7 @@ export const AuthenticShopGallery: React.FC = () => {
               type="button"
               key={item.id}
               onClick={() => setActiveLightboxIndex(galleryItems.findIndex(g => g.id === item.id))}
-              className={`relative block w-full text-left rounded-2xl overflow-hidden border border-gold-200 dark:border-gold-800/40 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer bg-slate-100 dark:bg-slate-900 ${
+              className={`relative block w-full text-left rounded-2xl overflow-hidden border border-gold-200 dark:border-gold-800/40 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer bg-stone-100 dark:bg-[#1C1612] ${
                 idx === 0 ? 'sm:col-span-2 sm:row-span-2 min-h-[260px] sm:min-h-[380px]' : 'h-60'
               }`}
             >
@@ -162,23 +144,24 @@ export const AuthenticShopGallery: React.FC = () => {
               />
               
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent opacity-80 group-hover:opacity-95 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/25 to-transparent opacity-80 group-hover:opacity-95 transition-opacity" />
 
               {/* Caption Overlay */}
               <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white">
-                <span className="inline-block px-2 py-0.5 rounded bg-gold-600 text-[10px] font-extrabold uppercase mb-1">
+                <span className="inline-block px-2 py-0.5 rounded-lg bg-gold-600 text-xs font-extrabold uppercase mb-1">
                   {item.verifiedSource}
                 </span>
                 <h3 className="font-display text-sm sm:text-base font-bold text-white line-clamp-1">
                   {item.title}
                 </h3>
-                <p className="text-[11px] text-slate-300 line-clamp-1 font-serif italic">
+                {/* [FIXED] Issue 7: Elevate caption to 12px text-xs and unify stone palette */}
+                <p className="text-xs text-stone-300 line-clamp-1 font-serif italic">
                   {item.marathiTitle}
                 </p>
               </div>
 
               {/* Hover Zoom Icon */}
-              <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 dark:bg-black/60 backdrop-blur-sm text-slate-800 dark:text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 dark:bg-black/60 backdrop-blur-sm text-stone-800 dark:text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Eye className="w-4 h-4" />
               </div>
             </button>
@@ -239,7 +222,7 @@ export const AuthenticShopGallery: React.FC = () => {
                 </button>
 
                 {/* Counter pill */}
-                <div className="absolute bottom-3 left-3 rounded-full bg-black/70 px-2.5 py-0.5 text-[10px] font-bold text-gold-300 backdrop-blur-sm">
+                <div className="absolute bottom-3 left-3 rounded-full bg-black/70 px-2.5 py-0.5 text-xs font-bold text-gold-300 backdrop-blur-sm">
                   {((activeLightboxIndex ?? 0) + 1)} / {galleryItems.length}
                 </div>
               </div>
@@ -247,10 +230,10 @@ export const AuthenticShopGallery: React.FC = () => {
               {/* Caption & Metadata Container */}
               <div className="overflow-y-auto p-4 sm:p-5 text-left space-y-1.5 bg-gradient-to-b from-[#1C1612] to-[#14100D] border-t border-gold-900/40">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-gold-600/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                  <span className="rounded-full bg-gold-600/90 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-white">
                     {activePhoto.verifiedSource}
                   </span>
-                  <span className="text-[11px] text-stone-400">· Spine Road Boutique</span>
+                  <span className="text-xs text-stone-400">· Spine Road Boutique</span>
                 </div>
 
                 <h3 id="gallery-lightbox-title" className="font-display text-base sm:text-lg font-bold text-[#FFF8ED]">

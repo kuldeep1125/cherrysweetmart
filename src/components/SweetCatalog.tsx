@@ -107,7 +107,8 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
         
         {/* Section Header */}
         <div className="mx-auto mb-12 max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold-300/70 bg-white px-4 py-1 text-xs font-bold uppercase tracking-widest text-primary-900 shadow-xs dark:border-gold-800/40 dark:bg-gold-950/40 dark:text-gold-300">
+          {/* [FIXED] Standardized section badge with guaranteed dark mode contrast */}
+          <div className="section-badge">
             <Sparkles className="h-3.5 w-3.5 text-gold-600 dark:text-gold-400" />
             <span>Complete Sweet & Namkeen Repertoire</span>
           </div>
@@ -150,19 +151,19 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                   Clear
                 </button>
               ) : (
-                <span className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rounded border border-stone-200 bg-white px-1.5 py-0.5 text-[10px] font-bold text-stone-400 dark:border-stone-700 dark:bg-stone-800 sm:inline">
+                <span className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-lg border border-stone-200 bg-white px-1.5 py-0.5 text-xs font-bold text-stone-400 dark:border-stone-700 dark:bg-stone-800 sm:inline">
                   /
                 </span>
               )}
             </div>
 
-            {/* [FIXED] Issue 31: Distinct dietary attribute tags to avoid confusing overlap with categories */}
-            <div className="flex w-full flex-wrap items-center justify-start gap-2 md:w-auto md:justify-end">
-              <span className="text-xs font-semibold text-stone-500 dark:text-stone-400">Dietary:</span>
+            {/* [FIXED] Issue 11 & 21: Consolidated dietary filters with cohesive rounded-full pill styling */}
+            <div className="flex w-full flex-wrap items-center justify-start gap-1.5 md:w-auto md:justify-end">
+              <span className="text-xs font-semibold text-stone-500 dark:text-stone-400 mr-1">Dietary:</span>
               {[
-                { id: 'all', label: 'All Items' },
+                { id: 'all', label: 'All' },
                 { id: 'bestseller', label: '★ Bestsellers' },
-                { id: 'pure-ghee', label: '🧈 100% Desi Ghee' },
+                { id: 'pure-ghee', label: '🧈 Desi Ghee' },
                 { id: 'sugar-free', label: '🌱 Sugar-Free' },
                 { id: 'dry-fruit', label: '🌰 Dry Fruit' },
               ].map(tag => {
@@ -175,7 +176,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                     className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
                       isSelected
                         ? 'bg-gradient-to-r from-[#2F1710] to-[#4A2419] text-[#FFF8ED] shadow-sm ring-1 ring-gold-400/40 dark:from-[#3D1E15] dark:to-[#2A140E]'
-                        : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:bg-gold-50/50 dark:border-gold-900/40 dark:bg-[#221B16] dark:text-stone-300'
+                        : 'border border-stone-200 bg-white text-stone-600 hover:border-gold-300 hover:bg-gold-50/50 dark:border-stone-800 dark:bg-[#221B16] dark:text-stone-300'
                     }`}
                   >
                     {tag.label}
@@ -186,7 +187,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
           </div>
 
           {/* Sleek Horizontal Category Navigation Rail */}
-          <div className="relative mt-6 border-t border-stone-100 pt-5 dark:border-stone-800">
+          <div className="relative mt-5 border-t border-stone-100 pt-4 dark:border-stone-800">
             {/* Left Scroll Button */}
             <button
               onClick={() => scrollRail('left')}
@@ -200,11 +201,11 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
             {/* Scrollable Container */}
             <div
               ref={categoryRailRef}
-              className="no-scrollbar flex items-center gap-2.5 overflow-x-auto px-7 py-1 scroll-smooth"
+              className="no-scrollbar flex items-center gap-2 overflow-x-auto px-7 py-1 scroll-smooth"
             >
               <button
                 onClick={() => setActiveCategory('all')}
-                className={`shrink-0 rounded-2xl px-4 py-2 text-xs font-bold transition-all ${
+                className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
                   activeCategory === 'all'
                     ? 'bg-gradient-to-r from-[#2A140E] to-[#43231A] text-white shadow-md ring-2 ring-gold-400/40'
                     : 'border border-stone-200 bg-stone-50 text-stone-700 hover:border-gold-300 hover:bg-gold-50 dark:border-stone-800 dark:bg-[#221B16] dark:text-stone-300'
@@ -220,7 +221,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
-                    className={`shrink-0 rounded-2xl px-4 py-2 text-xs font-bold transition-all ${
+                    className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
                       isSelected
                         ? 'bg-gradient-to-r from-[#2A140E] to-[#43231A] text-white shadow-md ring-2 ring-gold-400/40'
                         : 'border border-stone-200 bg-stone-50 text-stone-700 hover:border-gold-300 hover:bg-gold-50 dark:border-stone-800 dark:bg-[#221B16] dark:text-stone-300'
@@ -307,42 +308,43 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                       <span>Inspect Dossier</span>
                     </span>
                   </div>
-
-                  {/* Bottom Shelf Life Indicator */}
-                  <div className="absolute bottom-2 right-2.5 text-xs font-medium text-white/90">
-                    Shelf life: {sweet.shelfLife}
-                  </div>
                 </div>
 
                 {/* Content Box */}
                 <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
+                  {/* [FIXED] Issue 15: Fixed min-heights for titles and descriptions ensure strict horizontal alignment across cards */}
                   <div>
-                    {/* Category Label */}
-                    <div className="text-xs font-bold uppercase tracking-widest text-gold-700 dark:text-gold-400">
-                      {sweet.categoryName}
+                    {/* Category Label & [FIXED] Issue 14: Dedicated Shelf Life Pill in metadata area */}
+                    <div className="flex items-center justify-between gap-2 text-xs">
+                      <span className="font-bold uppercase tracking-widest text-gold-700 dark:text-gold-400">
+                        {sweet.categoryName}
+                      </span>
+                      <span className="rounded-lg bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-600 dark:bg-stone-800/90 dark:text-stone-300">
+                        {sweet.shelfLife}
+                      </span>
                     </div>
 
-                    {/* Sweet Title */}
-                    <h3
-                      onClick={() => onSelectSweet(sweet)}
-                      className="mt-1 font-display text-base font-bold leading-snug text-stone-900 transition-colors hover:text-gold-600 dark:text-white dark:hover:text-gold-400 line-clamp-1 cursor-pointer"
-                      title={sweet.name}
-                    >
-                      {sweet.name}
-                    </h3>
+                    {/* Sweet Title & Marathi Subtitle */}
+                    <div className="mt-1.5 min-h-[3rem]">
+                      <h3
+                        onClick={() => onSelectSweet(sweet)}
+                        className="font-display text-base font-bold leading-snug text-stone-900 transition-colors hover:text-gold-600 dark:text-white dark:hover:text-gold-400 line-clamp-1 cursor-pointer"
+                        title={sweet.name}
+                      >
+                        {sweet.name}
+                      </h3>
+                      <p className="font-display text-xs font-medium italic text-primary-800 dark:text-gold-400 line-clamp-1">
+                        {sweet.marathiName}
+                      </p>
+                    </div>
 
-                    {/* Marathi Subtitle */}
-                    <p className="font-display text-xs font-medium italic text-primary-800 dark:text-gold-400 line-clamp-1">
-                      {sweet.marathiName}
-                    </p>
-
-                    {/* Description */}
-                    <p className="mt-1.5 text-xs leading-relaxed text-stone-500 line-clamp-2 dark:text-stone-400">
+                    {/* Description with fixed min-height for row alignment */}
+                    <p className="mt-1 min-h-[2.5rem] text-xs leading-relaxed text-stone-500 line-clamp-2 dark:text-stone-400">
                       {sweet.description}
                     </p>
                   </div>
 
-                  {/* [FIXED] Issue 16 & 30: Grouped weight selector and price tightly with enhanced affordance */}
+                  {/* Grouped weight selector and price */}
                   <div className="mt-4 border-t border-stone-100 pt-3 dark:border-stone-800/80 space-y-2.5">
                     
                     {/* Price and Portion Segmented Control */}
@@ -356,16 +358,16 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                         </span>
                       </div>
 
-                      {/* [FIXED] Issue 30: Enlarge touch target and improve button affordance */}
+                      {/* [FIXED] Issue 12: Neutral selected weight state in dark mode prevents clashing with gold CTAs */}
                       <div className="flex items-center rounded-lg border border-stone-200 bg-stone-100 p-0.5 dark:border-stone-800 dark:bg-[#251D17]" role="group" aria-label="Select portion size">
                         {(['250g', '500g', '1kg'] as const).map(w => (
                           <button
                             key={w}
                             onClick={() => handleWeightChange(sweet.id, w)}
                             aria-pressed={weight === w}
-                            className={`min-h-[30px] rounded-md px-2.5 py-1 text-xs font-bold transition-all ${
+                            className={`min-h-[30px] rounded-lg px-2.5 py-1 text-xs font-bold transition-all ${
                               weight === w
-                                ? 'bg-stone-900 text-white shadow-xs dark:bg-gold-500 dark:text-[#2A140E]'
+                                ? 'bg-stone-900 text-white shadow-xs dark:bg-stone-700 dark:text-white dark:ring-1 dark:ring-stone-500'
                                 : 'text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-white'
                             }`}
                           >
@@ -375,11 +377,11 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
                       </div>
                     </div>
 
-                    {/* [FIXED] Issue 29: Swapped CTA dominance: Add to Box is primary gold fill, WhatsApp is secondary */}
-                    <div className="grid grid-cols-2 gap-2">
+                    {/* [FIXED] Issue 13 & 24: Add to Box is dominant primary CTA, WhatsApp is secondary outline, with 12px gap-3 */}
+                    <div className="grid grid-cols-2 gap-3 pt-1">
                       <button
                         onClick={() => handleAddHamper(sweet, weight)}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 py-2 px-2.5 text-xs font-bold text-[#2A140E] shadow-sm transition-all hover:brightness-105 active:scale-95"
+                        className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 py-2 px-3 text-xs font-bold text-[#2A140E] shadow-sm transition-all hover:brightness-105 active:scale-95"
                         title="Add this sweet to the custom gift box atelier"
                       >
                         <Gift className="h-3.5 w-3.5" />
@@ -388,7 +390,7 @@ export const SweetCatalog: React.FC<SweetCatalogProps> = ({ onSelectSweet, onOrd
 
                       <button
                         onClick={() => onOrderQuick(sweet, weight, price)}
-                        className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-stone-200 bg-white py-2 px-2.5 text-xs font-bold text-stone-800 transition-all hover:bg-stone-50 active:scale-95 dark:border-stone-700 dark:bg-[#221B16] dark:text-stone-200 dark:hover:bg-stone-800"
+                        className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl border border-stone-300/80 bg-white/80 py-2 px-3 text-xs font-bold text-stone-700 transition-all hover:border-emerald-500 hover:text-emerald-700 active:scale-95 dark:border-stone-700 dark:bg-[#1E1814] dark:text-stone-300 dark:hover:border-emerald-500/80 dark:hover:text-emerald-400"
                       >
                         <MessageCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>WhatsApp</span>
